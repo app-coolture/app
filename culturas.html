@@ -2,7 +2,7 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Coolture - Forum Pro</title>
     <style>
         :root {
@@ -101,8 +101,9 @@
         .comment-list { flex-grow: 1; overflow-y: auto; padding: 20px; }
         .comment-item { margin-bottom: 12px; font-size: 13px; border-bottom: 1px solid #f2f2f2; padding-bottom: 8px; }
         .input-box { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; padding-bottom: 40px; background: white; }
-        .input-box input { flex-grow: 1; border: 1px solid #ddd; border-radius: 20px; padding: 10px 15px; outline: none; }
+        .input-box input { flex-grow: 1; border: 1px solid #ddd; border-radius: 20px; padding: 10px 15px; outline: none; background: white; color: black; }
         .send-btn { background: var(--green-coolture); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
+        .send-btn:active { transform: scale(0.96); }
     </style>
 </head>
 <body>
@@ -149,7 +150,7 @@
 
     <div class="header">
         <div class="burger" onclick="toggleMenu()">☰</div>
-        <img src="images/logos-02.png" class="logo-mini">
+        <img src="images/logos-02.png" class="logo-mini" alt="logo">
         <div style="width:28px"></div>
     </div>
 
@@ -172,20 +173,181 @@
 </div>
 
 <script>
-    const DB_INITIAL = {
-        users: [{ id: 1, name: "Marc_99" }, { id: 2, name: "Marta_G" }, { id: 10, name: "Tu" }],
-        posts: [
-            { id: 101, userId: 1, tema: "Arquitectura", cont: "Asia", title: "La Gran Muralla", body: "L'enginyeria antiga és increïble. Caminar per aquí et fa sentir la història.", likes: 42 },
-            { id: 102, userId: 2, tema: "Gastronomia", cont: "Europa", title: "Carbonara Autèntica", body: "Sense nata! Solo ou, pecorino i guanciale.", likes: 128 },
-            { id: 103, userId: 1, tema: "Leyendas", cont: "América", title: "El Mite de Quetzalcóatl", body: "Fascinat per la serp emplomallada mesoamericana.", likes: 93 }
-        ],
-        comments: []
+    // ======================== DATOS EXTENSOS: 60 POSTS, MÚLTIPLES USUARIOS Y COMENTARIOS ========================
+    // Generamos una base de datos rica con 60 publicaciones, cada una con comentarios variados.
+    // Los temas y continentes respetan las opciones del menú.
+    
+    const TEMAS = ["Gastronomia", "Lenguaje", "Musica y Arte", "Celebraciones", "Vivencias", "Leyendas", "Entorno", "Arquitectura"];
+    const CONTINENTES = ["Europa", "África", "Antartida", "América", "Asia", "Oceania"];
+    
+    // Crear una lista amplia de usuarios (20 diferentes, incluyendo "Tu" como id 10)
+    const USUARIOS_BASE = [
+        { id: 1, name: "Marc_99" }, { id: 2, name: "Marta_G" }, { id: 3, name: "LauraExplora" }, { id: 4, name: "Carlos_Folk" },
+        { id: 5, name: "Sofia_Andes" }, { id: 6, name: "RamenLover" }, { id: 7, name: "KyotoDreams" }, { id: 8, name: "NileWalker" },
+        { id: 9, name: "TangoVibes" }, { id: 10, name: "Tu" }, { id: 11, name: "PolarAdventurer" }, { id: 12, name: "SambaTrue" },
+        { id: 13, name: "AlpacaMystic" }, { id: 14, name: "MedinaStories" }, { id: 15, name: "BorealLight" }, { id: 16, name: "OutbackSpirit" },
+        { id: 17, name: "Flamenco_Root" }, { id: 18, name: "SilkRoad_Globe" }, { id: 19, name: "MaoriGuardian" }, { id: 20, name: "PatagoniaWinds" }
+    ];
+    
+    // Frases para títulos y cuerpos variados y culturales
+    const titulosPorTema = {
+        "Gastronomia": ["Misterios del mole", "Pasta fresca artesanal", "Café etíope tradicional", "Dim sum perfecto", "Parrilla argentina", "Especias de Marrakech", "Ceviche ecuatoriano", "Quesos alpinos"],
+        "Lenguaje": ["Palabras intraducibles", "El arte del silencio", "Gestos que hablan", "Orígenes del catalán", "Dialectos andinos", "Lenguas en peligro", "Jerga juvenil global", "Poesía náhuatl"],
+        "Musica y Arte": ["Tambores de Senegal", "Flamenco fusión", "K-pop identidad", "Pintura rupestre", "Graffiti como voz", "Ópera de Pekín", "Murales de Detroit", "Arte textil andino"],
+        "Celebraciones": ["Diwali en Delhi", "Oktoberfest local", "Carnaval de Barranquilla", "Año nuevo lunar", "Inti Raymi", "Día de los Muertos", "Feria de Abril", "Holi colores"],
+        "Vivencias": ["Viajar sola por India", "Voluntariado en Tanzania", "Aprendiendo quechua", "Nómada digital en Bali", "Perdidos en Transilvania", "Un té con beduinos", "Cocina con abuelas", "Rituales de bienvenida"],
+        "Leyendas": ["El Pombero", "La Llorona ancestral", "Dragon de Komodo", "Yeti del Himalaya", "Sirenas del Danubio", "Chullachaqui", "Tupac Amaru mítico", "Mito de la Serpiente"],
+        "Entorno": ["Selva amazónica viva", "Desierto del Sáhara", "Fiordos noruegos", "Barrera de coral", "Parques de Yellowstone", "Picos del Himalaya", "Estepa mongola", "Volcanes de Islandia"],
+        "Arquitectura": ["Casas colgantes", "Rascacielos bioclimáticos", "Templos dorados", "Arquitectura de barro", "Fortalezas incas", "Palacios de hielo", "Gran Mezquita", "Museo del mañana"]
     };
-
-    let DB = JSON.parse(localStorage.getItem('coolture_db')) || DB_INITIAL;
-    let filtroTema = null, filtroCont = null, activePostId = null;
-
-    function saveData() { localStorage.setItem('coolture_db', JSON.stringify(DB)); }
+    
+    const cuerposInspiracion = [
+        "Una experiencia que cambió mi perspectiva cultural. Me fascinó cada detalle.",
+        "Tradición viva, cada rincón cuenta una historia milenaria.",
+        "Descubrí sabores y aromas que nunca olvidaré. ¡Altamente recomendado!",
+        "El respeto por las raíces es increíble en esta comunidad.",
+        "Me emocionó la calidez de la gente y sus costumbres únicas.",
+        "¿Alguien más ha vivido algo similar? Me encantaría leer sus anécdotas.",
+        "Un patrimonio que debemos proteger y difundir. ⚡",
+        "Me pregunto cómo ha evolucionado esta tradición en el siglo XXI.",
+        "Increíble sincretismo cultural, lleno de simbolismo.",
+        "Naturaleza y espiritualidad se unen de forma magistral."
+    ];
+    
+    // Generar posts (60) de forma dinámica y asegurar variedad
+    function generarPostsYComentarios() {
+        const posts = [];
+        const comments = [];
+        let postId = 101;  // mantener ids consistentes y no colisionar
+        const usuarios = [...USUARIOS_BASE];
+        
+        // Bucle para 60 posts
+        for (let i = 0; i < 60; i++) {
+            const tema = TEMAS[Math.floor(Math.random() * TEMAS.length)];
+            const continente = CONTINENTES[Math.floor(Math.random() * CONTINENTES.length)];
+            const usuarioAleatorio = usuarios[Math.floor(Math.random() * usuarios.length)];
+            const tituloPool = titulosPorTema[tema] || ["Costumbres ancestrales", "Patrimonio cultural"];
+            const titulo = tituloPool[Math.floor(Math.random() * tituloPool.length)] + (Math.random() > 0.7 ? " · reflexió" : "");
+            const cuerpoBase = cuerposInspiracion[Math.floor(Math.random() * cuerposInspiracion.length)];
+            const cuerpoExtendido = cuerpoBase + " " + (Math.random() > 0.5 ? "Comparte la teva opinió! 🌍" : "Què en penses? #Coolture");
+            const likes = Math.floor(Math.random() * 280) + 10;
+            
+            posts.push({
+                id: postId,
+                userId: usuarioAleatorio.id,
+                tema: tema,
+                cont: continente,
+                title: titulo,
+                body: cuerpoExtendido,
+                likes: likes
+            });
+            
+            // Añadir entre 2 y 6 comentarios por cada post (riqueza conversacional)
+            const numComentarios = Math.floor(Math.random() * 5) + 2; // mínimo 2 comentarios
+            for (let c = 0; c < numComentarios; c++) {
+                const comentarista = usuarios[Math.floor(Math.random() * usuarios.length)];
+                let textoComentario = "";
+                const opciones = [
+                    "Qué bonita tradición, gracias por compartir 🙌",
+                    "Me encantaría vivir esa experiencia algún día.",
+                    "Justo estaba investigando sobre esto, gran aporte!",
+                    "¿Sabes dónde puedo encontrar más información?",
+                    "Totalmente de acuerdo, la diversidad cultural nos enriquece.",
+                    "Yo lo viví en el 2022 y fue mágico ✨",
+                    "Interesante punto de vista, nunca lo había pensado así.",
+                    "Tengo una anécdota parecida, que recuerdos!",
+                    "Esto debería preservarse como patrimonio.",
+                    "Gracias por difundir estas maravillas."
+                ];
+                textoComentario = opciones[Math.floor(Math.random() * opciones.length)];
+                // algunos comentarios más largos
+                if (Math.random() > 0.8) textoComentario += " Además, he leído que influye mucho en la identidad local.";
+                comments.push({
+                    id: Date.now() + postId + c + Math.random() * 10000,
+                    postId: postId,
+                    userId: comentarista.id,
+                    text: textoComentario
+                });
+            }
+            postId++;
+        }
+        
+        // Aseguramos que hay comentarios adicionales para cada post (si alguno por error no llego a 2, pero arriba ya son 2-6)
+        // También se podrían añadir algunos comentarios del usuario "Tu" para dinamismo
+        // Inyectamos algunos comentarios extra firmados por "Tu" (id 10) en posts aleatorios para fomentar interacción
+        for (let i = 0; i < 25; i++) {
+            const postRandom = posts[Math.floor(Math.random() * posts.length)];
+            comments.push({
+                id: Date.now() + i + 999999,
+                postId: postRandom.id,
+                userId: 10,
+                text: "M'encanta aquest tema! Jo també vaig viure una experiència semblant. 💬"
+            });
+        }
+        
+        return { posts, comments };
+    }
+    
+    // Creamos dataset completo y luego comprobamos localStorage
+    const freshData = generarPostsYComentarios();
+    const FULL_USERS = USUARIOS_BASE;
+    
+    // Database inicial completa (60 posts + comentarios + usuarios)
+    const COMPLETE_DB = {
+        users: FULL_USERS,
+        posts: freshData.posts,
+        comments: freshData.comments
+    };
+    
+    // Estrategia de carga: Si localStorage está vacío o el número de posts es menor a 60 (para garantizar 60 publicaciones),
+    // se sobreescribe con la base completa. Además se garantiza que el input de comentarios guarde correctamente.
+    let DB;
+    
+    function initDatabase() {
+        const stored = localStorage.getItem('coolture_db');
+        if (stored) {
+            const parsed = JSON.parse(stored);
+            // Si ya existen 60 o más posts, usamos esa base (para no machacar datos guardados recientemente por usuario)
+            if (parsed.posts && parsed.posts.length >= 60) {
+                DB = parsed;
+            } else {
+                DB = JSON.parse(JSON.stringify(COMPLETE_DB));
+                localStorage.setItem('coolture_db', JSON.stringify(DB));
+            }
+        } else {
+            DB = JSON.parse(JSON.stringify(COMPLETE_DB));
+            localStorage.setItem('coolture_db', JSON.stringify(DB));
+        }
+        // Aseguramos que el usuario "Tu" (id 10) exista en la base (por si acaso)
+        if (!DB.users.find(u => u.id === 10)) {
+            DB.users.push({ id: 10, name: "Tu" });
+        }
+        // Aseguramos que no haya posts duplicados con id repetido (garantía)
+        const uniqueIds = new Set();
+        DB.posts = DB.posts.filter(p => {
+            if (uniqueIds.has(p.id)) return false;
+            uniqueIds.add(p.id);
+            return true;
+        });
+        if (DB.posts.length < 60) {
+            // Si por alguna razón aún hay menos de 60, añadimos más posts sin perder estructura
+            const extraPosts = freshData.posts.slice(0, 60 - DB.posts.length);
+            let maxId = Math.max(...DB.posts.map(p => p.id), 100);
+            extraPosts.forEach(p => { p.id = ++maxId; DB.posts.push(p); });
+        }
+        localStorage.setItem('coolture_db', JSON.stringify(DB));
+    }
+    
+    initDatabase();
+    
+    // Variables globales de filtros y estado
+    let filtroTema = null;
+    let filtroCont = null;
+    let activePostId = null;
+    
+    function saveData() { 
+        localStorage.setItem('coolture_db', JSON.stringify(DB)); 
+    }
     
     function toggleMenu() { 
         const menu = document.getElementById('sideMenu');
@@ -193,64 +355,162 @@
         menu.classList.toggle('active'); 
         overlay.classList.toggle('active');
     }
-
+    
     function closeAll() { 
         closeComments(); 
         document.getElementById('sideMenu').classList.remove('active'); 
         document.getElementById('overlay').classList.remove('active'); 
     }
-
+    
     function setFiltre(tipus, valor, el) {
         if (tipus === 'tema') {
-            if (filtroTema === valor) { filtroTema = null; el.classList.remove('selected'); }
-            else { document.querySelectorAll('#listaTemas .pill').forEach(p => p.classList.remove('selected')); filtroTema = valor; el.classList.add('selected'); }
+            if (filtroTema === valor) { 
+                filtroTema = null; 
+                el.classList.remove('selected'); 
+            } else { 
+                document.querySelectorAll('#listaTemas .pill').forEach(p => p.classList.remove('selected')); 
+                filtroTema = valor; 
+                el.classList.add('selected'); 
+            }
         } else {
-            if (filtroCont === valor) { filtroCont = null; el.classList.remove('selected'); }
-            else { document.querySelectorAll('#listaContinentes .pill').forEach(p => p.classList.remove('selected')); filtroCont = valor; el.classList.add('selected'); }
+            if (filtroCont === valor) { 
+                filtroCont = null; 
+                el.classList.remove('selected'); 
+            } else { 
+                document.querySelectorAll('#listaContinentes .pill').forEach(p => p.classList.remove('selected')); 
+                filtroCont = valor; 
+                el.classList.add('selected'); 
+            }
         }
         renderFeed();
         setTimeout(toggleMenu, 300);
     }
-
+    
     function renderFeed() {
         const feed = document.getElementById('feed');
+        if (!feed) return;
         feed.innerHTML = "";
         const filtrats = DB.posts.filter(p => (filtroTema ? p.tema === filtroTema : true) && (filtroCont ? p.cont === filtroCont : true));
+        if (filtrats.length === 0) {
+            feed.innerHTML = '<div style="padding: 40px; text-align: center; color: gray;">Cap publicació amb aquests filtres 🌱</div>';
+            return;
+        }
         filtrats.forEach(post => {
-            const user = DB.users.find(u => u.id === post.userId);
+            const user = DB.users.find(u => u.id === post.userId) || { name: "Anònim" };
             const postComments = DB.comments.filter(c => c.postId === post.id);
+            const commentCount = postComments.length;
             feed.innerHTML += `
                 <div class="post-card">
                     <div class="user-info">u/${user.name}</div>
                     <div class="tags"><span class="tag-pill">${post.tema}</span><span class="tag-pill">${post.cont}</span></div>
-                    <h3 class="post-title">${post.title}</h3>
-                    <p class="post-text">${post.body}</p>
-                    <div class="actions"><span>↑ ${post.likes}</span><span class="btn-comment" onclick="openComments(${post.id})">💬 ${postComments.length}</span></div>
+                    <h3 class="post-title">${escapeHtml(post.title)}</h3>
+                    <p class="post-text">${escapeHtml(post.body)}</p>
+                    <div class="actions"><span>⬆️ ${post.likes}</span><span class="btn-comment" onclick="openComments(${post.id})">💬 ${commentCount}</span></div>
                 </div>`;
         });
     }
-
+    
+    // pequeño helper para evitar XSS (por si acaso)
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+    
     function openComments(postId) {
         activePostId = postId;
         const list = document.getElementById('commentList');
-        list.innerHTML = DB.comments.filter(c => c.postId === postId).map(c => {
-            const user = DB.users.find(u => u.id === c.userId);
-            return `<div class="comment-item"><b>@${user.name}</b> ${c.text}</div>`;
-        }).join('');
+        if (!list) return;
+        const postComments = DB.comments.filter(c => c.postId === postId);
+        if (postComments.length === 0) {
+            list.innerHTML = '<div style="padding: 12px; text-align:center; color:gray;">Encara no hi ha comentaris. Sigues el primer ✍️</div>';
+        } else {
+            list.innerHTML = postComments.map(c => {
+                const user = DB.users.find(u => u.id === c.userId) || { name: "Anònim" };
+                return `<div class="comment-item"><b>@${escapeHtml(user.name)}</b> ${escapeHtml(c.text)}</div>`;
+            }).join('');
+        }
         document.getElementById('commentModal').classList.add('active');
         document.getElementById('overlay').classList.add('active');
+        // Enfocar input automáticamente
+        setTimeout(() => {
+            const inputField = document.getElementById('newComment');
+            if (inputField) inputField.focus();
+        }, 200);
     }
-
-    function closeComments() { document.getElementById('commentModal').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
-
+    
+    function closeComments() { 
+        document.getElementById('commentModal').classList.remove('active'); 
+        document.getElementById('overlay').classList.remove('active'); 
+        activePostId = null;
+    }
+    
     function submitComment() {
         const input = document.getElementById('newComment');
-        if (!input.value.trim()) return;
-        DB.comments.push({ id: Date.now(), postId: activePostId, userId: 10, text: input.value });
-        saveData(); input.value = ""; openComments(activePostId); renderFeed();
+        if (!input || !input.value.trim()) return;
+        if (!activePostId) return;
+        const newText = input.value.trim();
+        DB.comments.push({ 
+            id: Date.now() + Math.random() * 10000, 
+            postId: activePostId, 
+            userId: 10, 
+            text: newText 
+        });
+        saveData();
+        input.value = "";
+        // Refrescar modal y feed
+        openComments(activePostId);
+        renderFeed();
     }
-
-    window.onload = renderFeed;
+    
+    // Exponer funciones globales
+    window.toggleMenu = toggleMenu;
+    window.setFiltre = setFiltre;
+    window.openComments = openComments;
+    window.closeComments = closeComments;
+    window.submitComment = submitComment;
+    window.closeAll = closeAll;
+    
+    // Inicializar feed y comprobar que los comentarios funcionan
+    document.addEventListener('DOMContentLoaded', () => {
+        renderFeed();
+        // Si por algún motivo el input del modal no tuviese evento, ya está bindeado en el onclick.
+        // También agregamos evento por si pulsan enter en el input
+        const commentInput = document.getElementById('newComment');
+        if (commentInput) {
+            commentInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitComment();
+                }
+            });
+        }
+    });
+    
+    // Pequeño parche para asegurar que el modal overlay no bloquee inputs (ya funciona)
+    // También aseguramos que la base de datos nunca pierda los 60 posts en caso de recarga accidental con filtros.
+    if (DB.posts.length < 60) {
+        // recomponer otra vez
+        const finalFix = generarPostsYComentarios();
+        const existingIds = new Set(DB.posts.map(p => p.id));
+        let newId = Math.max(...DB.posts.map(p => p.id), 200);
+        for (let p of finalFix.posts) {
+            if (!existingIds.has(p.id) && DB.posts.length < 60) {
+                p.id = ++newId;
+                DB.posts.push(p);
+                existingIds.add(p.id);
+            }
+            if (DB.posts.length >= 60) break;
+        }
+        saveData();
+        renderFeed();
+    }
 </script>
 </body>
 </html>
