@@ -56,7 +56,6 @@
             text-align: center;
         }
 
-        /* --- SELECTOR DE PAÍS --- */
         .country-selector {
             width: 100%;
             background: var(--white);
@@ -68,13 +67,14 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             margin-bottom: 30px;
             cursor: pointer;
+            transition: 0.2s;
         }
+        .country-selector:active { transform: scale(0.98); }
 
         .country-info { display: flex; align-items: center; gap: 12px; }
         .flag-icon { width: 30px; height: 20px; object-fit: cover; border-radius: 3px; }
         .country-name { font-weight: 700; color: var(--text-dark); }
 
-        /* --- TARJETAS DE NIVEL --- */
         .level-card {
             width: 100%;
             background: var(--white);
@@ -89,17 +89,65 @@
             border: 2px solid transparent;
             box-sizing: border-box;
         }
-
         .level-card:active { transform: scale(0.97); }
         .level-card.novato { border-left: 8px solid #A3B899; }
         .level-card.experto { border-left: 8px solid #D4B066; }
 
         .level-icon { font-size: 35px; }
-        
         .level-text h3 { margin: 0; font-size: 18px; color: var(--text-dark); }
         .level-text p { margin: 3px 0 0 0; font-size: 13px; color: var(--text-grey); }
 
-        /* --- NAVBAR INFERIOR --- */
+        /* MODAL PER CANVIAR PAÍS */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+        }
+        .modal-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-container {
+            background: var(--bg-color);
+            width: 280px;
+            border-radius: 40px;
+            padding: 20px;
+            text-align: center;
+            max-height: 70%;
+            overflow-y: auto;
+        }
+        .modal-container h3 {
+            margin-top: 0;
+            color: var(--green-coolture);
+        }
+        .pais-opcio {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pais-opcio:hover { background: #e8e4d8; border-radius: 30px; }
+        .pais-opcio img { width: 30px; height: 20px; object-fit: cover; border-radius: 3px; }
+        .close-modal {
+            margin-top: 15px;
+            background: var(--green-coolture);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
         .navbar {
             position: absolute; bottom: 0; width: 100%;
             height: 85px; background-color: var(--green-coolture);
@@ -120,15 +168,17 @@
         <h1 class="header-title">Quizz Challenge</h1>
         <p class="sub-title">Demostra el que saps sobre el món</p>
 
-        <div class="country-selector">
+        <!-- Selector de país (clic per canviar) -->
+        <div class="country-selector" id="countrySelector">
             <div class="country-info">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/1200px-Flag_of_Spain.svg.png" class="flag-icon" alt="España">
-                <span class="country-name">España</span>
+                <img id="currentFlag" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/1200px-Flag_of_Spain.svg.png" class="flag-icon" alt="bandera">
+                <span id="currentCountry" class="country-name">Espanya</span>
             </div>
             <span style="color: var(--green-coolture); font-weight: bold;">Canviar</span>
         </div>
 
-        <div class="level-card novato" onclick="location.href='quizz/spain/novato_quizzspain.html'">
+        <!-- Targetes de nivell -->
+        <div class="level-card novato" id="btnNovato">
             <div class="level-icon">🌱</div>
             <div class="level-text">
                 <h3>Nivell Novato</h3>
@@ -136,7 +186,7 @@
             </div>
         </div>
 
-        <div class="level-card experto" onclick="location.href='quizz/spain/experto_quizzspain.html'">
+        <div class="level-card experto" id="btnExperto">
             <div class="level-icon">🏆</div>
             <div class="level-text">
                 <h3>Nivell Expert</h3>
@@ -146,20 +196,96 @@
     </div>
 
     <nav class="navbar">
-        <a href="culturas.html" class="nav-item">
-            <img src="images/forum.png" class="nav-icon" alt="Forum">
-        </a>
-        <a href="quizz.html" class="nav-item active">
-            <img src="images/quizz2.png" class="nav-icon" alt="Quizz">
-        </a>
-        <a href="pasaporte.html" class="nav-item">
-            <img src="images/passaport.png" class="nav-icon" alt="Passaport">
-        </a>
-        <a href="perfil.html" class="nav-item">
-            <img src="images/perfil.png" class="nav-icon" alt="Perfil">
-        </a>
+        <a href="culturas.html" class="nav-item"><img src="images/forum.png" class="nav-icon" alt="Forum"></a>
+        <a href="quizz.html" class="nav-item active"><img src="images/quizz2.png" class="nav-icon" alt="Quizz"></a>
+        <a href="pasaporte.html" class="nav-item"><img src="images/passaport.png" class="nav-icon" alt="Passaport"></a>
+        <a href="perfil.html" class="nav-item"><img src="images/perfil.png" class="nav-icon" alt="Perfil"></a>
     </nav>
 </div>
 
+<!-- MODAL PER SELECCIONAR PAÍS -->
+<div id="modalPais" class="modal-overlay">
+    <div class="modal-container">
+        <h3>Selecciona un país</h3>
+        <div id="llistaPaisos"></div>
+        <button class="close-modal" id="tancarModal">Tancar</button>
+    </div>
+</div>
+
+<script>
+    // Llista de països disponibles (amb el nom exacte de la carpeta)
+    const paises = [
+        { nom: "Espanya", carpeta: "Espanya", bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/1200px-Flag_of_Spain.svg.png" },
+        { nom: "Perú", carpeta: "Perú", bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Peru.svg/1200px-Flag_of_Peru.svg.png" },
+        { nom: "Itàlia", carpeta: "Itàlia", bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/1200px-Flag_of_Italy.svg.png" },
+        { nom: "Japó", carpeta: "Japó", bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/1200px-Flag_of_Japan.svg.png" },
+        { nom: "Tailàndia", carpeta: "Tailàndia", bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/1200px-Flag_of_Thailand.svg.png" },
+        { nom: "Àustria", carpeta: "Àustria", bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Austria.svg/1200px-Flag_of_Austria.svg.png" },
+        { nom: "Noruega", carpeta: "Noruega", bandera: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Norway.svg/1200px-Flag_of_Norway.svg.png" }
+    ];
+
+    let paisActual = "Espanya";
+    let carpetaActual = "Espanya";
+
+    // Guardar/recuperar país des de localStorage
+    if (localStorage.getItem('quizPais')) {
+        const stored = localStorage.getItem('quizPais');
+        const found = paises.find(p => p.nom === stored);
+        if (found) {
+            paisActual = found.nom;
+            carpetaActual = found.carpeta;
+        }
+    } else {
+        localStorage.setItem('quizPais', paisActual);
+    }
+
+    // Actualitzar la UI amb el país actual
+    function updateCountryUI() {
+        const paisData = paises.find(p => p.nom === paisActual);
+        if (paisData) {
+            document.getElementById('currentFlag').src = paisData.bandera;
+            document.getElementById('currentCountry').innerText = paisData.nom;
+            carpetaActual = paisData.carpeta;
+        }
+    }
+
+    // Obrir modal amb llista de països
+    function obrirModalPais() {
+        const modal = document.getElementById('modalPais');
+        const llistaDiv = document.getElementById('llistaPaisos');
+        llistaDiv.innerHTML = '';
+        paises.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'pais-opcio';
+            div.innerHTML = `<img src="${p.bandera}" alt="${p.nom}"><span>${p.nom}</span>`;
+            div.onclick = () => {
+                paisActual = p.nom;
+                carpetaActual = p.carpeta;
+                localStorage.setItem('quizPais', paisActual);
+                updateCountryUI();
+                modal.classList.remove('active');
+            };
+            llistaDiv.appendChild(div);
+        });
+        modal.classList.add('active');
+    }
+
+    // Tancar modal
+    document.getElementById('tancarModal').onclick = () => {
+        document.getElementById('modalPais').classList.remove('active');
+    };
+    document.getElementById('countrySelector').onclick = obrirModalPais;
+
+    // Iniciar quiz amb país i nivell (ruta: quizz/[carpeta]/novato.html)
+    function iniciarQuiz(nivell) {
+        // nivell pot ser 'novato' o 'experto'
+        window.location.href = `quizz/${carpetaActual}/${nivell}.html`;
+    }
+
+    document.getElementById('btnNovato').onclick = () => iniciarQuiz('novato');
+    document.getElementById('btnExperto').onclick = () => iniciarQuiz('experto');
+
+    updateCountryUI();
+</script>
 </body>
 </html>
