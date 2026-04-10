@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coolture - Selecció Quizz</title>
+    <style>
+        :root {
+            --bg-color: #F5F1E8; 
+            --green-coolture: #667F57;
+            --select-bg: #F4F1E8;
+            --white: #ffffff;
+            --text-dark: #1c1c1c;
+            --text-grey: #7c7c7c;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            background-color: #1a1a1a;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            width: 375px; height: 812px;
+            background-color: var(--bg-color);
+            border-radius: 40px; overflow: hidden;
+            position: relative; display: flex; flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .notch { width: 120px; height: 35px; border-radius: 20px; margin: 12px auto; background: black; flex-shrink: 0; }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-top: 10px;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .sub-title {
+            font-size: 14px;
+            color: var(--text-grey);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* --- SELECTOR DE PAÍS --- */
+        .country-selector {
+            width: 100%;
+            background: var(--white);
+            padding: 15px 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+        .country-info { display: flex; align-items: center; gap: 12px; }
+        .flag-icon { width: 30px; height: 20px; object-fit: cover; border-radius: 3px; }
+        .country-name { font-weight: 700; color: var(--text-dark); }
+
+        /* --- TARJETAS DE NIVEL --- */
+        .level-card {
+            width: 100%;
+            background: var(--white);
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+            box-sizing: border-box;
+        }
+
+        .level-card:active { transform: scale(0.97); }
+        .level-card.novato { border-left: 8px solid #A3B899; }
+        .level-card.experto { border-left: 8px solid #D4B066; }
+
+        .level-icon { font-size: 35px; }
+        
+        .level-text h3 { margin: 0; font-size: 18px; color: var(--text-dark); }
+        .level-text p { margin: 3px 0 0 0; font-size: 13px; color: var(--text-grey); }
+
+        /* --- NAVBAR INFERIOR --- */
+        .navbar {
+            position: absolute; bottom: 0; width: 100%;
+            height: 85px; background-color: var(--green-coolture);
+            display: flex; justify-content: space-around; align-items: center;
+            padding-bottom: 10px; box-sizing: border-box; z-index: 5000;
+        }
+        .nav-item { display: flex; align-items: center; justify-content: center; text-decoration: none; width: 65px; height: 60px; }
+        .nav-item.active { background-color: var(--select-bg); border-radius: 20px; }
+        .nav-icon { width: 45px; height: 45px; object-fit: contain; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="notch"></div>
+
+    <div class="content">
+        <h1 class="header-title">Quizz Challenge</h1>
+        <p class="sub-title">Demostra el que saps sobre el món</p>
+
+        <div class="country-selector">
+            <div class="country-info">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/1200px-Flag_of_Spain.svg.png" class="flag-icon" alt="España">
+                <span class="country-name">España</span>
+            </div>
+            <span style="color: var(--green-coolture); font-weight: bold;">Canviar</span>
+        </div>
+
+        <div class="level-card novato" onclick="location.href=''">
+            <div class="level-icon">🌱</div>
+            <div class="level-text">
+                <h3>Nivell Novato</h3>
+                <p>15 preguntes bàsiques</p>
+            </div>
+        </div>
+
+        <div class="level-card experto" onclick="location.href=''">
+            <div class="level-icon">🏆</div>
+            <div class="level-text">
+                <h3>Nivell Expert</h3>
+                <p>15 preguntes avançades</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <a href="culturas.html" class="nav-item">
+            <img src="images/forum.png" class="nav-icon" alt="Forum">
+        </a>
+        <a href="quizz.html" class="nav-item active">
+            <img src="images/quizz2.png" class="nav-icon" alt="Quizz">
+        </a>
+        <a href="pasaporte.html" class="nav-item">
+            <img src="images/passaport.png" class="nav-icon" alt="Passaport">
+        </a>
+        <a href="perfil.html" class="nav-item">
+            <img src="images/perfil.png" class="nav-icon" alt="Perfil">
+        </a>
+    </nav>
+</div>
+
+</body>
+</html>

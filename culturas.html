@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coolture - Forum Pro</title>
+    <style>
+        :root {
+            --bg-color: #F5F1E8; 
+            --green-coolture: #667F57;
+            --select-bg: #F4F1E8;
+            --white: #ffffff;
+            --reddit-grey: #7c7c7c;
+            --reddit-border: #cccbc4;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            background-color: #1a1a1a;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            width: 375px; height: 812px;
+            background-color: var(--bg-color);
+            border-radius: 40px; overflow: hidden;
+            position: relative; display: flex; flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .notch { width: 120px; height: 35px; border-radius: 20px; margin: 12px auto; background: black; flex-shrink: 0; z-index: 2100; }
+
+        /* --- MENÚ BURGER (Z-INDEX AUMENTADO PARA ESTAR POR ENCIMA DE TODO) --- */
+        .menu-overlay {
+            position: absolute; top: 0; left: -100%; width: 80%; height: 100%;
+            background: var(--bg-color); 
+            z-index: 4000; /* Por encima de la navbar y el modal */
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; box-shadow: 10px 0 30px rgba(0,0,0,0.2);
+            border-top-right-radius: 30px; border-bottom-right-radius: 30px;
+        }
+        .menu-overlay.active { left: 0; }
+        
+        .overlay-bg { 
+            position: absolute; top:0; left:0; width:100%; height:100%; 
+            background: rgba(0,0,0,0.5); 
+            z-index: 3500; /* Por encima de la navbar pero bajo el menú */
+            display: none; 
+        }
+        .overlay-bg.active { display: block; }
+
+        .menu-scroll-content { padding: 20px; overflow-y: auto; flex-grow: 1; padding-bottom: 100px; }
+        .close-menu { position: sticky; top: 0; align-self: flex-end; font-size: 32px; cursor: pointer; color: var(--green-coolture); background: var(--bg-color); width: 100%; text-align: right; padding: 10px 20px; z-index: 100; }
+        
+        .menu-title { font-size: 13px; font-weight: bold; margin: 15px 0 10px 5px; color: var(--green-coolture); text-transform: uppercase; }
+        .pill-list { display: flex; flex-direction: column; gap: 8px; }
+        .pill { border: 1.5px solid #000; border-radius: 30px; padding: 10px; font-size: 13px; text-align: center; font-weight: 600; background: white; cursor: pointer; transition: 0.3s; }
+        .pill.selected { background: var(--green-coolture); color: white; border-color: var(--green-coolture); }
+        .divider-green { height: 4px; background: var(--green-coolture); margin: 20px 0; border-radius: 10px; opacity: 0.3; }
+
+        /* --- HEADER --- */
+        .header { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; flex-shrink: 0; z-index: 1000; }
+        .burger { font-size: 28px; cursor: pointer; color: var(--green-coolture); }
+        .logo-mini { width: 80px; }
+
+        /* --- FEED --- */
+        #feed { flex-grow: 1; overflow-y: auto; padding-bottom: 120px; scrollbar-width: none; }
+        #feed::-webkit-scrollbar { display: none; }
+        .post-card { background: var(--white); border-bottom: 1px solid var(--reddit-border); padding: 15px; }
+        .user-info { font-size: 11px; font-weight: bold; color: var(--reddit-grey); margin-bottom: 5px; }
+        .tags { display: flex; gap: 5px; margin-bottom: 8px; }
+        .tag-pill { font-size: 9px; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; font-weight: bold; background: #e8ede4; color: var(--green-coolture); }
+        .post-title { font-size: 16px; margin: 5px 0; color: #1c1c1c; font-weight: 700; }
+        .post-text { font-size: 14px; color: #444; line-height: 1.4; }
+        .actions { display: flex; gap: 15px; font-size: 13px; font-weight: bold; color: var(--reddit-grey); margin-top: 10px; }
+        .btn-comment { cursor: pointer; color: var(--green-coolture); }
+
+        /* --- NAVBAR INFERIOR --- */
+        .navbar {
+            position: absolute; bottom: 0; width: 100%; height: 85px;
+            background-color: var(--green-coolture); display: flex;
+            justify-content: space-around; align-items: center;
+            padding-bottom: 10px; box-sizing: border-box; 
+            z-index: 5000; /* Nivel intermedio */
+        }
+        .nav-item { display: flex; align-items: center; justify-content: center; text-decoration: none; width: 65px; height: 60px; }
+        .nav-item.active { background-color: var(--select-bg); border-radius: 20px; }
+        .nav-icon { width: 45px; height: 45px; object-fit: contain; }
+
+        /* --- MODAL COMENTARIOS --- */
+        .modal {
+            position: absolute; bottom: -100%; left: 0; width: 100%; height: 75%;
+            background: white; z-index: 5000; transition: 0.4s ease;
+            border-top-left-radius: 30px; border-top-right-radius: 30px;
+            display: flex; flex-direction: column;
+        }
+        .modal.active { bottom: 0; }
+        .modal-header { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .comment-list { flex-grow: 1; overflow-y: auto; padding: 20px; }
+        .comment-item { margin-bottom: 12px; font-size: 13px; border-bottom: 1px solid #f2f2f2; padding-bottom: 8px; }
+        .input-box { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; padding-bottom: 40px; background: white; }
+        .input-box input { flex-grow: 1; border: 1px solid #ddd; border-radius: 20px; padding: 10px 15px; outline: none; }
+        .send-btn { background: var(--green-coolture); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="notch"></div>
+    <div class="overlay-bg" id="overlay" onclick="closeAll()"></div>
+
+    <div class="menu-overlay" id="sideMenu">
+        <div class="close-menu" onclick="toggleMenu()">✕</div>
+        <div class="menu-scroll-content">
+            <div class="menu-title">Secció Temes</div>
+            <div class="pill-list" id="listaTemas">
+                <div onclick="setFiltre('tema', 'Gastronomia', this)" class="pill">Gastronomia</div>
+                <div onclick="setFiltre('tema', 'Lenguaje', this)" class="pill">Lenguaje</div>
+                <div onclick="setFiltre('tema', 'Musica y Arte', this)" class="pill">Musica y Arte</div>
+                <div onclick="setFiltre('tema', 'Celebraciones', this)" class="pill">Celebraciones</div>
+                <div onclick="setFiltre('tema', 'Vivencias', this)" class="pill">Vivencias</div>
+                <div onclick="setFiltre('tema', 'Leyendas', this)" class="pill">Leyendas</div>
+                <div onclick="setFiltre('tema', 'Entorno', this)" class="pill">Entorno</div>
+                <div onclick="setFiltre('tema', 'Arquitectura', this)" class="pill">Arquitectura</div>
+            </div>
+            <div class="divider-green"></div>
+            <div class="menu-title">Secció Continents</div>
+            <div class="pill-list" id="listaContinentes">
+                <div onclick="setFiltre('continente', 'Europa', this)" class="pill">Europa</div>
+                <div onclick="setFiltre('continente', 'África', this)" class="pill">África</div>
+                <div onclick="setFiltre('continente', 'Antartida', this)" class="pill">Antartida</div>
+                <div onclick="setFiltre('continente', 'América', this)" class="pill">América</div>
+                <div onclick="setFiltre('continente', 'Asia', this)" class="pill">Asia</div>
+                <div onclick="setFiltre('continente', 'Oceania', this)" class="pill">Oceania</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="commentModal">
+        <div class="modal-header"><b>Comentaris</b><span onclick="closeComments()" style="cursor:pointer; font-size:20px;">✕</span></div>
+        <div class="comment-list" id="commentList"></div>
+        <div class="input-box">
+            <input type="text" id="newComment" placeholder="Escriu la teva resposta...">
+            <button class="send-btn" onclick="submitComment()">↑</button>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="burger" onclick="toggleMenu()">☰</div>
+        <img src="images/logos-02.png" class="logo-mini">
+        <div style="width:28px"></div>
+    </div>
+
+    <div id="feed"></div>
+
+    <nav class="navbar">
+        <a href="culturas.html" class="nav-item active">
+            <img src="images/forum2.png" class="nav-icon" alt="Forum">
+        </a>
+        <a href="quizz.html" class="nav-item">
+            <img src="images/quizz.png" class="nav-icon" alt="Quizz">
+        </a>
+        <a href="pasaporte.html" class="nav-item"> 
+            <img src="images/passaport.png" class="nav-icon" alt="Passaport">
+        </a>
+        <a href="perfil.html" class="nav-item"> 
+            <img src="images/perfil.png" class="nav-icon" alt="Perfil">
+        </a>
+    </nav>
+</div>
+
+<script>
+    const DB_INITIAL = {
+        users: [{ id: 1, name: "Marc_99" }, { id: 2, name: "Marta_G" }, { id: 10, name: "Tu" }],
+        posts: [
+            { id: 101, userId: 1, tema: "Arquitectura", cont: "Asia", title: "La Gran Muralla", body: "L'enginyeria antiga és increïble. Caminar per aquí et fa sentir la història.", likes: 42 },
+            { id: 102, userId: 2, tema: "Gastronomia", cont: "Europa", title: "Carbonara Autèntica", body: "Sense nata! Solo ou, pecorino i guanciale.", likes: 128 },
+            { id: 103, userId: 1, tema: "Leyendas", cont: "América", title: "El Mite de Quetzalcóatl", body: "Fascinat per la serp emplomallada mesoamericana.", likes: 93 }
+        ],
+        comments: []
+    };
+
+    let DB = JSON.parse(localStorage.getItem('coolture_db')) || DB_INITIAL;
+    let filtroTema = null, filtroCont = null, activePostId = null;
+
+    function saveData() { localStorage.setItem('coolture_db', JSON.stringify(DB)); }
+    
+    function toggleMenu() { 
+        const menu = document.getElementById('sideMenu');
+        const overlay = document.getElementById('overlay');
+        menu.classList.toggle('active'); 
+        overlay.classList.toggle('active');
+    }
+
+    function closeAll() { 
+        closeComments(); 
+        document.getElementById('sideMenu').classList.remove('active'); 
+        document.getElementById('overlay').classList.remove('active'); 
+    }
+
+    function setFiltre(tipus, valor, el) {
+        if (tipus === 'tema') {
+            if (filtroTema === valor) { filtroTema = null; el.classList.remove('selected'); }
+            else { document.querySelectorAll('#listaTemas .pill').forEach(p => p.classList.remove('selected')); filtroTema = valor; el.classList.add('selected'); }
+        } else {
+            if (filtroCont === valor) { filtroCont = null; el.classList.remove('selected'); }
+            else { document.querySelectorAll('#listaContinentes .pill').forEach(p => p.classList.remove('selected')); filtroCont = valor; el.classList.add('selected'); }
+        }
+        renderFeed();
+        setTimeout(toggleMenu, 300);
+    }
+
+    function renderFeed() {
+        const feed = document.getElementById('feed');
+        feed.innerHTML = "";
+        const filtrats = DB.posts.filter(p => (filtroTema ? p.tema === filtroTema : true) && (filtroCont ? p.cont === filtroCont : true));
+        filtrats.forEach(post => {
+            const user = DB.users.find(u => u.id === post.userId);
+            const postComments = DB.comments.filter(c => c.postId === post.id);
+            feed.innerHTML += `
+                <div class="post-card">
+                    <div class="user-info">u/${user.name}</div>
+                    <div class="tags"><span class="tag-pill">${post.tema}</span><span class="tag-pill">${post.cont}</span></div>
+                    <h3 class="post-title">${post.title}</h3>
+                    <p class="post-text">${post.body}</p>
+                    <div class="actions"><span>↑ ${post.likes}</span><span class="btn-comment" onclick="openComments(${post.id})">💬 ${postComments.length}</span></div>
+                </div>`;
+        });
+    }
+
+    function openComments(postId) {
+        activePostId = postId;
+        const list = document.getElementById('commentList');
+        list.innerHTML = DB.comments.filter(c => c.postId === postId).map(c => {
+            const user = DB.users.find(u => u.id === c.userId);
+            return `<div class="comment-item"><b>@${user.name}</b> ${c.text}</div>`;
+        }).join('');
+        document.getElementById('commentModal').classList.add('active');
+        document.getElementById('overlay').classList.add('active');
+    }
+
+    function closeComments() { document.getElementById('commentModal').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
+
+    function submitComment() {
+        const input = document.getElementById('newComment');
+        if (!input.value.trim()) return;
+        DB.comments.push({ id: Date.now(), postId: activePostId, userId: 10, text: input.value });
+        saveData(); input.value = ""; openComments(activePostId); renderFeed();
+    }
+
+    window.onload = renderFeed;
+</script>
+</body>
+</html>

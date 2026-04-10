@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coolture - Selecció de País</title>
+    <style>
+        :root {
+            --verde: #6b7a5a;
+            --crema: #f5f2eb;
+            --oro: #c5a866;
+            --blanco: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1a1a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            width: 375px;
+            height: 812px;
+            background-color: var(--crema);
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+
+        .notch {
+            width: 120px;
+            height: 35px;
+            border-radius: 20px;
+            margin: 12px auto;
+            background: black;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .header {
+            background-color: var(--verde);
+            /* Quitamos el min-height fijo para que se ajuste al contenido */
+            padding-bottom: 40px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--blanco);
+            z-index: 10;
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .logo-peque {
+            width: 70px;
+            margin-top: 20px; /* Reducido porque la notch ya empuja hacia abajo */
+        }
+
+        .pregunta {
+            margin-top: 40px;
+            font-size: 26px;
+            font-weight: 300;
+            text-align: center;
+        }
+
+        .columna-letras {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding: 40px 0;
+            gap: 35px;
+            scrollbar-width: none;
+        }
+
+        .columna-letras::-webkit-scrollbar {
+            display: none;
+        }
+
+        .letra-item {
+            font-size: 45px;
+            color: #333;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .letra-item:hover {
+            color: var(--oro);
+            transform: scale(1.2);
+        }
+
+        .lista-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px 0;
+            scrollbar-width: none;
+            width: 100%;
+        }
+
+        .lista-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        #lista-dinamica {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pais-item {
+            padding: 15px;
+            font-style: italic;
+            color: #333;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+            border-bottom: 0.5px solid rgba(197, 168, 102, 0.3);
+            text-align: center;
+            cursor: pointer;
+            width: 80%;
+            box-sizing: border-box;
+        }
+
+        .pais-item:hover {
+            background-color: rgba(197, 168, 102, 0.1);
+        }
+
+        .btn-back {
+            background: none;
+            border: none;
+            color: var(--oro);
+            font-weight: bold;
+            padding: 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 12px;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="notch"></div>
+        
+        <div class="header">
+            <img src="images/logos-02.png" class="logo-peque" alt="Logo">
+            <h2 id="display-texto" class="pregunta">De quin país ets?</h2>
+        </div>
+
+        <div id="vista-alfabeto" class="columna-letras"></div>
+
+        <div id="vista-lista" class="lista-container">
+            <div id="lista-dinamica"></div>
+            <button class="btn-back" onclick="mostrarAlfabeto()">← Tornar a l'alfabet</button>
+        </div>
+    </div>
+
+    <script>
+        const paises = {
+            "A": ["AFEGANISTAN", "ALBÀNIA", "ALEMANYA", "ALGÈRIA", "ANDORRA", "ANGOLA", "ANTIGUA I BARBUDA", "ARÀBIA SAUDITA", "ARGENTINA", "ARMÈNIA", "AUSTRÀLIA", "ÀUSTRIA", "AZERBAIDJAN"],
+            "B": ["BAHAMES", "BAHREIN", "BANGLADESH", "BARBADOS", "BÈLGICA", "BELICE", "BENÍN", "BIELORÚSSIA", "BIRMANIA", "BOLÍVIA", "BOSNIA I HERCEGOVINA", "BOTSWANA", "BRASIL", "BRUNEI", "BULGÀRIA", "BURKINA FASO", "BURUNDI", "BUTAN"],
+            "C": ["CAP VERD", "CAMBODJA", "CAMERUN", "CANADÀ", "CATAR", "CIUTAT DEL VATICÀ", "COLÒMBIA", "COMORES", "COREA DEL NORD", "COREA DEL SUD", "COSTA D’IVORI", "COSTA RICA", "CROÀCIA", "CUBA"],
+            "D": ["DINAMARCA", "DJIBUTI", "DOMINICA"],
+            "E": ["EQUADOR", "EGIPTE", "EL SALVADOR", "EMIRATS ÀRABS UNITS", "ERITREA", "ESLOVÀQUIA", "ESLOVÈNIA", "ESPANYA", "ESTATS UNITS", "ESTÒNIA", "ESWATINI", "ETIÒPIA"],
+            "F": ["FIJI", "FILIPINES", "FINLÀNDIA", "FRANÇA"],
+            "G": ["GABON", "GÀMBIA", "GEÒRGIA", "GHANA", "GRANADA", "GRÈCIA", "GUATEMALA", "GUINEA", "GUINEA EQUATORIAL", "GUINEA-BISSAU", "GUYANA"],
+            "H": ["HAITÍ", "HONDURES", "HONGRIA"],
+            "I": ["ÍNDIA", "INDONÈSIA", "IRAN", "IRAQ", "IRLANDA", "ISLÀNDIA", "ILLES MARSHALL", "ILLES SALOMÓ", "ISRAEL", "ITÀLIA", "IEMEN"],
+            "J": ["JAMAICA", "JAPÓ", "JORDÀNIA"],
+            "K": ["KAZAKHSTAN", "KENYA", "KIRGUISTAN", "KIRIBATI", "KUWAIT"],
+            "L": ["LAOS", "LESOTHO", "LETÒNIA", "LÍBAN", "LIBÈRIA", "LÍBIA", "LIECHTENSTEIN", "LITUÀNIA", "LUXEMBURG"],
+            "M": ["MADAGASCAR", "MALÀISIA", "MALAWI", "MALDIVES", "MALI", "MALTA", "MARROC", "MAURICI", "MAURITÀNIA", "MÈXIC", "MICRONÈSIA", "MOLDÀVIA", "MÒNACO", "MONGÒLIA", "MONTENEGRO", "MOÇAMBIC"],
+            "N": ["NAMÍBIA", "NAURU", "NEPAL", "NICARAGUA", "NÍGER", "NIGÈRIA", "NORUEGA", "NOVA ZELANDA"],
+            "O": ["OMAN"],
+            "P": ["PAÏSOS BAIXOS", "PAKISTAN", "PALAUS", "PANAMÀ", "PAPUA NOVA GUINEA", "PARAGUAI", "PERÚ", "POLÒNIA", "PORTUGAL"],
+            "Q": ["QATAR"],
+            "R": ["REGNE UNIT", "REPÚBLICA CENTREAFRICANA", "REPÚBLICA DEMOCRÀTICA DEL CONGO", "REPÚBLICA DEL CONGO", "REPÚBLICA DOMINICANA", "REPÚBLICA SUDAFRICANA", "REPÚBLICA TXECA", "REPÚBLICA DE MACEDÒNIA", "ROMANIA", "RUANDA", "RÚSSIA"],
+            "S": ["SAMOA", "SAN MARINO", "SANT CRISTÒFOL I NEVIS", "SANT TOMÉ I PRÍNCEP", "SANT VICENÇ I LES GRANADINES", "SANTA LLÚCIA", "SENEGAL", "SÈRBIA", "SEYCHELLES", "SIERRA LEONE", "SINGAPUR", "SÍRIA", "SOMÀLIA", "SRI LANKA", "SUDAN", "SUDAN DEL SUD", "SUÈCIA", "SUÏSSA", "SURINAM"],
+            "T": ["TAILÀNDIA", "TANZÀNIA", "TADJIKISTAN", "TIMOR ORIENTAL", "TOGO", "TONGA", "TRINITAT I TOBAGO", "TUNÍSIA", "TURKMENISTAN", "TURQUIA", "TUVALU", "TXAD"],
+            "U": ["UCRAÏNA", "UGANDA", "URUGUAI", "UZBEKISTAN"],
+            "V": ["VANUATU", "VENEÇUELA", "VIETNAM"],
+            "X": ["XILE", "XINA", "XIPRE"],
+            "Z": ["ZÀMBIA", "ZIMBABWE"]
+        };
+
+        const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        const columna = document.getElementById('vista-alfabeto');
+
+        alfabeto.forEach(letra => {
+            const div = document.createElement('div');
+            div.className = 'letra-item';
+            div.innerText = letra;
+            div.onclick = () => mostrarPaises(letra);
+            columna.appendChild(div);
+        });
+
+        function mostrarPaises(letra) {
+            const listaDinamica = document.getElementById('lista-dinamica');
+            listaDinamica.innerHTML = "";
+
+            const listaFiltrada = paises[letra] || ["No hi ha països"];
+            
+            listaFiltrada.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'pais-item';
+                item.innerText = p;
+                
+                // --- AQUÍ ESTÁ EL CAMBIO IMPORTANTE PARA QUE FUNCIONE EL CLIC ---
+                item.onclick = function() {
+                    window.location.href = 'pregunta2.html?pais=' + encodeURIComponent(p);
+                };
+                
+                listaDinamica.appendChild(item);
+            });
+
+            document.getElementById('vista-alfabeto').style.display = 'none';
+            document.getElementById('vista-lista').style.display = 'flex';
+        }
+
+        function mostrarAlfabeto() {
+            document.getElementById('vista-alfabeto').style.display = 'flex';
+            document.getElementById('vista-lista').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

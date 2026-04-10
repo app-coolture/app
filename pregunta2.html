@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coolture - Interessos</title>
+    <style>
+        :root {
+            --verde: #6b7a5a;
+            --blanco: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1a1a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            width: 375px;
+            height: 812px;
+            background-color: var(--verde);
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .notch {
+            width: 120px;
+            height: 35px;
+            border-radius: 20px; /* Redondeado total para efecto isla */
+            background: black;
+            margin: 12px auto; /* Centrado y con aire arriba */
+            flex-shrink: 0;
+            z-index: 20;
+        }
+
+        .logo {
+            width: 100px;
+            margin-top: 20px; /* Reducido para que no baje demasiado el contenido */
+        }
+
+        .pregunta {
+            color: var(--blanco);
+            font-size: 24px;
+            font-weight: 300;
+            margin-top: 50px; /* Ajustado para compensar el espacio de la notch */
+            text-align: center;
+            padding: 0 30px;
+            line-height: 1.2;
+        }
+
+        /* Contenedor de botones con scroll por si añades muchos */
+        .button-group {
+            width: 85%;
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            max-height: 450px;
+            scrollbar-width: none;
+        }
+
+        .button-group::-webkit-scrollbar {
+            display: none;
+        }
+
+        .btn-opcio {
+            background-color: var(--blanco);
+            color: #333;
+            text-decoration: none;
+            text-align: center;
+            padding: 16px 0;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .btn-opcio:hover {
+            transform: scale(1.03);
+            background-color: #f8f8f8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="notch"></div>
+        
+        <img src="images/logos-02.png" class="logo" alt="Logo">
+
+        <h2 class="pregunta">Què t'agrada descobrir més?</h2>
+
+        <div class="button-group">
+            <a href="culturas.html?interes=musica" class="btn-opcio">Música i Art</a>
+            <a href="culturas.html?interes=gastronomia" class="btn-opcio">Gastronomia</a>
+            <a href="culturas.html?interes=tradicions" class="btn-opcio">Tradicions</a>
+            <a href="culturas.html?interes=historia" class="btn-opcio">Història i llocs</a>
+            <a href="culturas.html?interes=festes" class="btn-opcio">Festes Populars</a>
+        </div>
+    </div>
+</body>
+</html>

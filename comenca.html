@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coolture - Comença</title>
+    <style>
+        /* --- MODIFICA ESTO PARA CAMBIAR EL DISEÑO --- */
+        :root {
+            --color-oro: #c5a866;       /* Color de la parte superior */
+            --color-verde: #6b7a5a;     /* Color de la parte inferior */
+            --angulo: 115deg;           /* Ajusta aquí los grados (ej: 120deg, 160deg) */
+            --separacion: 50%;          /* Dónde corta la línea (50% es la mitad) */
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1a1a1a;
+            font-family: sans-serif;
+        }
+
+        .container {
+            width: 375px;
+            height: 812px;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            /* Aquí se aplica el degradado con el ángulo y colores de arriba */
+            background: linear-gradient(var(--angulo), var(--color-oro) var(--separacion), var(--color-verde) var(--separacion));
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .notch {
+            width: 120px;
+            height: 35px;
+            border-radius: 20px;
+            margin: 12px auto;
+            background: black;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 80%;
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .logo {
+            width: 280px;
+            margin-top: 240px; /* Ajustado para que quede centrado como en el frame */
+        }
+
+        .bottom-area {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .small-text {
+            font-size: 11px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .btn-comenca {
+            display: block;
+            background: white;
+            color: #333;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="notch"></div>
+        
+        <div class="content">
+            <img src="images/logos-01.png" class="logo" alt="Coolture Logo">
+            
+            <div class="bottom-area">
+                <p class="small-text">Tenim unes preguntes importants...</p>
+                <a href="paises.html" class="btn-comenca">Comença</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

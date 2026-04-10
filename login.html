@@ -1,0 +1,138 @@
+<link rel="stylesheet" href="style.css">
+
+<style>
+.btn-submit {
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 12px;
+    font-family: inherit;
+}
+
+.form input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 🔴 Error visual */
+.input-error {
+    border: 1px solid #e74c3c !important;
+}
+
+/* 📝 Texto error */
+.error-text {
+    font-size: 11px;
+    color: #e74c3c;
+    margin: 4px 0 8px 2px;
+    display: none;
+}
+</style>
+
+<div class="container">
+    <div class="notch"></div>
+    <div class="content">
+        <img src="images/logos-02.png" class="logo">
+        
+        <form class="form" style="margin-top: 40px;" onsubmit="return validateForm()" action="comenca.html">
+            
+            <input type="text" id="email" placeholder="Email*">
+            <div class="error-text" id="emailError"></div>
+            
+            <input type="password" id="password" placeholder="Contrasenya*">
+            <div class="error-text" id="passwordError"></div>
+            
+            <input type="text" id="username" placeholder="Nom d'usuari*">
+            <div class="error-text" id="usernameError"></div>
+            
+            <p class="small-text">T'enviarem un codi per verificar el teu correu</p>
+            
+            <button type="submit" class="btn btn-white btn-submit" style="margin-top: 40px;">
+                Inicia sessió
+            </button>
+            
+        </form>
+    </div>
+</div>
+
+<script>
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const usernameInput = document.getElementById("username");
+
+const emailError = document.getElementById("emailError");
+const passwordError = document.getElementById("passwordError");
+const usernameError = document.getElementById("usernameError");
+
+// Validación en tiempo real
+emailInput.oninput = () => validateEmail();
+passwordInput.oninput = () => validatePassword();
+usernameInput.oninput = () => validateUsername();
+
+function showError(input, errorDiv, message) {
+    input.classList.add("input-error");
+    errorDiv.style.display = "block";
+    errorDiv.innerText = message;
+}
+
+function clearError(input, errorDiv) {
+    input.classList.remove("input-error");
+    errorDiv.style.display = "none";
+}
+
+function validateEmail() {
+    const value = emailInput.value.trim();
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (value === "") {
+        showError(emailInput, emailError, "Aquest camp és obligatori");
+        return false;
+    } else if (!regex.test(value)) {
+        showError(emailInput, emailError, "Email no vàlid");
+        return false;
+    } else {
+        clearError(emailInput, emailError);
+        return true;
+    }
+}
+
+function validatePassword() {
+    const value = passwordInput.value.trim();
+
+    if (value === "") {
+        showError(passwordInput, passwordError, "Aquest camp és obligatori");
+        return false;
+    } else if (value.length < 6) {
+        showError(passwordInput, passwordError, "Mínim 6 caràcters");
+        return false;
+    } else {
+        clearError(passwordInput, passwordError);
+        return true;
+    }
+}
+
+function validateUsername() {
+    const value = usernameInput.value.trim();
+
+    if (value === "") {
+        showError(usernameInput, usernameError, "Aquest camp és obligatori");
+        return false;
+    } else if (value.length < 3) {
+        showError(usernameInput, usernameError, "Mínim 3 caràcters");
+        return false;
+    } else {
+        clearError(usernameInput, usernameError);
+        return true;
+    }
+}
+
+function validateForm() {
+    const validEmail = validateEmail();
+    const validPassword = validatePassword();
+    const validUsername = validateUsername();
+
+    return validEmail && validPassword && validUsername;
+}
+</script>

@@ -1,0 +1,110 @@
+:root {
+    --gold: #c5a866;
+    --green: #6b7a5a;
+    --white: #ffffff;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #1a1a1a; /* Fondo para resaltar el móvil */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 375px;
+    height: 812px;
+    background-color: var(--gold);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 40px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+}
+
+.notch {
+    width: 120px;
+    height: 35px;
+    border-radius: 20px;
+    margin: 12px auto;
+    background: black;
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+.content {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.logo { width: 180px; margin-top: 50px; }
+.logo-center { margin-top: 280px; width: 120px; }
+
+.tagline {
+    color: var(--white);
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 50px;
+    opacity: 0.9;
+}
+
+/* Formulario */
+.form { width: 100%; margin-top: 20px; }
+input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--white);
+    color: var(--white);
+    padding: 10px 0;
+    margin-bottom: 15px;
+    outline: none;
+    font-size: 16px;
+}
+input::placeholder { color: rgba(255,255,255,0.7); }
+
+.small-text {
+    color: var(--white);
+    font-size: 10px;
+    text-align: left;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* Botones */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.btn-white { background: var(--white); color: #333; }
+.btn-outline { background: transparent; border: 1px solid var(--white); color: var(--white); }
+
+/* Pantalla Comença (Diagonal) */
+.split-bg {
+    background: linear-gradient(150deg, var(--gold) 55%, var(--green) 55.2%);
+}
+
+/* Imagen del icono */
+.nav-icon {
+    width: 100px;       /* <--- Aumenta este número para hacerlos más GRANDES */
+    height: 100px;      /* <--- Aumenta este número para hacerlos más GRANDES */
+    object-fit: contain;
+}
