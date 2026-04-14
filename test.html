@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barra inferior flotant - Coolture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .phone-mock {
+            width: 375px;
+            height: 812px;
+            background-color: #F5F1E8;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .notch {
+            width: 120px;
+            height: 35px;
+            background-color: black;
+            border-radius: 20px;
+            margin: 12px auto 0 auto;
+        }
+
+        .content-placeholder {
+            position: absolute;
+            top: 100px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #667F57;
+            font-weight: bold;
+            padding: 20px;
+        }
+
+        :root {
+            --green-coolture: #667F57;
+            --select-bg: #F4F1E8;
+        }
+
+        .navbar {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            background-color: var(--green-coolture);
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 70px;
+            box-sizing: border-box;
+            z-index: 5000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 60px;
+            height: 50px;
+        }
+
+        .nav-item.active {
+            background-color: var(--select-bg);
+            border-radius: 20px;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-mock">
+        <div class="notch"></div>
+        <div class="content-placeholder">
+            (Contingut de la pantalla)<br>
+            Barra flotant prima, icona més gran sense engrandir el botó
+        </div>
+
+        <nav class="navbar">
+            <a href="culturas.html" class="nav-item">
+                <img src="images/forum.png" class="nav-icon" alt="Forum">
+            </a>
+            <a href="quizz.html" class="nav-item active">
+                <img src="images/quizz2.png" class="nav-icon" alt="Quizz">
+            </a>
+            <a href="pasaporte.html" class="nav-item">
+                <img src="images/passaport.png" class="nav-icon" alt="Passaport">
+            </a>
+            <a href="perfil.html" class="nav-item">
+                <img src="images/perfil.png" class="nav-icon" alt="Perfil">
+            </a>
+        </nav>
+    </div>
+</body>
+</html>

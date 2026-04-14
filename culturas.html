@@ -32,11 +32,11 @@
 
         .notch { width: 120px; height: 35px; border-radius: 20px; margin: 12px auto; background: black; flex-shrink: 0; z-index: 2100; }
 
-        /* --- MENÚ BURGER (Z-INDEX AUMENTADO PARA ESTAR POR ENCIMA DE TODO) --- */
+        /* --- MENÚ BURGER --- */
         .menu-overlay {
             position: absolute; top: 0; left: -100%; width: 80%; height: 100%;
             background: var(--bg-color); 
-            z-index: 4000; /* Por encima de la navbar y el modal */
+            z-index: 4000;
             transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex; flex-direction: column; box-shadow: 10px 0 30px rgba(0,0,0,0.2);
             border-top-right-radius: 30px; border-bottom-right-radius: 30px;
@@ -46,7 +46,7 @@
         .overlay-bg { 
             position: absolute; top:0; left:0; width:100%; height:100%; 
             background: rgba(0,0,0,0.5); 
-            z-index: 3500; /* Por encima de la navbar pero bajo el menú */
+            z-index: 3500;
             display: none; 
         }
         .overlay-bg.active { display: block; }
@@ -61,49 +61,365 @@
         .divider-green { height: 4px; background: var(--green-coolture); margin: 20px 0; border-radius: 10px; opacity: 0.3; }
 
         /* --- HEADER --- */
-        .header { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; flex-shrink: 0; z-index: 1000; }
-        .burger { font-size: 28px; cursor: pointer; color: var(--green-coolture); }
-        .logo-mini { width: 80px; }
+        .header { 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-start; 
+            padding: 10px 20px; 
+            flex-shrink: 0; 
+            z-index: 1000;
+            gap: 12px;
+        }
+        .burger { 
+            font-size: 36px; 
+            cursor: pointer; 
+            color: var(--green-coolture); 
+            line-height: 1; 
+            flex-shrink: 0;
+            position: relative;
+            top: -2px; /* mover un poco hacia arriba */
+        }
+        
+        /* ----- NUEVA BARRA DE BÚSQUEDA ANIMADA ----- */
+        #search {
+            flex: 1;
+            display: grid;
+            grid-template: "search" 60px / 1fr;
+            justify-content: stretch;
+            align-content: center;
+            justify-items: stretch;
+            align-items: stretch;
+            background: transparent;
+        }
+        #search input {
+            display: block;
+            grid-area: search;
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 100%;
+            background: none;
+            padding: 0 30px 0 60px;
+            border: none;
+            border-radius: 100px;
+            font: 16px/1 system-ui, sans-serif;
+            outline-offset: -8px;
+            color: #1a1a1a;
+        }
+        #search input::placeholder {
+            color: #aaa;
+        }
+        #search svg {
+            grid-area: search;
+            overflow: visible;
+            color: #596D44;
+            fill: none;
+            stroke: currentColor;
+            width: 100%;
+            height: auto;
+        }
+        .spark {
+            fill: currentColor;
+            stroke: none;
+            r: 15;
+        }
+        .spark:nth-child(1) {
+            animation: spark-radius 2.03s 1s both, spark-one-motion 2s 1s both;
+        }
+        @keyframes spark-radius {
+            0% { r: 0; animation-timing-function: cubic-bezier(0, 0.3, 0, 1.57) }
+            30% { r: 15; animation-timing-function: cubic-bezier(1, -0.39, 0.68, 1.04) }
+            95% { r: 8 }
+            99% { r: 10 }
+            99.99% { r: 7 }
+            100% { r: 0 }
+        }
+        @keyframes spark-one-motion {
+            0% { transform: translate(-20%, 50%); animation-timing-function: cubic-bezier(0.63, 0.88, 0, 1.25) }
+            20% { transform: rotate(-0deg) translate(0%, -50%); animation-timing-function: ease-in }
+            80% { transform: rotate(-230deg) translateX(-20%) rotate(-100deg) translateX(15%); animation-timing-function: linear }
+            100% { transform: rotate(-360deg) translate(30px, 100%); animation-timing-function: cubic-bezier(.64,.66,0,.51) }
+        }
+        .spark:nth-child(2) {
+            animation: spark-radius 2.03s 1s both, spark-two-motion 2.03s 1s both;
+        }
+        @keyframes spark-two-motion {
+            0% { transform: translate(120%, 50%) rotate(-70deg) translateY(0%); animation-timing-function: cubic-bezier(0.36, 0.18, 0.94, 0.55) }
+            20% { transform: translate(90%, -80%) rotate(60deg) translateY(-80%); animation-timing-function: cubic-bezier(0.16, 0.77, 1, 0.4) }
+            40% { transform: translate(110%, -50%) rotate(-30deg) translateY(-120%); animation-timing-function: linear }
+            70% { transform: translate(100%, -50%) rotate(120deg) translateY(-100%); animation-timing-function: linear }
+            80% { transform: translate(95%, 50%) rotate(80deg) translateY(-150%); animation-timing-function: cubic-bezier(.64,.66,0,.51) }
+            100% { transform: translate(100%, 50%) rotate(120deg) translateY(0%) }
+        }
+        .spark:nth-child(3) {
+            animation: spark-radius 2.05s 1s both, spark-three-motion 2.03s 1s both;
+        }
+        @keyframes spark-three-motion {
+            0% { transform: translate(50%, 100%) rotate(-40deg) translateX(0%); animation-timing-function: cubic-bezier(0.62, 0.56, 1, 0.54) }
+            30% { transform: translate(40%, 70%) rotate(20deg) translateX(20%); animation-timing-function: cubic-bezier(0, 0.21, 0.88, 0.46) }
+            40% { transform: translate(65%, 20%) rotate(-50deg) translateX(15%); animation-timing-function: cubic-bezier(0, 0.24, 1, 0.62) }
+            60% { transform: translate(60%, -40%) rotate(-50deg) translateX(20%); animation-timing-function: cubic-bezier(0, 0.24, 1, 0.62) }
+            70% { transform: translate(70%, -0%) rotate(-180deg) translateX(20%); animation-timing-function: cubic-bezier(0.15, 0.48, 0.76, 0.26) }
+            100% { transform: translate(70%, -0%) rotate(-360deg) translateX(0%) rotate(180deg) translateX(20%); }
+        }
+        .burst {
+            stroke-width: 3;
+        }
+        .burst :nth-child(2n) { color: #ff783e }
+        .burst :nth-child(3n) { color: #ffab00 }
+        .burst :nth-child(4n) { color: #55e214 }
+        .burst :nth-child(5n) { color: #82d9f5 }
+        .circle { r: 6; }
+        .rect { width: 10px; height: 10px; }
+        .triangle { d: path("M0,-6 L7,6 L-7,6 Z"); stroke-linejoin: round; }
+        .plus { d: path("M0,-5 L0,5 M-5,0L 5,0"); stroke-linecap: round; }
+        .burst:nth-child(4) { transform: translate(30px, 100%) rotate(150deg); }
+        .burst:nth-child(5) { transform: translate(50%, 0%) rotate(-20deg); }
+        .burst:nth-child(6) { transform: translate(100%, 50%) rotate(75deg); }
+        @keyframes particle-fade {
+            0%, 100% { opacity: 0 }
+            5%, 80% { opacity: 1 }
+        }
+        .burst :nth-child(1) { animation: particle-fade 600ms 2.95s both, particle-one-move 600ms 2.95s both; }
+        .burst :nth-child(2) { animation: particle-fade 600ms 2.95s both, particle-two-move 600ms 2.95s both; }
+        .burst :nth-child(3) { animation: particle-fade 600ms 2.95s both, particle-three-move 600ms 2.95s both; }
+        .burst :nth-child(4) { animation: particle-fade 600ms 2.95s both, particle-four-move 600ms 2.95s both; }
+        .burst :nth-child(5) { animation: particle-fade 600ms 2.95s both, particle-five-move 600ms 2.95s both; }
+        .burst :nth-child(6) { animation: particle-fade 600ms 2.95s both, particle-six-move 600ms 2.95s both; }
+        @keyframes particle-one-move { 0% { transform: rotate(0deg) translate(-5%) scale(0.0001, 0.0001) } 100% { transform: rotate(-20deg) translateX(8%) scale(0.5, 0.5) } }
+        @keyframes particle-two-move { 0% { transform: rotate(0deg) translate(-5%) scale(0.0001, 0.0001) } 100% { transform: rotate(0deg) translateX(8%) scale(0.5, 0.5) } }
+        @keyframes particle-three-move { 0% { transform: rotate(0deg) translate(-5%) scale(0.0001, 0.0001) } 100% { transform: rotate(20deg) translateX(8%) scale(0.5, 0.5) } }
+        @keyframes particle-four-move { 0% { transform: rotate(0deg) translate(-5%) scale(0.0001, 0.0001) } 100% { transform: rotate(-35deg) translateX(12%) } }
+        @keyframes particle-five-move { 0% { transform: rotate(0deg) translate(-5%) scale(0.0001, 0.0001) } 100% { transform: rotate(0deg) translateX(12%) } }
+        @keyframes particle-six-move { 0% { transform: rotate(0deg) translate(-5%) scale(0.0001, 0.0001) } 100% { transform: rotate(35deg) translateX(12%) } }
+        .bar {
+            width: 100%;
+            height: 100%;
+            ry: 50%;
+            stroke-width: 2;
+            animation: bar-in 900ms 3s both;
+        }
+        @keyframes bar-in {
+            0% { stroke-dasharray: 0 180 0 226 0 405 0 0 }
+            100% { stroke-dasharray: 0 0 181 0 227 0 405 0 }
+        }
+        .magnifier {
+            animation: magnifier-in 600ms 3.6s both;
+            transform-box: fill-box;
+        }
+        @keyframes magnifier-in {
+            0% { transform: translate(20px, 8px) rotate(-45deg) scale(0.01, 0.01); }
+            50% { transform: translate(-4px, 8px) rotate(-45deg); }
+            100% { transform: translate(0px, 0px) rotate(0deg); }
+        }
+        .magnifier .glass { cx: 27; cy: 27; r: 8; stroke-width: 3; }
+        .magnifier .handle { x1: 32; y1: 32; x2: 44; y2: 44; stroke-width: 3; }
 
         /* --- FEED --- */
         #feed { flex-grow: 1; overflow-y: auto; padding-bottom: 120px; scrollbar-width: none; }
         #feed::-webkit-scrollbar { display: none; }
-        .post-card { background: var(--white); border-bottom: 1px solid var(--reddit-border); padding: 15px; }
-        .user-info { font-size: 11px; font-weight: bold; color: var(--reddit-grey); margin-bottom: 5px; }
-        .tags { display: flex; gap: 5px; margin-bottom: 8px; }
+        .post-card { 
+            background: #F4F1E8; 
+            border-bottom: 1px solid var(--reddit-border); 
+            padding: 15px; 
+        }
+        
+        /* Avatar i alias */
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #232323;
+            object-fit: cover;
+            background: #e0e0e0;
+            flex-shrink: 0;
+        }
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .username-line {
+            font-size: 13px;
+            font-weight: bold;
+            color: #1c1c1c;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .user-alias {
+            font-size: 10px;
+            color: #7c7c7c;
+            margin-top: 2px;
+        }
+        .verified-icon {
+            width: 14px;
+            height: 14px;
+            margin-left: 2px;
+            vertical-align: middle;
+        }
+        .check-icon {
+            height: 1em;
+            width: auto;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+        
+        .tags { display: flex; gap: 5px; margin-bottom: 8px; margin-top: 6px; }
         .tag-pill { font-size: 9px; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; font-weight: bold; background: #e8ede4; color: var(--green-coolture); }
         .post-title { font-size: 16px; margin: 5px 0; color: #1c1c1c; font-weight: 700; }
         .post-text { font-size: 14px; color: #444; line-height: 1.4; }
-        .actions { display: flex; gap: 15px; font-size: 13px; font-weight: bold; color: var(--reddit-grey); margin-top: 10px; }
-        .btn-comment { cursor: pointer; color: var(--green-coolture); }
-
-        /* --- NAVBAR INFERIOR --- */
-        .navbar {
-            position: absolute; bottom: 0; width: 100%; height: 85px;
-            background-color: var(--green-coolture); display: flex;
-            justify-content: space-around; align-items: center;
-            padding-bottom: 10px; box-sizing: border-box; 
-            z-index: 5000; /* Nivel intermedio */
+        
+        /* Imagen del post */
+        .post-image {
+            width: auto;
+            max-width: 85%;
+            display: block;
+            margin: 10px 0;
+            margin-left: 0;
+            border-radius: 12px;
+            border: 2px solid #232323;
+            object-fit: cover;
+            max-height: 200px;
         }
-        .nav-item { display: flex; align-items: center; justify-content: center; text-decoration: none; width: 65px; height: 60px; }
-        .nav-item.active { background-color: var(--select-bg); border-radius: 20px; }
-        .nav-icon { width: 45px; height: 45px; object-fit: contain; }
+        
+        .actions { display: flex; gap: 15px; font-size: 13px; font-weight: bold; color: var(--reddit-grey); margin-top: 10px; align-items: center; }
+        .action-icon { width: 18px; height: 18px; vertical-align: middle; margin-right: 4px; }
+        .btn-comment { cursor: pointer; display: inline-flex; align-items: center; gap: 4px; color: var(--green-coolture); }
+
+        /* --- NUEVA BARRA INFERIOR FLOTANT --- */
+        .navbar {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            background-color: var(--green-coolture);
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 70px;
+            box-sizing: border-box;
+            z-index: 5000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 60px;
+            height: 50px;
+        }
+
+        .nav-item.active {
+            background-color: var(--select-bg);
+            border-radius: 20px;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
 
         /* --- MODAL COMENTARIOS --- */
         .modal {
             position: absolute; bottom: -100%; left: 0; width: 100%; height: 75%;
-            background: white; z-index: 5000; transition: 0.4s ease;
+            background: white; z-index: 7000;
+            transition: 0.4s ease;
             border-top-left-radius: 30px; border-top-right-radius: 30px;
             display: flex; flex-direction: column;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
         }
         .modal.active { bottom: 0; }
-        .modal-header { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .comment-list { flex-grow: 1; overflow-y: auto; padding: 20px; }
-        .comment-item { margin-bottom: 12px; font-size: 13px; border-bottom: 1px solid #f2f2f2; padding-bottom: 8px; }
-        .input-box { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; padding-bottom: 40px; background: white; }
-        .input-box input { flex-grow: 1; border: 1px solid #ddd; border-radius: 20px; padding: 10px 15px; outline: none; background: white; color: black; }
-        .send-btn { background: var(--green-coolture); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
-        .send-btn:active { transform: scale(0.96); }
+        .modal-header { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; font-size: 16px; background: white; border-radius: 30px 30px 0 0; }
+        .comment-list { flex-grow: 1; overflow-y: auto; padding: 20px; background: #fefefe; }
+        .comment-item { 
+            margin-bottom: 16px; 
+            font-size: 13px; 
+            border-bottom: 1px solid #f0f0f0; 
+            padding-bottom: 12px; 
+            word-break: break-word;
+            display: flex;
+            gap: 10px;
+        }
+        .comment-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid #232323;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .comment-content {
+            flex: 1;
+        }
+        .comment-user {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-bottom: 4px;
+        }
+        .comment-username {
+            font-weight: bold;
+            font-size: 12px;
+            color: #1c1c1c;
+        }
+        .comment-alias {
+            font-size: 9px;
+            color: #7c7c7c;
+        }
+        .comment-text {
+            font-size: 12px;
+            color: #333;
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+        .input-box { 
+            padding: 12px 16px; 
+            border-top: 1px solid #eee; 
+            display: flex; 
+            gap: 12px; 
+            background: white; 
+            align-items: center;
+            padding-bottom: 20px;
+        }
+        .input-box input { 
+            flex-grow: 1; 
+            border: 1px solid #ccc; 
+            border-radius: 30px; 
+            padding: 12px 18px; 
+            outline: none; 
+            background: white; 
+            color: #1a1a1a;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .input-box input:focus { border-color: var(--green-coolture); box-shadow: 0 0 0 2px rgba(102,127,87,0.2); }
+        .send-btn { 
+            background: var(--green-coolture); 
+            color: white; 
+            border: none; 
+            border-radius: 50%; 
+            width: 44px; 
+            height: 44px; 
+            cursor: pointer; 
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .send-btn:active { transform: scale(0.94); background: #4e643f; }
     </style>
 </head>
 <body>
@@ -140,18 +456,56 @@
     </div>
 
     <div class="modal" id="commentModal">
-        <div class="modal-header"><b>Comentaris</b><span onclick="closeComments()" style="cursor:pointer; font-size:20px;">✕</span></div>
+        <div class="modal-header"><b>Comentaris</b><span onclick="closeComments()" style="cursor:pointer; font-size:22px;">✕</span></div>
         <div class="comment-list" id="commentList"></div>
         <div class="input-box">
-            <input type="text" id="newComment" placeholder="Escriu la teva resposta...">
+            <input type="text" id="newComment" placeholder="Escriu el teu comentari..." autocomplete="off">
             <button class="send-btn" onclick="submitComment()">↑</button>
         </div>
     </div>
 
     <div class="header">
         <div class="burger" onclick="toggleMenu()">☰</div>
-        <img src="images/logos-02.png" class="logo-mini" alt="logo">
-        <div style="width:28px"></div>
+        <!-- NUEVA BARRA DE BÚSQUEDA ANIMADA -->
+        <div id="search">
+            <svg viewBox="0 0 420 60" xmlns="http://www.w3.org/2000/svg">
+                <rect class="bar"/>
+                <g class="magnifier">
+                    <circle class="glass"/>
+                    <line class="handle" x1="32" y1="32" x2="44" y2="44"></line>
+                </g>
+                <g class="sparks">
+                    <circle class="spark"/>
+                    <circle class="spark"/>
+                    <circle class="spark"/>
+                </g>
+                <g class="burst pattern-one">
+                    <circle class="particle circle"/>
+                    <path class="particle triangle"/>
+                    <circle class="particle circle"/>
+                    <path class="particle plus"/>
+                    <rect class="particle rect"/>
+                    <path class="particle triangle"/>
+                </g>
+                <g class="burst pattern-two">
+                    <path class="particle plus"/>
+                    <circle class="particle circle"/>
+                    <path class="particle triangle"/>
+                    <rect class="particle rect"/>
+                    <circle class="particle circle"/>
+                    <path class="particle plus"/>
+                </g>
+                <g class="burst pattern-three">
+                    <circle class="particle circle"/>
+                    <rect class="particle rect"/>
+                    <path class="particle plus"/>
+                    <path class="particle triangle"/>
+                    <rect class="particle rect"/>
+                    <path class="particle plus"/>
+                </g>
+            </svg>
+            <input type="search" id="searchInput" name="q" aria-label="Search for inspiration" placeholder="Buscar...">
+        </div>
     </div>
 
     <div id="feed"></div>
@@ -163,10 +517,10 @@
         <a href="quizz.html" class="nav-item">
             <img src="images/quizz.png" class="nav-icon" alt="Quizz">
         </a>
-        <a href="pasaporte.html" class="nav-item"> 
+        <a href="pasaporte.html" class="nav-item">
             <img src="images/passaport.png" class="nav-icon" alt="Passaport">
         </a>
-        <a href="perfil.html" class="nav-item"> 
+        <a href="perfil.html" class="nav-item">
             <img src="images/perfil.png" class="nav-icon" alt="Perfil">
         </a>
     </nav>
@@ -174,22 +528,33 @@
 
 <script>
     // ======================== DATOS EXTENSOS: 60 POSTS, MÚLTIPLES USUARIOS Y COMENTARIOS ========================
-    // Generamos una base de datos rica con 60 publicaciones, cada una con comentarios variados.
-    // Los temas y continentes respetan las opciones del menú.
-    
     const TEMAS = ["Gastronomia", "Lenguaje", "Musica y Arte", "Celebraciones", "Vivencias", "Leyendas", "Entorno", "Arquitectura"];
     const CONTINENTES = ["Europa", "África", "Antartida", "América", "Asia", "Oceania"];
     
-    // Crear una lista amplia de usuarios (20 diferentes, incluyendo "Tu" como id 10)
+    // Usuarios con alias y avatar (se generarán luego)
     const USUARIOS_BASE = [
-        { id: 1, name: "Marc_99" }, { id: 2, name: "Marta_G" }, { id: 3, name: "LauraExplora" }, { id: 4, name: "Carlos_Folk" },
-        { id: 5, name: "Sofia_Andes" }, { id: 6, name: "RamenLover" }, { id: 7, name: "KyotoDreams" }, { id: 8, name: "NileWalker" },
-        { id: 9, name: "TangoVibes" }, { id: 10, name: "Tu" }, { id: 11, name: "PolarAdventurer" }, { id: 12, name: "SambaTrue" },
-        { id: 13, name: "AlpacaMystic" }, { id: 14, name: "MedinaStories" }, { id: 15, name: "BorealLight" }, { id: 16, name: "OutbackSpirit" },
-        { id: 17, name: "Flamenco_Root" }, { id: 18, name: "SilkRoad_Globe" }, { id: 19, name: "MaoriGuardian" }, { id: 20, name: "PatagoniaWinds" }
+        { id: 1, name: "Marc_99", verified: true, alias: "Foodie Català", avatarUrl: "" },
+        { id: 2, name: "Marta_G", verified: true, alias: "Art Explorer", avatarUrl: "" },
+        { id: 3, name: "LauraExplora", verified: true, alias: "Global Trotter", avatarUrl: "" },
+        { id: 4, name: "Carlos_Folk", verified: false, alias: "Tradiciones Vivas", avatarUrl: "" },
+        { id: 5, name: "Sofia_Andes", verified: false, alias: "Montañista Cultural", avatarUrl: "" },
+        { id: 6, name: "RamenLover", verified: false, alias: "Umami Seeker", avatarUrl: "" },
+        { id: 7, name: "KyotoDreams", verified: false, alias: "Zen Spirit", avatarUrl: "" },
+        { id: 8, name: "NileWalker", verified: false, alias: "Historia Viva", avatarUrl: "" },
+        { id: 9, name: "TangoVibes", verified: false, alias: "Ritmo Argentino", avatarUrl: "" },
+        { id: 10, name: "Tu", verified: true, alias: "Coolture Insider", avatarUrl: "" },
+        { id: 11, name: "PolarAdventurer", verified: false, alias: "Hielo Eterno", avatarUrl: "" },
+        { id: 12, name: "SambaTrue", verified: false, alias: "Carnaval Soul", avatarUrl: "" },
+        { id: 13, name: "AlpacaMystic", verified: false, alias: "Andean Dreamer", avatarUrl: "" },
+        { id: 14, name: "MedinaStories", verified: false, alias: "Cuentos Árabes", avatarUrl: "" },
+        { id: 15, name: "BorealLight", verified: false, alias: "Aurora Guide", avatarUrl: "" },
+        { id: 16, name: "OutbackSpirit", verified: false, alias: "Red Dust", avatarUrl: "" },
+        { id: 17, name: "Flamenco_Root", verified: false, alias: "Duende Flamenco", avatarUrl: "" },
+        { id: 18, name: "SilkRoad_Globe", verified: false, alias: "Ruta Ancestral", avatarUrl: "" },
+        { id: 19, name: "MaoriGuardian", verified: false, alias: "Haka Pride", avatarUrl: "" },
+        { id: 20, name: "PatagoniaWinds", verified: false, alias: "Fin del Mundo", avatarUrl: "" }
     ];
     
-    // Frases para títulos y cuerpos variados y culturales
     const titulosPorTema = {
         "Gastronomia": ["Misterios del mole", "Pasta fresca artesanal", "Café etíope tradicional", "Dim sum perfecto", "Parrilla argentina", "Especias de Marrakech", "Ceviche ecuatoriano", "Quesos alpinos"],
         "Lenguaje": ["Palabras intraducibles", "El arte del silencio", "Gestos que hablan", "Orígenes del catalán", "Dialectos andinos", "Lenguas en peligro", "Jerga juvenil global", "Poesía náhuatl"],
@@ -214,14 +579,17 @@
         "Naturaleza y espiritualidad se unen de forma magistral."
     ];
     
-    // Generar posts (60) de forma dinámica y asegurar variedad
+    // Generar avatares con UI Avatars
+    function getAvatarUrl(username) {
+        return `https://ui-avatars.com/api/?background=667F57&color=fff&rounded=true&size=64&bold=true&name=${encodeURIComponent(username.charAt(0))}`;
+    }
+    
     function generarPostsYComentarios() {
         const posts = [];
         const comments = [];
-        let postId = 101;  // mantener ids consistentes y no colisionar
+        let postId = 101;
         const usuarios = [...USUARIOS_BASE];
         
-        // Bucle para 60 posts
         for (let i = 0; i < 60; i++) {
             const tema = TEMAS[Math.floor(Math.random() * TEMAS.length)];
             const continente = CONTINENTES[Math.floor(Math.random() * CONTINENTES.length)];
@@ -232,6 +600,13 @@
             const cuerpoExtendido = cuerpoBase + " " + (Math.random() > 0.5 ? "Comparte la teva opinió! 🌍" : "Què en penses? #Coolture");
             const likes = Math.floor(Math.random() * 280) + 10;
             
+            // Imagen aleatoria en el post (30% de probabilidad)
+            let imageUrl = null;
+            if (Math.random() < 0.3) {
+                const imageId = (postId % 80) + 10;
+                imageUrl = `https://picsum.photos/id/${imageId}/400/250`;
+            }
+            
             posts.push({
                 id: postId,
                 userId: usuarioAleatorio.id,
@@ -239,14 +614,13 @@
                 cont: continente,
                 title: titulo,
                 body: cuerpoExtendido,
-                likes: likes
+                likes: likes,
+                image: imageUrl
             });
             
-            // Añadir entre 2 y 6 comentarios por cada post (riqueza conversacional)
-            const numComentarios = Math.floor(Math.random() * 5) + 2; // mínimo 2 comentarios
+            const numComentarios = Math.floor(Math.random() * 5) + 2;
             for (let c = 0; c < numComentarios; c++) {
                 const comentarista = usuarios[Math.floor(Math.random() * usuarios.length)];
-                let textoComentario = "";
                 const opciones = [
                     "Qué bonita tradición, gracias por compartir 🙌",
                     "Me encantaría vivir esa experiencia algún día.",
@@ -259,8 +633,7 @@
                     "Esto debería preservarse como patrimonio.",
                     "Gracias por difundir estas maravillas."
                 ];
-                textoComentario = opciones[Math.floor(Math.random() * opciones.length)];
-                // algunos comentarios más largos
+                let textoComentario = opciones[Math.floor(Math.random() * opciones.length)];
                 if (Math.random() > 0.8) textoComentario += " Además, he leído que influye mucho en la identidad local.";
                 comments.push({
                     id: Date.now() + postId + c + Math.random() * 10000,
@@ -272,9 +645,6 @@
             postId++;
         }
         
-        // Aseguramos que hay comentarios adicionales para cada post (si alguno por error no llego a 2, pero arriba ya son 2-6)
-        // También se podrían añadir algunos comentarios del usuario "Tu" para dinamismo
-        // Inyectamos algunos comentarios extra firmados por "Tu" (id 10) en posts aleatorios para fomentar interacción
         for (let i = 0; i < 25; i++) {
             const postRandom = posts[Math.floor(Math.random() * posts.length)];
             comments.push({
@@ -284,30 +654,40 @@
                 text: "M'encanta aquest tema! Jo també vaig viure una experiència semblant. 💬"
             });
         }
-        
         return { posts, comments };
     }
     
-    // Creamos dataset completo y luego comprobamos localStorage
     const freshData = generarPostsYComentarios();
-    const FULL_USERS = USUARIOS_BASE;
-    
-    // Database inicial completa (60 posts + comentarios + usuarios)
     const COMPLETE_DB = {
-        users: FULL_USERS,
+        users: USUARIOS_BASE,
         posts: freshData.posts,
         comments: freshData.comments
     };
     
-    // Estrategia de carga: Si localStorage está vacío o el número de posts es menor a 60 (para garantizar 60 publicaciones),
-    // se sobreescribe con la base completa. Además se garantiza que el input de comentarios guarde correctamente.
     let DB;
+    
+    function enrichUsersWithAvatarsAndAlias() {
+        DB.users.forEach(user => {
+            if (!user.avatarUrl) {
+                user.avatarUrl = getAvatarUrl(user.name);
+            }
+            if (!user.alias) {
+                const defaultAliases = {
+                    1: "Foodie Català", 2: "Art Explorer", 3: "Global Trotter", 4: "Tradiciones Vivas",
+                    5: "Montañista Cultural", 6: "Umami Seeker", 7: "Zen Spirit", 8: "Historia Viva",
+                    9: "Ritmo Argentino", 10: "Coolture Insider", 11: "Hielo Eterno", 12: "Carnaval Soul",
+                    13: "Andean Dreamer", 14: "Cuentos Árabes", 15: "Aurora Guide", 16: "Red Dust",
+                    17: "Duende Flamenco", 18: "Ruta Ancestral", 19: "Haka Pride", 20: "Fin del Mundo"
+                };
+                user.alias = defaultAliases[user.id] || "Cultural Explorer";
+            }
+        });
+    }
     
     function initDatabase() {
         const stored = localStorage.getItem('coolture_db');
         if (stored) {
             const parsed = JSON.parse(stored);
-            // Si ya existen 60 o más posts, usamos esa base (para no machacar datos guardados recientemente por usuario)
             if (parsed.posts && parsed.posts.length >= 60) {
                 DB = parsed;
             } else {
@@ -318,42 +698,42 @@
             DB = JSON.parse(JSON.stringify(COMPLETE_DB));
             localStorage.setItem('coolture_db', JSON.stringify(DB));
         }
-        // Aseguramos que el usuario "Tu" (id 10) exista en la base (por si acaso)
-        if (!DB.users.find(u => u.id === 10)) {
-            DB.users.push({ id: 10, name: "Tu" });
-        }
-        // Aseguramos que no haya posts duplicados con id repetido (garantía)
+        if (!DB.users.find(u => u.id === 10)) DB.users.push({ id: 10, name: "Tu", verified: true, alias: "Coolture Insider", avatarUrl: getAvatarUrl("Tu") });
+        enrichUsersWithAvatarsAndAlias();
+        
         const uniqueIds = new Set();
         DB.posts = DB.posts.filter(p => {
             if (uniqueIds.has(p.id)) return false;
             uniqueIds.add(p.id);
             return true;
         });
+        // Asegurar que algunos posts tengan imagen (si no tienen, añadir aleatoriamente)
+        DB.posts.forEach(post => {
+            if (!post.image && Math.random() < 0.2) {
+                const imageId = (post.id % 80) + 10;
+                post.image = `https://picsum.photos/id/${imageId}/400/250`;
+            }
+        });
+        
         if (DB.posts.length < 60) {
-            // Si por alguna razón aún hay menos de 60, añadimos más posts sin perder estructura
             const extraPosts = freshData.posts.slice(0, 60 - DB.posts.length);
             let maxId = Math.max(...DB.posts.map(p => p.id), 100);
             extraPosts.forEach(p => { p.id = ++maxId; DB.posts.push(p); });
         }
         localStorage.setItem('coolture_db', JSON.stringify(DB));
     }
-    
     initDatabase();
     
-    // Variables globales de filtros y estado
     let filtroTema = null;
     let filtroCont = null;
     let activePostId = null;
+    let searchTerm = "";
     
-    function saveData() { 
-        localStorage.setItem('coolture_db', JSON.stringify(DB)); 
-    }
+    function saveData() { localStorage.setItem('coolture_db', JSON.stringify(DB)); }
     
     function toggleMenu() { 
-        const menu = document.getElementById('sideMenu');
-        const overlay = document.getElementById('overlay');
-        menu.classList.toggle('active'); 
-        overlay.classList.toggle('active');
+        document.getElementById('sideMenu').classList.toggle('active'); 
+        document.getElementById('overlay').classList.toggle('active');
     }
     
     function closeAll() { 
@@ -364,53 +744,16 @@
     
     function setFiltre(tipus, valor, el) {
         if (tipus === 'tema') {
-            if (filtroTema === valor) { 
-                filtroTema = null; 
-                el.classList.remove('selected'); 
-            } else { 
-                document.querySelectorAll('#listaTemas .pill').forEach(p => p.classList.remove('selected')); 
-                filtroTema = valor; 
-                el.classList.add('selected'); 
-            }
+            if (filtroTema === valor) { filtroTema = null; el.classList.remove('selected'); } 
+            else { document.querySelectorAll('#listaTemas .pill').forEach(p => p.classList.remove('selected')); filtroTema = valor; el.classList.add('selected'); }
         } else {
-            if (filtroCont === valor) { 
-                filtroCont = null; 
-                el.classList.remove('selected'); 
-            } else { 
-                document.querySelectorAll('#listaContinentes .pill').forEach(p => p.classList.remove('selected')); 
-                filtroCont = valor; 
-                el.classList.add('selected'); 
-            }
+            if (filtroCont === valor) { filtroCont = null; el.classList.remove('selected'); } 
+            else { document.querySelectorAll('#listaContinentes .pill').forEach(p => p.classList.remove('selected')); filtroCont = valor; el.classList.add('selected'); }
         }
         renderFeed();
         setTimeout(toggleMenu, 300);
     }
     
-    function renderFeed() {
-        const feed = document.getElementById('feed');
-        if (!feed) return;
-        feed.innerHTML = "";
-        const filtrats = DB.posts.filter(p => (filtroTema ? p.tema === filtroTema : true) && (filtroCont ? p.cont === filtroCont : true));
-        if (filtrats.length === 0) {
-            feed.innerHTML = '<div style="padding: 40px; text-align: center; color: gray;">Cap publicació amb aquests filtres 🌱</div>';
-            return;
-        }
-        filtrats.forEach(post => {
-            const user = DB.users.find(u => u.id === post.userId) || { name: "Anònim" };
-            const postComments = DB.comments.filter(c => c.postId === post.id);
-            const commentCount = postComments.length;
-            feed.innerHTML += `
-                <div class="post-card">
-                    <div class="user-info">u/${user.name}</div>
-                    <div class="tags"><span class="tag-pill">${post.tema}</span><span class="tag-pill">${post.cont}</span></div>
-                    <h3 class="post-title">${escapeHtml(post.title)}</h3>
-                    <p class="post-text">${escapeHtml(post.body)}</p>
-                    <div class="actions"><span>⬆️ ${post.likes}</span><span class="btn-comment" onclick="openComments(${post.id})">💬 ${commentCount}</span></div>
-                </div>`;
-        });
-    }
-    
-    // pequeño helper para evitar XSS (por si acaso)
     function escapeHtml(str) {
         if (!str) return "";
         return str.replace(/[&<>]/g, function(m) {
@@ -418,27 +761,93 @@
             if (m === '<') return '&lt;';
             if (m === '>') return '&gt;';
             return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
+        });
+    }
+    
+    // Función para generar 2-3 check.png
+    function getCheckIcons() {
+        let icons = '';
+        const numChecks = Math.random() < 0.5 ? 2 : 3; // entre 2 y 3 aleatorio
+        for (let i = 0; i < numChecks; i++) {
+            icons += `<img src="images/check.png" class="check-icon">`;
+        }
+        return icons;
+    }
+    
+    function renderFeed() {
+        const feed = document.getElementById('feed');
+        if (!feed) return;
+        feed.innerHTML = "";
+        let filtrats = DB.posts.filter(p => (filtroTema ? p.tema === filtroTema : true) && (filtroCont ? p.cont === filtroCont : true));
+        
+        // Filtrar por búsqueda (título o texto)
+        if (searchTerm.trim() !== "") {
+            const term = searchTerm.toLowerCase();
+            filtrats = filtrats.filter(p => p.title.toLowerCase().includes(term) || p.body.toLowerCase().includes(term));
+        }
+        
+        if (filtrats.length === 0) {
+            feed.innerHTML = '<div style="padding: 40px; text-align: center; color: gray;">Cap publicació amb aquests filtres 🌱</div>';
+            return;
+        }
+        filtrats.forEach(post => {
+            const user = DB.users.find(u => u.id === post.userId) || { name: "Anònim", verified: false, alias: "Visitant", avatarUrl: getAvatarUrl("Anon") };
+            const postComments = DB.comments.filter(c => c.postId === post.id);
+            const verifiedBadge = user.verified ? `<img src="images/icon-verificado.png" class="verified-icon" alt="verificat">` : '';
+            const checkIcons = getCheckIcons();
+            const postImageHtml = post.image ? `<img src="${escapeHtml(post.image)}" class="post-image" alt="post image" loading="lazy">` : '';
+            
+            feed.innerHTML += `
+                <div class="post-card">
+                    <div class="user-header">
+                        <img src="${escapeHtml(user.avatarUrl)}" class="avatar" alt="avatar">
+                        <div class="user-details">
+                            <div class="username-line">
+                                <span>@${escapeHtml(user.name)}</span> ${checkIcons} ${verifiedBadge}
+                            </div>
+                            <div class="user-alias">${escapeHtml(user.alias)}</div>
+                        </div>
+                    </div>
+                    <div class="tags"><span class="tag-pill">${escapeHtml(post.tema)}</span><span class="tag-pill">${escapeHtml(post.cont)}</span></div>
+                    <h3 class="post-title">${escapeHtml(post.title)}</h3>
+                    <p class="post-text">${escapeHtml(post.body)}</p>
+                    ${postImageHtml}
+                    <div class="actions">
+                        <span><img src="images/icon-corazon.png" class="action-icon" alt="likes"> ${post.likes}</span>
+                        <span class="btn-comment" onclick="openComments(${post.id})">
+                            <img src="images/icon-comentar.png" class="action-icon" alt="comentaris"> ${postComments.length}
+                        </span>
+                    </div>
+                </div>`;
         });
     }
     
     function openComments(postId) {
         activePostId = postId;
         const list = document.getElementById('commentList');
-        if (!list) return;
         const postComments = DB.comments.filter(c => c.postId === postId);
         if (postComments.length === 0) {
             list.innerHTML = '<div style="padding: 12px; text-align:center; color:gray;">Encara no hi ha comentaris. Sigues el primer ✍️</div>';
         } else {
             list.innerHTML = postComments.map(c => {
-                const user = DB.users.find(u => u.id === c.userId) || { name: "Anònim" };
-                return `<div class="comment-item"><b>@${escapeHtml(user.name)}</b> ${escapeHtml(c.text)}</div>`;
+                const user = DB.users.find(u => u.id === c.userId) || { name: "Anònim", verified: false, alias: "Visitant", avatarUrl: getAvatarUrl("Anon") };
+                const verifiedBadge = user.verified ? `<img src="images/icon-verificado.png" class="verified-icon" alt="verificat">` : '';
+                const checkIcons = getCheckIcons();
+                return `
+                    <div class="comment-item">
+                        <img src="${escapeHtml(user.avatarUrl)}" class="comment-avatar" alt="avatar">
+                        <div class="comment-content">
+                            <div class="comment-user">
+                                <span class="comment-username">@${escapeHtml(user.name)}</span> ${checkIcons} ${verifiedBadge}
+                                <span class="comment-alias">${escapeHtml(user.alias)}</span>
+                            </div>
+                            <div class="comment-text">${escapeHtml(c.text)}</div>
+                        </div>
+                    </div>`;
             }).join('');
         }
         document.getElementById('commentModal').classList.add('active');
         document.getElementById('overlay').classList.add('active');
-        // Enfocar input automáticamente
         setTimeout(() => {
             const inputField = document.getElementById('newComment');
             if (inputField) inputField.focus();
@@ -464,12 +873,16 @@
         });
         saveData();
         input.value = "";
-        // Refrescar modal y feed
         openComments(activePostId);
         renderFeed();
     }
     
-    // Exponer funciones globales
+    // Función para búsqueda en tiempo real
+    function onSearchInput(e) {
+        searchTerm = e.target.value;
+        renderFeed();
+    }
+    
     window.toggleMenu = toggleMenu;
     window.setFiltre = setFiltre;
     window.openComments = openComments;
@@ -477,11 +890,8 @@
     window.submitComment = submitComment;
     window.closeAll = closeAll;
     
-    // Inicializar feed y comprobar que los comentarios funcionan
     document.addEventListener('DOMContentLoaded', () => {
         renderFeed();
-        // Si por algún motivo el input del modal no tuviese evento, ya está bindeado en el onclick.
-        // También agregamos evento por si pulsan enter en el input
         const commentInput = document.getElementById('newComment');
         if (commentInput) {
             commentInput.addEventListener('keypress', function(e) {
@@ -491,12 +901,13 @@
                 }
             });
         }
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', onSearchInput);
+        }
     });
     
-    // Pequeño parche para asegurar que el modal overlay no bloquee inputs (ya funciona)
-    // También aseguramos que la base de datos nunca pierda los 60 posts en caso de recarga accidental con filtros.
     if (DB.posts.length < 60) {
-        // recomponer otra vez
         const finalFix = generarPostsYComentarios();
         const existingIds = new Set(DB.posts.map(p => p.id));
         let newId = Math.max(...DB.posts.map(p => p.id), 200);

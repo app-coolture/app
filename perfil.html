@@ -40,7 +40,7 @@
         }
 
         #profile-content {
-            flex-grow: 1; overflow-y: auto; padding: 10px 30px; 
+            flex-grow: 1; overflow-y: auto; padding: 10px 30px 100px 30px; /* Añadido padding inferior para que no se solape con la barra flotante */
             scrollbar-width: none;
         }
         #profile-content::-webkit-scrollbar { display: none; }
@@ -77,7 +77,7 @@
             border-radius: 30px; 
             padding: 0 20px; 
             display: flex; align-items: center; justify-content: space-between;
-            height: 38px; /* Altura fina como en la foto */
+            height: 38px;
             box-sizing: border-box;
         }
         
@@ -96,19 +96,32 @@
             cursor: pointer; margin-top: 8px; display: block; text-decoration: none;
         }
 
-        .feed-end-space { height: 100px; }
+        .feed-end-space { height: 20px; } /* Reducido porque ya hay padding inferior */
 
-        /* --- NAVBAR INFERIOR (LIMPIA) --- */
+        /* --- NUEVA BARRA INFERIOR FLOTANT (MÁS DELGADA, ICONOS MÁS GRANDES) --- */
         .navbar {
-            position: absolute; bottom: 0; width: 100%;
-            height: 85px; background-color: var(--green-coolture);
-            display: flex; justify-content: space-around; align-items: center;
-            padding-bottom: 10px; box-sizing: border-box; z-index: 2000;
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            background-color: var(--green-coolture);
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 70px;
+            box-sizing: border-box;
+            z-index: 5000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .nav-item {
-            display: flex; align-items: center; justify-content: center;
-            text-decoration: none; width: 65px; height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 60px;
+            height: 50px;
         }
 
         .nav-item.active {
@@ -117,7 +130,9 @@
         }
 
         .nav-icon {
-            width: 45px; height: 45px; object-fit: contain;
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -172,6 +187,7 @@
         <div class="feed-end-space"></div>
     </div>
 
+    <!-- BARRA INFERIOR FLOTANT (NUEVA) -->
     <nav class="navbar">
         <a href="culturas.html" class="nav-item">
             <img src="images/forum.png" class="nav-icon" alt="Forum">

@@ -2,59 +2,519 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coolture - Passaport</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Coolture - Passaport 3D</title>
     <style>
-        :root { --bg-color: #F5F1E8; --green-coolture: #667F57; --select-bg: #F4F1E8; --white: #ffffff; }
-        body, html { margin: 0; padding: 0; background-color: #1a1a1a; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Segoe UI', sans-serif; }
-        .container { width: 375px; height: 812px; background-color: var(--bg-color); border-radius: 40px; overflow: hidden; position: relative; display: flex; flex-direction: column; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .notch { width: 120px; height: 35px; border-radius: 20px; margin: 12px auto; background: black; }
-        
-        .content { flex-grow: 1; padding: 20px; text-align: center; overflow-y: auto; padding-bottom: 100px; }
-        h1 { color: var(--green-coolture); margin-bottom: 20px; }
-        
-        .stamps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .stamp-card { background: white; padding: 15px; border-radius: 20px; border: 2px dashed var(--green-coolture); display: flex; flex-direction: column; align-items: center; opacity: 0.5; }
-        .stamp-card.unlocked { opacity: 1; border-style: solid; }
-        .stamp-icon { width: 60px; height: 60px; background: #eee; border-radius: 50%; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+        :root { 
+            --bg-color: #F5F1E8; 
+            --green-coolture: #667F57; 
+            --gold-passaport: #C5A467;
+            --page-color: #fffbec;
+            --default-radius: 20px;
+            --select-bg: #F4F1E8;
+        }
 
-        /* NAVBAR (Mismo estilo que Forum/Quizz) */
-        .navbar { position: absolute; bottom: 0; width: 100%; height: 85px; background-color: var(--green-coolture); display: flex; justify-content: space-around; align-items: center; padding-bottom: 10px; box-sizing: border-box; }
-        .nav-item { display: flex; align-items: center; justify-content: center; text-decoration: none; width: 65px; height: 60px; }
-        .nav-item.active { background-color: var(--select-bg); border-radius: 20px; }
-        .nav-icon { width: 45px; height: 45px; object-fit: contain; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', 'Montserrat', sans-serif;
+            overflow-x: hidden; /* Evita scroll horizontal global */
+        }
+
+        .container {
+            width: 375px;
+            height: 812px;
+            background-color: var(--bg-color);
+            border-radius: 40px;
+            overflow: hidden; /* Evita desbordamiento del contenedor */
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .notch {
+            width: 120px;
+            height: 35px;
+            border-radius: 20px;
+            margin: 12px auto;
+            background: black;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px 10px 10px 10px;
+            overflow-y: auto;
+            overflow-x: hidden; /* Elimina scroll horizontal */
+            scrollbar-width: none;
+        }
+        .main-content::-webkit-scrollbar { display: none; }
+
+        .book {
+            width: 280px;
+            max-width: 100%; /* Asegura que no se desborde */
+            height: 440px;
+            position: relative;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            border-radius: 0 15px 15px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+
+        .hardcover-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transform-origin: left center;
+            transition: transform 1s cubic-bezier(0.4, 0.2, 0, 1);
+            z-index: 20;
+            border-radius: 0 15px 15px 0;
+        }
+
+        .book.open .hardcover-front {
+            transform: rotateY(-180deg);
+        }
+
+        .hardcover-front li {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 0 15px 15px 0;
+            list-style: none;
+        }
+
+        .cover-design {
+            background: linear-gradient(145deg, var(--gold-passaport), #b38f40);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            border-radius: 0 15px 15px 0;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .cover-design h2 {
+            font-size: 22px;
+            letter-spacing: 4px;
+            margin-bottom: 30px;
+        }
+
+        .cover-design img {
+            width: 100px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .chip-icon {
+            width: 50px;
+            height: 35px;
+            border: 2px solid white;
+            border-radius: 8px;
+            position: relative;
+            margin-top: 10px;
+        }
+        .chip-icon::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: white;
+        }
+
+        .hardcover-front li:last-child {
+            background: #f5f0e0;
+            transform: rotateY(180deg);
+            border-radius: 15px 0 0 15px;
+        }
+
+        .page {
+            position: absolute;
+            width: 98%;
+            height: 96%;
+            top: 2%;
+            left: 0;
+            transform-style: preserve-3d;
+            z-index: 10;
+            list-style: none;
+        }
+
+        .page li {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--page-color);
+            border-radius: 0 12px 12px 0;
+            transform-origin: left center;
+            transition: transform 1s cubic-bezier(0.4, 0.2, 0, 1);
+            backface-visibility: hidden;
+            box-shadow: inset -3px 0 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden; /* Sin scroll horizontal en páginas */
+            background-image: url('images/fondopass.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-blend-mode: overlay;
+            word-wrap: break-word;
+        }
+
+        .page li:not(:last-child) {
+            background: #fffef7;
+            background-image: repeating-linear-gradient(
+                to bottom,
+                rgba(0,0,0,0.05) 0px,
+                rgba(0,0,0,0.05) 1px,
+                transparent 1px,
+                transparent 30px
+            ), url('images/fondopass.png');
+            background-size: cover, cover;
+            background-repeat: no-repeat, no-repeat;
+            background-position: center, center;
+            background-blend-mode: overlay;
+        }
+
+        .book.open .page li:nth-child(1) { transform: rotateY(-170deg); transition-delay: 0.05s; }
+        .book.open .page li:nth-child(2) { transform: rotateY(-160deg); transition-delay: 0.1s; }
+        .book.open .page li:nth-child(3) { transform: rotateY(-150deg); transition-delay: 0.15s; }
+        .book.open .page li:nth-child(4) { transform: rotateY(-140deg); transition-delay: 0.2s; }
+        .book.open .page li:nth-child(5) { transform: rotateY(-130deg); transition-delay: 0.25s; }
+        .book.open .page li:nth-child(6) { transform: rotateY(-120deg); transition-delay: 0.3s; }
+
+        .page li:last-child {
+            transform: rotateY(0deg);
+            z-index: 5;
+            background: #fffcf0;
+            background-image: url('images/fondopass.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-blend-mode: overlay;
+            border-radius: 0 12px 12px 0;
+            padding: 20px 15px;
+            position: relative;
+        }
+
+        .country-name {
+            color: var(--gold-passaport);
+            font-size: 28px;
+            font-weight: 800;
+            text-align: center;
+            letter-spacing: 3px;
+            margin: 5px 0 15px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* CATEGORIES MÉS PETITES I SIMÈTRIQUES */
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+            background: rgba(255, 252, 240, 0.92);
+            border-radius: 20px;
+            padding: 12px 16px;
+            padding-right: 75px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            width: 100%;
+        }
+
+        .category-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(197, 166, 97, 0.2);
+            flex-wrap: wrap;
+        }
+        .category-row:last-child {
+            border-bottom: none;
+        }
+
+        .category-name {
+            font-weight: 600;
+            font-size: 13px;
+            color: #4a3a1f;
+            letter-spacing: 0.2px;
+        }
+
+        .check-group {
+            display: flex;
+            gap: 6px;
+            color: var(--gold-passaport);
+        }
+        .check-group i {
+            font-size: 14px;
+        }
+        .check-group i.fa-square-check {
+            color: var(--gold-passaport);
+        }
+        .check-group i.fa-square {
+            color: #c0b28a;
+        }
+
+        /* NOVA ESTRELLA DEL SEGELL (50px) */
+        .stamp-badge {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            z-index: 20;
+        }
+        .star5 {
+            background: var(--gold-passaport);
+            width: 50px;
+            height: 50px;
+            position: relative;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .star5::before {
+            content: "";
+            background: var(--gold-passaport);
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            border-radius: 15px;
+            transform: rotate(45deg);
+        }
+        .star5 img {
+            position: relative;
+            z-index: 2;
+            width: 180px;
+            height: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .countries-strip {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 10px 0;
+            flex-wrap: wrap;
+            background: transparent;
+            margin-top: 0;
+            flex-shrink: 0;
+            width: 100%;
+        }
+        .flag-icon {
+            width: 40px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-size: cover;
+            cursor: pointer;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+        .flag-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .navbar {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            background-color: var(--green-coolture);
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 70px;
+            box-sizing: border-box;
+            z-index: 5000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 60px;
+            height: 50px;
+        }
+
+        .nav-item.active {
+            background-color: var(--select-bg);
+            border-radius: 20px;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <div class="notch"></div>
-        <div class="content">
-            <h1>El teu Passaport</h1>
-            <div class="stamps-grid">
-                <div class="stamp-card unlocked">
-                    <div class="stamp-icon">🍜</div>
-                    <span>Gourmet Asia</span>
+<div class="container">
+    <div class="notch"></div>
+
+    <div class="main-content">
+        <div class="book" id="passportBook">
+            <ul class="hardcover-front">
+                <li>
+                    <div class="cover-design">
+                        <h2>PASSAPORT</h2>
+                        <img src="images/logos-03.png" alt="Coolture Logo">
+                        <div class="chip-icon"></div>
+                    </div>
+                </li>
+                <li></li>
+            </ul>
+            <ul class="page">
+                <li></li> <li></li> <li></li> <li></li> <li></li> <li></li>
+                <li class="last-page" id="dynamicPage"></li>
+            </ul>
+        </div>
+
+        <div class="countries-strip" id="countriesStrip"></div>
+    </div>
+
+    <nav class="navbar">
+        <a href="culturas.html" class="nav-item"><img src="images/forum.png" class="nav-icon" alt="Forum"></a>
+        <a href="quizz.html" class="nav-item"><img src="images/quizz.png" class="nav-icon" alt="Quizz"></a>
+        <a href="pasaporte.html" class="nav-item active"><img src="images/passaport2.png" class="nav-icon" alt="Passaport"></a>
+        <a href="perfil.html" class="nav-item"><img src="images/perfil.png" class="nav-icon" alt="Perfil"></a>
+    </nav>
+</div>
+
+<script>
+    const countriesData = {
+        "Japó": {
+            name: "JAPÓ",
+            levels: [3, 2, 4, 2, 1, 2, 1]
+        },
+        "Espanya": {
+            name: "ESPANYA",
+            levels: [3, 3, 2, 4, 1, 3, 2]
+        },
+        "Itàlia": {
+            name: "ITÀLIA",
+            levels: [4, 2, 3, 3, 2, 4, 1]
+        },
+        "Brasil": {
+            name: "BRASIL",
+            levels: [2, 1, 4, 3, 2, 2, 3]
+        },
+        "França": {
+            name: "FRANÇA",
+            levels: [3, 2, 3, 2, 2, 3, 2]
+        },
+        "Alemanya": {
+            name: "ALEMANYA",
+            levels: [3, 3, 3, 2, 1, 3, 2]
+        }
+    };
+
+    const categories = ["Gastronomia", "Llenguatge", "Música i art", "Celebracions", "Llegendes", "Arquitectura", "Vivències"];
+    const flagList = [
+        { code: "jp", name: "Japó" },
+        { code: "es", name: "Espanya" },
+        { code: "it", name: "Itàlia" },
+        { code: "br", name: "Brasil" },
+        { code: "fr", name: "França" },
+        { code: "de", name: "Alemanya" }
+    ];
+
+    function generateChecks(level, max = 4) {
+        let html = '';
+        for (let i = 0; i < max; i++) {
+            if (i < level) {
+                html += '<i class="fa-regular fa-square-check"></i>';
+            } else {
+                html += '<i class="fa-regular fa-square"></i>';
+            }
+        }
+        return html;
+    }
+
+    function updateCountry(countryKey) {
+        const country = countriesData[countryKey];
+        if (!country) return;
+        const lastPage = document.getElementById('dynamicPage');
+        let categoriesHtml = '';
+        for (let i = 0; i < categories.length; i++) {
+            categoriesHtml += `
+                <div class="category-row">
+                    <span class="category-name">${categories[i]}</span>
+                    <div class="check-group">
+                        ${generateChecks(country.levels[i], 4)}
+                    </div>
                 </div>
-                <div class="stamp-card unlocked">
-                    <div class="stamp-icon">🏛️</div>
-                    <span>Arquitecte</span>
-                </div>
-                <div class="stamp-card">
-                    <div class="stamp-icon">🗿</div>
-                    <span>Explorador</span>
-                </div>
-                <div class="stamp-card">
-                    <div class="stamp-icon">💃</div>
-                    <span>Folklore</span>
+            `;
+        }
+
+        lastPage.innerHTML = `
+            <h1 class="country-name">${country.name}</h1>
+            <div class="category-list">
+                ${categoriesHtml}
+            </div>
+            <div class="stamp-badge">
+                <div class="star5">
+                    <img src="images/logos-03.png" alt="logo">
                 </div>
             </div>
-        </div>
-        <nav class="navbar">
-            <a href="culturas.html" class="nav-item"><img src="images/forum.png" class="nav-icon"></a>
-            <a href="quizz.html" class="nav-item"><img src="images/quizz.png" class="nav-icon"></a>
-            <a href="pasaporte.html" class="nav-item active"><img src="images/passaport2.png" class="nav-icon"></a>
-            <a href="perfil.html" class="nav-item"><img src="images/perfil.png" class="nav-icon"></a>
-        </nav>
-    </div>
+        `;
+    }
+
+    const strip = document.getElementById('countriesStrip');
+    flagList.forEach(flag => {
+        const flagDiv = document.createElement('div');
+        flagDiv.className = 'flag-icon';
+        flagDiv.style.backgroundImage = `url('https://flagcdn.com/${flag.code}.svg')`;
+        flagDiv.setAttribute('data-country', flag.name);
+        flagDiv.addEventListener('click', (e) => {
+            e.stopPropagation();
+            updateCountry(flag.name);
+        });
+        strip.appendChild(flagDiv);
+    });
+
+    updateCountry("Japó");
+
+    const book = document.getElementById('passportBook');
+    book.addEventListener('click', (e) => {
+        if (e.target.closest('.flag-icon')) return;
+        book.classList.toggle('open');
+    });
+</script>
 </body>
 </html>
