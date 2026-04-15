@@ -130,26 +130,64 @@
             margin: 10px;
             cursor: pointer;
         }
+        
+        /* ===== NUEVA BARRA INFERIOR FLOTANTE Y ARRODONADIA ===== */
         .navbar {
-            position: absolute; bottom: 0; width: 100%;
-            height: 85px; background-color: var(--green-coolture);
-            display: flex; justify-content: space-around; align-items: center;
-            padding-bottom: 10px; box-sizing: border-box; z-index: 5000;
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            background-color: var(--green-coolture);
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 70px;
+            box-sizing: border-box;
+            z-index: 5000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
-        .nav-item { display: flex; align-items: center; justify-content: center; text-decoration: none; width: 65px; height: 60px; }
-        .nav-item.active { background-color: var(--select-bg); border-radius: 20px; }
-        .nav-icon { width: 45px; height: 45px; object-fit: contain; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 60px;
+            height: 50px;
+        }
+
+        .nav-item.active {
+            background-color: var(--select-bg);
+            border-radius: 20px;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="notch"></div>
     <div class="quiz-content" id="quizContent"></div>
+    
+    <!-- Barra inferior flotante y más prima (con active en Quizz) -->
     <nav class="navbar">
-        <a href="../../culturas.html" class="nav-item"><img src="../../images/forum.png" class="nav-icon" alt="Forum"></a>
-        <a href="../../quizz.html" class="nav-item"><img src="../../images/quizz2.png" class="nav-icon" alt="Quizz"></a>
-        <a href="../../pasaporte.html" class="nav-item"><img src="../../images/passaport.png" class="nav-icon" alt="Passaport"></a>
-        <a href="../../perfil.html" class="nav-item"><img src="../../images/perfil.png" class="nav-icon" alt="Perfil"></a>
+        <a href="../../culturas.html" class="nav-item">
+            <img src="../../images/forum.png" class="nav-icon" alt="Forum">
+        </a>
+        <a href="../../quizz.html" class="nav-item active">
+            <img src="../../images/quizz2.png" class="nav-icon" alt="Quizz">
+        </a>
+        <a href="../../pasaporte.html" class="nav-item">
+            <img src="../../images/passaport.png" class="nav-icon" alt="Passaport">
+        </a>
+        <a href="../../perfil.html" class="nav-item">
+            <img src="../../images/perfil.png" class="nav-icon" alt="Perfil">
+        </a>
     </nav>
 </div>
 
@@ -172,13 +210,13 @@
         { text: "Quina muntanya és la més alta de l'illa de Tenerife i de tot Espanya?", options: ["Mont Teide", "Pico Viejo", "Roque de los Muchachos", "Montaña de Tindaya"], correct: 0 }
     ];
 
-    let currentIndex = 0, score = 0, timerInterval = null, timeLeft = 15, answeringLock = false;
+    let currentIndex = 0, score = 0, timerInterval = null, timeLeft = 20, answeringLock = false;
     const quizContainer = document.getElementById('quizContent');
 
     function stopTimer() { if (timerInterval) clearInterval(timerInterval); timerInterval = null; }
     function startTimer() {
         stopTimer();
-        timeLeft = 15;
+        timeLeft = 20;
         updateTimerDisplay();
         timerInterval = setInterval(() => {
             if (!answeringLock && timeLeft > 0) {
@@ -208,7 +246,7 @@
         quizContainer.innerHTML = `
             <div class="progress-area">
                 <div class="question-counter">Pregunta ${currentIndex+1}/${QUESTIONS.length}</div>
-                <div class="timer-box">⏱ <span id="timerValue">15</span> s</div>
+                <div class="timer-box">⏱ <span id="timerValue">20</span> s</div>
             </div>
             <div class="question-text">${q.text}</div>
             <div class="options-list" id="optionsList">
