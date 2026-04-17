@@ -15,41 +15,47 @@
             --shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
         }
 
-        /* RESET I BASE RESPONSIVA */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body, html {
             margin: 0;
             padding: 0;
             background-color: #1a1a1a;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* CONTAINER PRINCIPAL: sense silueta, sense notch, fluid */
         .container {
-            width: 100%;
-            max-width: 480px;
+            width: 390px;
+            min-height: 100vh;
             background-color: var(--bg-color);
+            position: relative;
             display: flex;
             flex-direction: column;
             margin: 0 auto;
-            box-shadow: none;          /* eliminem ombra externa de silueta */
-            border-radius: 0;          /* eliminem cantonades arrodonides tipus iPhone */
-            overflow: visible;
-            position: relative;
-            min-height: 100vh;         /* ocupa tota l'alçada disponible */
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            border-radius: 0;
+            box-shadow: none;
         }
 
-        /* CONTINGUT PRINCIPAL: s'expandeix per empènyer la navbar avall si cal */
         .content {
-            flex: 1;
-            padding: 20px 24px;
+            flex-grow: 1;
+            padding: 20px 20px 100px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-y: auto;
+            scrollbar-width: none;
         }
+        .content::-webkit-scrollbar { display: none; }
 
         .header-title {
             font-size: 24px;
@@ -79,7 +85,6 @@
             margin-bottom: 30px;
             cursor: pointer;
             transition: 0.2s;
-            box-sizing: border-box;
         }
         .country-selector:active { transform: scale(0.98); }
 
@@ -95,21 +100,55 @@
             margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 20px;
+            justify-content: space-between;
             cursor: pointer;
             transition: transform 0.2s;
             border: 2px solid transparent;
             box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            flex-direction: row-reverse;
         }
         .level-card:active { transform: scale(0.97); }
+        
+        .level-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><circle cx="15" cy="15" r="4" fill="%23667F57" opacity="0.3"/><circle cx="40" cy="30" r="3" fill="%23667F57" opacity="0.25"/><circle cx="70" cy="55" r="5" fill="%23667F57" opacity="0.2"/><circle cx="85" cy="20" r="3" fill="%23667F57" opacity="0.3"/><circle cx="20" cy="70" r="4" fill="%23667F57" opacity="0.2"/></svg>');
+            background-repeat: repeat;
+            background-size: 40px 40px;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .level-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
         .level-card.novato { border-left: 8px solid #A3B899; }
+        .level-card.explorador { border-left: 8px solid #B8A27A; }
         .level-card.experto { border-left: 8px solid #D4B066; }
 
-        .level-icon { font-size: 35px; }
+        .level-img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+            display: block;
+            margin-left: 10px;
+        }
+
+        .level-text {
+            flex: 1;
+            text-align: left;
+        }
         .level-text h3 { margin: 0; font-size: 18px; color: var(--text-dark); }
         .level-text p { margin: 3px 0 0 0; font-size: 13px; color: var(--text-grey); }
 
-        /* MODAL PER CANVIAR PAÍS */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -160,18 +199,21 @@
             cursor: pointer;
         }
 
-        /* ===== BARRA INFERIOR (sense position absolute) ===== */
+        /* BARRA INFERIOR amb els marges originals (left/right 8px) */
         .navbar {
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom, 20px));
+            left: 8px;
+            right: 8px;
             background-color: var(--green-coolture);
             border-radius: 40px;
             display: flex;
             justify-content: space-around;
             align-items: center;
             height: 72px;
-            margin: 16px 12px 20px 12px;   /* espai inferior i laterals */
             box-shadow: var(--shadow);
-            position: relative;
             z-index: 100;
+            overflow: visible;
         }
 
         .nav-item {
@@ -201,7 +243,11 @@
             display: block;
         }
 
-        /* ZONA CENTRAL: PROTUBERÀNCIA AMB LA IMATGE 03 (CLICABLE) */
+        .navbar a:first-child { transform: translateX(6px); }
+        .navbar a:nth-child(2) { transform: translateX(6px); }
+        .navbar a:nth-child(4) { transform: translateX(-6px); }
+        .navbar a:last-child { transform: translateX(-6px); }
+
         .center-logo-link {
             position: relative;
             display: flex;
@@ -215,7 +261,6 @@
             z-index: 20;
         }
 
-        /* Cercle verd que sobresurt lleugerament */
         .center-logo-link::before {
             content: '';
             position: absolute;
@@ -250,50 +295,26 @@
             transform: scale(1.02);
         }
 
-        .navbar a:active {
-            opacity: 0.85;
-        }
-
-        /* Ajustos per a pantalles petites (sense els translateX que ja no calen) */
         @media (max-width: 400px) {
-            .navbar {
-                height: 68px;
-                margin: 12px 8px 16px 8px;
-            }
-            .nav-item {
-                width: 60px;
-                height: 52px;
-            }
-            .nav-icon {
-                width: 44px;
-                height: 44px;
-            }
-            .center-logo {
-                width: 44px;
-                height: 44px;
-                margin-top: -44px;
-            }
-            .center-logo-link::before {
-                width: 76px;
-                height: 76px;
-                bottom: 18px;
-            }
-            .content {
-                padding: 16px 20px;
-            }
+            .navbar { left: 6px; right: 6px; height: 68px; }
+            .nav-item { width: 60px; height: 52px; }
+            .nav-icon { width: 44px; height: 44px; }
+            .center-logo { width: 60px; height: 60px; margin-top: -33px; }
+            .center-logo-link::before { width: 76px; height: 76px; }
+            .navbar a:first-child { transform: translateX(4px); }
+            .navbar a:nth-child(2) { transform: translateX(4px); }
+            .navbar a:nth-child(4) { transform: translateX(-4px); }
+            .navbar a:last-child { transform: translateX(-4px); }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- NOTCH ELIMINAT completament -->
-
     <div class="content">
         <h1 class="header-title">Quizz Challenge</h1>
         <p class="sub-title">Demostra el que saps sobre el món</p>
 
-        <!-- Selector de país (clic per canviar) -->
         <div class="country-selector" id="countrySelector">
             <div class="country-info">
                 <img id="currentFlag" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/1200px-Flag_of_Spain.svg.png" class="flag-icon" alt="bandera">
@@ -302,17 +323,24 @@
             <span style="color: var(--green-coolture); font-weight: bold;">Canviar</span>
         </div>
 
-        <!-- Targetes de nivell -->
         <div class="level-card novato" id="btnNovato">
-            <div class="level-icon">🌱</div>
+            <img class="level-img" src="images/medalla-01.png" alt="Novato">
             <div class="level-text">
-                <h3>Nivell Novato</h3>
+                <h3>Nivell Principiant</h3>
                 <p>15 preguntes bàsiques</p>
             </div>
         </div>
 
+        <div class="level-card explorador" id="btnExplorador">
+            <img class="level-img" src="images/medalla-02.png" alt="Explorador">
+            <div class="level-text">
+                <h3>Nivell Explorador</h3>
+                <p>15 preguntes d'exploració cultural</p>
+            </div>
+        </div>
+
         <div class="level-card experto" id="btnExperto">
-            <div class="level-icon">🏆</div>
+            <img class="level-img" src="images/medalla-03.png" alt="Expert">
             <div class="level-text">
                 <h3>Nivell Expert</h3>
                 <p>15 preguntes avançades</p>
@@ -320,7 +348,6 @@
         </div>
     </div>
 
-    <!-- BARRA INFERIOR (sense absolute, dins del flux) -->
     <nav class="navbar">
         <a href="culturas.html" class="nav-item">
             <img src="images/forum.png" class="nav-icon" alt="Forum">
@@ -328,9 +355,8 @@
         <a href="quizz.html" class="nav-item active">
             <img src="images/quizz2.png" class="nav-icon" alt="Quizz">
         </a>
-        <!-- Logo central clicable que redirigeix a home.html -->
         <a href="home.html" class="center-logo-link">
-            <img src="images/logos-03.png" class="center-logo" alt="Logo central 03">
+            <img src="images/logos-033.png" class="center-logo" alt="Logo central 03">
         </a>
         <a href="pasaporte.html" class="nav-item">
             <img src="images/passaport.png" class="nav-icon" alt="Passaport">
@@ -341,7 +367,6 @@
     </nav>
 </div>
 
-<!-- MODAL PER SELECCIONAR PAÍS -->
 <div id="modalPais" class="modal-overlay">
     <div class="modal-container">
         <h3>Selecciona un país</h3>
@@ -351,7 +376,6 @@
 </div>
 
 <script>
-    // Llista de països disponibles (amb el nom exacte de la carpeta)
     const paises = [
         { nom: "Espanya", carpeta: "Espanya", bandera: "images/banderas/espanya.png" },
         { nom: "Perú", carpeta: "Perú", bandera: "images/banderas/perú.svg" },
@@ -365,7 +389,6 @@
     let paisActual = "Espanya";
     let carpetaActual = "Espanya";
 
-    // Guardar/recuperar país des de localStorage
     if (localStorage.getItem('quizPais')) {
         const stored = localStorage.getItem('quizPais');
         const found = paises.find(p => p.nom === stored);
@@ -377,7 +400,6 @@
         localStorage.setItem('quizPais', paisActual);
     }
 
-    // Actualitzar la UI amb el país actual
     function updateCountryUI() {
         const paisData = paises.find(p => p.nom === paisActual);
         if (paisData) {
@@ -387,7 +409,6 @@
         }
     }
 
-    // Obrir modal amb llista de països
     function obrirModalPais() {
         const modal = document.getElementById('modalPais');
         const llistaDiv = document.getElementById('llistaPaisos');
@@ -408,23 +429,30 @@
         modal.classList.add('active');
     }
 
-    // Tancar modal
     document.getElementById('tancarModal').onclick = () => {
         document.getElementById('modalPais').classList.remove('active');
     };
     document.getElementById('countrySelector').onclick = obrirModalPais;
 
-    // Iniciar quiz amb país i nivell (ruta: quizz/[carpeta]/novato.html)
     function iniciarQuiz(nivell) {
         window.location.href = `quizz/${carpetaActual}/${nivell}.html`;
     }
 
     document.getElementById('btnNovato').onclick = () => iniciarQuiz('novato');
+    document.getElementById('btnExplorador').onclick = () => iniciarQuiz('explorador');
     document.getElementById('btnExperto').onclick = () => iniciarQuiz('experto');
 
     updateCountryUI();
 
-    // Els enllaços laterals funcionen amb href normal
+    document.querySelectorAll('.nav-item').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href && href !== '#') {
+                return true;
+            }
+            e.preventDefault();
+        });
+    });
 </script>
 </body>
 </html>

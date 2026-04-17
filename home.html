@@ -1,7 +1,7 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Coolture - Descobreix cultures</title>
     <style>
         :root {
@@ -28,30 +28,23 @@
             align-items: center;
             min-height: 100vh;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            padding: 20px;
+            padding: 0;
         }
 
+        /* Contenidor principal: ample fix 390px, sense cantonades arrodonides */
         .iphone {
-            width: 375px;
-            height: 812px;
+            width: 390px;
+            min-height: 100vh;
             background-color: #F5F1E8;
-            border-radius: 40px;
-            overflow: hidden;
             position: relative;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
+            border-radius: 0;
+            overflow: hidden;
         }
 
-        .notch {
-            width: 120px;
-            height: 35px;
-            background: black;
-            border-radius: 20px;
-            margin: 12px auto 0;
-            position: relative;
-            z-index: 200;
-        }
+        /* Notch eliminat completament */
 
         /* LÍNEA GRUESA (60px) */
         .header-decoration {
@@ -164,8 +157,8 @@
             text-decoration: none;
         }
 
-        .btn-explorar:hover {
-            transform: scale(1.02);
+        .btn-explorar:active {
+            transform: scale(0.96);
             background-color: #557046;
         }
 
@@ -268,10 +261,10 @@
             font-style: italic;
         }
 
-        /* BARRA INFERIOR (sense canvis) */
+        /* BARRA INFERIOR (fixa, amb marges laterals originals) */
         .navbar {
-            position: absolute;
-            bottom: 20px;
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom, 20px));
             left: 8px;
             right: 8px;
             background-color: var(--green-coolture);
@@ -364,7 +357,7 @@
             width: 48px;
             height: 48px;
             object-fit: contain;
-            margin-top: -48px;
+            margin-top: -58px;   /* Pujat de -48px a -58px */
             margin-left: auto;
             margin-right: auto;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
@@ -372,11 +365,15 @@
             pointer-events: auto;
         }
 
+        .center-logo:active {
+            transform: scale(0.96);
+        }
+
         @media (max-width: 400px) {
             .navbar { left: 6px; right: 6px; height: 68px; }
             .nav-item { width: 60px; height: 52px; }
             .nav-icon { width: 44px; height: 44px; }
-            .center-logo { width: 60px; height: 60px; margin-top: -18px; }
+            .center-logo { width: 60px; height: 60px; margin-top: -33px; } /* Ajustat de -18px a 33px */
             .center-logo-link::before { width: 76px; height: 76px; }
             .center-logo-link.active::after { width: 62px; height: 62px; border-width: 3px; }
             .carrusel-item { width: 130px; }
@@ -394,7 +391,7 @@
 </head>
 <body>
     <div class="iphone">
-        <div class="notch"></div>
+        <!-- Notch eliminat -->
 
         <div class="header-decoration">
             <div class="half-circle">
@@ -406,13 +403,11 @@
         </div>
 
         <div class="main-content">
-            <!-- Rectangle verd amb marge superior separat del cercle -->
             <div class="hero">
                 <h1>DESCOBREIX CULTURES.<br>CONNECTA AMB EL MÓN.</h1>
                 <p>La teva guia de més de 50 països, amb informació verificada</p>
             </div>
 
-            <!-- Botó just a sota -->
             <div class="btn-explorar-wrapper">
                 <a href="culturas.html" class="btn-explorar">Comença a explorar</a>
             </div>
@@ -472,7 +467,7 @@
                 <img src="images/quizz.png" class="nav-icon" alt="Quizz">
             </a>
             <a href="home.html" class="center-logo-link active">
-                <img src="images/logos-032.png" class="center-logo" alt="Logo central 032">
+                <img src="images/logos-0332.png" class="center-logo" alt="Logo central 032">
             </a>
             <a href="pasaporte.html" class="nav-item">
                 <img src="images/passaport.png" class="nav-icon" alt="Passaport">

@@ -1,324 +1,337 @@
-<!DOCTYPE html>
 <html lang="ca">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coolture - Perfil de Miquel Campos</title>
-    <style>
-        :root {
-            --bg-color: #F5F1E8; 
-            --green-coolture: #667F57; 
-            --select-bg: #F4F1E8; 
-            --white: #ffffff;
-            --text-dark: #1c1c1c;
-            --text-grey: #7c7c7c;
-            --badge-bg: #D4B066; 
-            --check-green: #667F57;
-            --text-badge: #5D5334;
-            --shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Coolture - Perfil de Miquel Campos</title>
+<style>
+:root {
+--bg-color: #F5F1E8;
+--green-coolture: #667F57;
+--select-bg: #F4F1E8;
+--white: #ffffff;
+--text-dark: #1c1c1c;
+--text-grey: #7c7c7c;
+--badge-bg: #D4B066;
+--check-green: #667F57;
+--text-badge: #5D5334;
+--shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
 
-        body, html {
-            margin: 0; padding: 0;
-            background-color: #1a1a1a;
-            display: flex; justify-content: center; align-items: center;
-            height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+* {
+box-sizing: border-box;
+}
 
-        .container {
-            width: 375px; height: 812px;
-            background-color: var(--bg-color);
-            border-radius: 40px; overflow: hidden;
-            position: relative; display: flex; flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
+body, html {
+margin: 0;
+padding: 0;
+background-color: #1a1a1a;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-        .notch { 
-            width: 120px; height: 35px; border-radius: 20px; 
-            margin: 12px auto; background: black; flex-shrink: 0; 
-            z-index: 2100;
-        }
+.container {
+width: 100%;
+max-width: 430px;
+min-height: 100vh;
+background-color: var(--bg-color);
+position: relative;
+display: flex;
+flex-direction: column;
+box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+margin: 0 auto;
+padding-top: env(safe-area-inset-top, 0px);
+padding-bottom: env(safe-area-inset-bottom, 0px);
+}
 
-        #profile-content {
-            flex-grow: 1; overflow-y: auto; padding: 10px 30px 100px 30px;
-            scrollbar-width: none;
-        }
-        #profile-content::-webkit-scrollbar { display: none; }
+#profile-content {
+flex-grow: 1;
+overflow-y: auto;
+padding: 53px 30px 100px 30px;  /* ← aumentado de 43px a 53px */
+scrollbar-width: none;
+}
+#profile-content::-webkit-scrollbar { display: none; }
 
-        .profile-photo-container {
-            position: relative; width: 100%; max-width: 320px; 
-            margin: 0 auto; margin-bottom: 20px;
-        }
-        .profile-photo {
-            width: 100%; aspect-ratio: 1.1; 
-            border-radius: 25px; object-fit: cover;
-        }
-        
-        .edit-photo-btn {
-            position: absolute; bottom: 10px; right: 10px;
-            background-color: var(--white); width: 35px; height: 35px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: pointer;
-        }
-        .edit-photo-btn img { width: 18px; height: 18px; }
+.profile-photo-container {
+position: relative;
+width: 100%;
+max-width: 320px;
+margin: 0 auto;
+margin-bottom: 20px;
+}
+.profile-photo {
+width: 100%;
+aspect-ratio: 1.1;
+border-radius: 25px;
+object-fit: cover;
+}
 
-        .profile-name { font-size: 26px; font-weight: 800; color: var(--text-dark); margin: 0; }
-        .profile-handle { font-size: 16px; color: var(--text-grey); margin: 0; }
-        .profile-info { font-size: 16px; color: var(--text-grey); margin: 5px 0 15px 0; }
-        .profile-description { font-size: 15px; color: var(--text-dark); line-height: 1.4; margin-bottom: 25px; }
+.edit-photo-btn {
+position: absolute;
+bottom: 10px;
+right: 10px;
+background-color: var(--white);
+width: 35px;
+height: 35px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+cursor: pointer;
+}
+.edit-photo-btn img { width: 18px; height: 18px; }
 
-        .section-title { font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; }
+.profile-name { font-size: 26px; font-weight: 800; color: var(--text-dark); margin: 0; }
+.profile-handle { font-size: 16px; color: var(--text-grey); margin: 0; }
+.profile-info { font-size: 16px; color: var(--text-grey); margin: 5px 0 15px 0; }
+.profile-description { font-size: 15px; color: var(--text-dark); line-height: 1.4; margin-bottom: 25px; }
 
-        .badges-list { width: 100%; display: flex; flex-direction: column; gap: 10px; }
-        
-        .badge-item {
-            background-color: var(--badge-bg);
-            border-radius: 30px; 
-            padding: 0 20px; 
-            display: flex; align-items: center; justify-content: space-between;
-            height: 38px;
-            box-sizing: border-box;
-        }
-        
-        .badge-icons { display: flex; gap: 6px; }
-        
-        .check-icon { 
-            width: 20px; height: 20px; border-radius: 50%;
-            background-color: var(--check-green); display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 12px; font-weight: bold;
-        }
-        
-        .badge-text { font-size: 15px; font-weight: 700; color: var(--text-badge); }
+.section-title { font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; }
 
-        .view-all-link {
-            text-align: right; width: 100%; font-size: 14px; color: var(--text-grey); 
-            cursor: pointer; margin-top: 8px; display: block; text-decoration: none;
-        }
+.badges-list { width: 100%; display: flex; flex-direction: column; gap: 10px; }
 
-        .feed-end-space { height: 20px; }
+.badge-item {
+background-color: var(--badge-bg);
+border-radius: 30px;
+padding: 0 20px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+height: 38px;
+box-sizing: border-box;
+}
 
-        /* ===== BARRA INFERIOR ESTÁNDAR (COOLTURE) ===== */
-        .navbar {
-            position: absolute;
-            bottom: 20px;
-            left: 8px;
-            right: 8px;
-            background-color: var(--green-coolture);
-            border-radius: 40px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            height: 72px;
-            box-shadow: var(--shadow);
-            z-index: 100;
-            overflow: visible;
-        }
+.badge-icons { display: flex; gap: 6px; }
 
-        .nav-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            width: 68px;
-            height: 56px;
-            transition: all 0.2s ease;
-            border-radius: 28px;
-            flex-shrink: 0;
-            position: relative;
-            z-index: 10;
-        }
+.check-icon {
+width: 20px;
+height: 20px;
+border-radius: 50%;
+background-color: var(--check-green);
+display: flex;
+align-items: center;
+justify-content: center;
+color: white;
+font-size: 12px;
+font-weight: bold;
+}
 
-        /* El elemento activo tiene z-index alto para estar por encima del círculo verde */
-        .nav-item.active {
-            background-color: var(--select-bg);
-            border-radius: 32px;
-            z-index: 30;
-        }
+.badge-text { font-size: 15px; font-weight: 700; color: var(--text-badge); }
 
-        .nav-icon {
-            width: 48px;
-            height: 48px;
-            object-fit: contain;
-            display: block;
-        }
+.view-all-link {
+text-align: right;
+width: 100%;
+font-size: 14px;
+color: var(--text-grey);
+cursor: pointer;
+margin-top: 8px;
+display: block;
+text-decoration: none;
+}
 
-        /* Desplazamientos laterales para que el rectángulo activo no sobresalga */
-        .navbar a:first-child {
-            transform: translateX(6px);
-        }
-        .navbar a:nth-child(2) {
-            transform: translateX(6px);
-        }
-        .navbar a:nth-child(4) {
-            transform: translateX(-6px);
-        }
-        .navbar a:last-child {
-            transform: translateX(-6px);
-        }
+.feed-end-space { height: 20px; }
 
-        /* Zona central con el logo clicable */
-        .center-logo-link {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 76px;
-            height: 72px;
-            flex-shrink: 0;
-            text-decoration: none;
-            cursor: pointer;
-            z-index: 20;
-        }
+/* ===== BARRA INFERIOR ===== */
+.navbar {
+position: fixed;
+bottom: max(20px, env(safe-area-inset-bottom, 20px));
+left: 8px;
+right: 8px;
+background-color: var(--green-coolture);
+border-radius: 40px;
+display: flex;
+justify-content: space-around;
+align-items: center;
+height: 72px;
+box-shadow: var(--shadow);
+z-index: 100;
+overflow: visible;
+max-width: calc(430px - 16px);
+margin: 0 auto;
+}
 
-        /* Círculo verde de fondo (detrás del rectángulo activo) */
-        .center-logo-link::before {
-            content: '';
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 84px;
-            height: 84px;
-            background-color: var(--green-coolture);
-            border-radius: 50%;
-            z-index: 1;
-            pointer-events: none;
-        }
+.nav-item {
+display: flex;
+align-items: center;
+justify-content: center;
+text-decoration: none;
+width: 68px;
+height: 56px;
+transition: all 0.2s ease;
+border-radius: 28px;
+flex-shrink: 0;
+position: relative;
+z-index: 10;
+}
 
-        /* Logo centrado */
-        .center-logo {
-            position: relative;
-            z-index: 2;
-            width: 48px;
-            height: 48px;
-            object-fit: contain;
-            margin-top: -48px;
-            left: 0;
-            right: 0;
-            margin-left: auto;
-            margin-right: auto;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-            transition: transform 0.2s ease;
-            pointer-events: auto;
-        }
+.nav-item.active {
+background-color: var(--select-bg);
+border-radius: 32px;
+z-index: 30;
+}
 
-        .center-logo-link:hover .center-logo {
-            transform: scale(1.02);
-        }
+.nav-icon {
+width: 48px;
+height: 48px;
+object-fit: contain;
+display: block;
+}
 
-        .navbar a:active {
-            opacity: 0.85;
-        }
+.navbar a:first-child { transform: translateX(6px); }
+.navbar a:nth-child(2) { transform: translateX(6px); }
+.navbar a:nth-child(4) { transform: translateX(-6px); }
+.navbar a:last-child { transform: translateX(-6px); }
 
-        @media (max-width: 400px) {
-            .navbar {
-                left: 6px;
-                right: 6px;
-                height: 68px;
-            }
-            .nav-item {
-                width: 60px;
-                height: 52px;
-            }
-            .nav-icon {
-                width: 44px;
-                height: 44px;
-            }
-            .center-logo {
-                width: 74px;
-                height: 74px;
-                margin-top: -28px;
-            }
-            .center-logo-link::before {
-                width: 76px;
-                height: 76px;
-            }
-            .navbar a:first-child {
-                transform: translateX(4px);
-            }
-            .navbar a:nth-child(2) {
-                transform: translateX(4px);
-            }
-            .navbar a:nth-child(4) {
-                transform: translateX(-4px);
-            }
-            .navbar a:last-child {
-                transform: translateX(-4px);
-            }
-        }
-    </style>
+.center-logo-link {
+position: relative;
+display: flex;
+justify-content: center;
+align-items: center;
+width: 76px;
+height: 72px;
+flex-shrink: 0;
+text-decoration: none;
+cursor: pointer;
+z-index: 20;
+}
+
+.center-logo-link::before {
+content: '';
+position: absolute;
+bottom: 20px;
+left: 50%;
+transform: translateX(-50%);
+width: 84px;
+height: 84px;
+background-color: var(--green-coolture);
+border-radius: 50%;
+z-index: 1;
+pointer-events: none;
+}
+
+.center-logo {
+position: relative;
+z-index: 2;
+width: 48px;
+height: 48px;
+object-fit: contain;
+margin-top: -48px;
+left: 0;
+right: 0;
+margin-left: auto;
+margin-right: auto;
+filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+transition: transform 0.2s ease;
+pointer-events: auto;
+}
+
+.center-logo-link:hover .center-logo {
+transform: scale(1.02);
+}
+
+.navbar a:active {
+opacity: 0.85;
+}
+
+@media (max-width: 400px) {
+.navbar {
+left: 6px;
+right: 6px;
+height: 68px;
+max-width: calc(100% - 12px);
+}
+.nav-item {
+width: 60px;
+height: 52px;
+}
+.nav-icon {
+width: 44px;
+height: 44px;
+}
+.center-logo {
+width: 60px;
+height: 60px;
+margin-top: -33px;
+}
+.center-logo-link::before {
+width: 76px;
+height: 76px;
+}
+.navbar a:first-child { transform: translateX(4px); }
+.navbar a:nth-child(2) { transform: translateX(4px); }
+.navbar a:nth-child(4) { transform: translateX(-4px); }
+.navbar a:last-child { transform: translateX(-4px); }
+}
+</style>
 </head>
 <body>
-
 <div class="container">
-    <div class="notch"></div>
-
-    <div id="profile-content">
-        <div class="profile-photo-container">
-            <img src="images/imgperfil.png" class="profile-photo" alt="Miquel Campos">
-            <div class="edit-photo-btn">
-                <img src="images/pencil.png" alt="Edit">
-            </div>
-        </div>
-
-        <h1 class="profile-name">Miquel Campos</h1>
-        <p class="profile-handle">@Mxkii_5</p>
-        <p class="profile-info">27 anys | España</p>
-        <p class="profile-description">M'agrada coneixer sobre altres països i cultures a la vegada que compartir les meves experiències amb tothom.</p>
-
-        <h2 class="section-title">Els meus emblemes</h2>
-        
-        <div class="badges-list">
-            <div class="badge-item">
-                <div class="badge-icons">
-                    <div class="check-icon">✓</div>
-                    <div class="check-icon">✓</div>
-                    <div class="check-icon">✓</div>
-                    <div class="check-icon">✓</div>
-                </div>
-                <span class="badge-text">Vivències</span>
-            </div>
-            <div class="badge-item">
-                <div class="badge-icons">
-                    <div class="check-icon">✓</div>
-                    <div class="check-icon">✓</div>
-                    <div class="check-icon">✓</div>
-                </div>
-                <span class="badge-text">Gastronomia</span>
-            </div>
-            <div class="badge-item">
-                <div class="badge-icons">
-                    <div class="check-icon">✓</div>
-                    <div class="check-icon">✓</div>
-                </div>
-                <span class="badge-text">Celebracions</span>
-            </div>
-        </div>
-
-        <a href="#" class="view-all-link">Veure tots</a>
-        <div class="feed-end-space"></div>
-    </div>
-
-    <!-- BARRA INFERIOR ESTÁNDAR (Perfil activo con perfil2.png) -->
-    <nav class="navbar">
-        <a href="culturas.html" class="nav-item">
-            <img src="images/forum.png" class="nav-icon" alt="Forum">
-        </a>
-        <a href="quizz.html" class="nav-item">
-            <img src="images/quizz.png" class="nav-icon" alt="Quizz">
-        </a>
-        <a href="home.html" class="center-logo-link">
-            <img src="images/logos-03.png" class="center-logo" alt="Logo central 03">
-        </a>
-        <a href="pasaporte.html" class="nav-item">
-            <img src="images/passaport.png" class="nav-icon" alt="Passaport">
-        </a>
-        <a href="perfil.html" class="nav-item active">
-            <img src="images/perfil2.png" class="nav-icon" alt="Perfil">
-        </a>
-    </nav>
+<div id="profile-content">
+<div class="profile-photo-container">
+<img src="images/imgperfil.png" class="profile-photo" alt="Miquel Campos">
+<div class="edit-photo-btn">
+<img src="images/pencil.png" alt="Edit">
+</div>
 </div>
 
+<h1 class="profile-name">Miquel Campos</h1>
+<p class="profile-handle">@Mxkii_5</p>
+<p class="profile-info">27 anys | España</p>
+<p class="profile-description">M'agrada coneixer sobre altres països i cultures a la vegada que compartir les meves experiències amb tothom.</p>
+
+<h2 class="section-title">Els meus emblemes</h2>
+
+<div class="badges-list">
+<div class="badge-item">
+<div class="badge-icons">
+<div class="check-icon">✓</div>
+<div class="check-icon">✓</div>
+<div class="check-icon">✓</div>
+<div class="check-icon">✓</div>
+</div>
+<span class="badge-text">Vivències</span>
+</div>
+<div class="badge-item">
+<div class="badge-icons">
+<div class="check-icon">✓</div>
+<div class="check-icon">✓</div>
+<div class="check-icon">✓</div>
+</div>
+<span class="badge-text">Gastronomia</span>
+</div>
+<div class="badge-item">
+<div class="badge-icons">
+<div class="check-icon">✓</div>
+<div class="check-icon">✓</div>
+</div>
+<span class="badge-text">Celebracions</span>
+</div>
+</div>
+
+<a href="#" class="view-all-link">Veure tots</a>
+<div class="feed-end-space"></div>
+</div>
+
+<nav class="navbar">
+<a href="culturas.html" class="nav-item">
+<img src="images/forum.png" class="nav-icon" alt="Forum">
+</a>
+<a href="quizz.html" class="nav-item">
+<img src="images/quizz.png" class="nav-icon" alt="Quizz">
+</a>
+<a href="home.html" class="center-logo-link">
+<img src="images/logos-033.png" class="center-logo" alt="Logo central 03">
+</a>
+<a href="pasaporte.html" class="nav-item">
+<img src="images/passaport.png" class="nav-icon" alt="Passaport">
+</a>
+<a href="perfil.html" class="nav-item active">
+<img src="images/perfil2.png" class="nav-icon" alt="Perfil">
+</a>
+</nav>
+</div>
 </body>
 </html>

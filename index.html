@@ -2,9 +2,20 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Coolture - Inici</title>
+
+    <!-- ========== PWA: MANIFEST I CONFIGURACIÓ ========== -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#c5a866">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Coolture">
+    <link rel="apple-touch-icon" href="images/logos-03.png">
+    <!-- ================================================= -->
+
     <style>
+        /* ===== ESTILS EXISTENTS (NO MODIFICATS) ===== */
         :root {
             --gold: #c5a866;
             --green: #6b7a5a;
@@ -28,28 +39,21 @@
             height: 100vh;
         }
 
+        /* Contenidor principal: ample fix 390px, sense cantonades arrodonides */
         .container {
-            width: 375px;
-            height: 812px;
+            width: 390px;
+            min-height: 100vh;
             background-color: var(--gold);
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow: hidden;
-            border-radius: 40px;
+            border-radius: 0;
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
 
-        .notch {
-            width: 120px;
-            height: 35px;
-            border-radius: 20px;
-            margin: 12px auto;
-            background: black;
-            flex-shrink: 0;
-            z-index: 10;
-        }
+        /* Notch eliminat completament */
 
         .logo-center {
             width: 200px;
@@ -79,7 +83,6 @@
                 top: 50%;
                 transform: translate(-50%, -50%) scale(1.02);
             }
-            /* A partir del 70% comença el zoom gradual */
             70% {
                 top: 50%;
                 transform: translate(-50%, -50%) scale(1);
@@ -95,7 +98,7 @@
             }
         }
 
-        /* Altres estils (sense canvis) */
+        /* ===== ESTILS ADDICIONALS (SENSE MODIFICAR ELS ANTERIORS) ===== */
         .content {
             width: 80%;
             display: flex;
@@ -112,7 +115,11 @@
             opacity: 0.9;
         }
 
-        .form { width: 100%; margin-top: 20px; }
+        .form {
+            width: 100%;
+            margin-top: 20px;
+        }
+
         input {
             width: 100%;
             background: transparent;
@@ -124,7 +131,10 @@
             outline: none;
             font-size: 16px;
         }
-        input::placeholder { color: rgba(255,255,255,0.7); }
+
+        input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
 
         .small-text {
             color: var(--white);
@@ -147,8 +157,17 @@
             cursor: pointer;
             font-size: 14px;
         }
-        .btn-white { background: var(--white); color: #333; }
-        .btn-outline { background: transparent; border: 1px solid var(--white); color: var(--white); }
+
+        .btn-white {
+            background: var(--white);
+            color: #333;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--white);
+            color: var(--white);
+        }
 
         .split-bg {
             background: linear-gradient(150deg, var(--gold) 55%, var(--green) 55.2%);
@@ -163,16 +182,31 @@
 </head>
 <body>
 <div class="container">
-    <div class="notch"></div>
+    <!-- Notch eliminat -->
     <a href="#" id="logoLink">
         <img src="images/logos-03.png" class="logo-center" alt="Coolture Logo">
     </a>
 </div>
 
 <script>
+    // Redirecció original (no modificada)
     setTimeout(() => {
         window.location.href = "escull.html";
     }, 3000);
+
+    // ========== REGISTRE DEL SERVICE WORKER PER PWA ==========
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(registration => {
+                    console.log('Service Worker registrat amb èxit:', registration);
+                })
+                .catch(error => {
+                    console.log('Error en registrar el Service Worker:', error);
+                });
+        });
+    }
+    // ========================================================
 </script>
 </body>
 </html>
