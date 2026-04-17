@@ -1,9 +1,25 @@
 const CACHE_NAME = 'coolture-v1';
 const urlsToCache = [
-  '.',
+  '/',
   'index.html',
-  'escull.html',        // si existeix, sinó elimina
-  'images/logos-03.png'
+  'escull.html',
+  'home.html',
+  'culturas.html',
+  'quizz.html',
+  'pasaporte.html',
+  'perfil.html',
+  'registre.html',
+  'comenca.html',
+  'paises.html',
+  'pregunta2.html',
+  'style.css',
+  'images/logos-03.png',
+  'images/logos-02.png',
+  'images/forum.png',
+  'images/quizz.png',
+  'images/passaport.png',
+  'images/perfil.png'
+  // Añade aquí más recursos si es necesario (ej. imágenes de fondo, otros CSS, etc.)
 ];
 
 self.addEventListener('install', event => {
