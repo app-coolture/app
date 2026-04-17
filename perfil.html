@@ -15,6 +15,7 @@
             --badge-bg: #D4B066; 
             --check-green: #667F57;
             --text-badge: #5D5334;
+            --shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
         }
 
         body, html {
@@ -40,7 +41,7 @@
         }
 
         #profile-content {
-            flex-grow: 1; overflow-y: auto; padding: 10px 30px 100px 30px; /* Añadido padding inferior para que no se solape con la barra flotante */
+            flex-grow: 1; overflow-y: auto; padding: 10px 30px 100px 30px;
             scrollbar-width: none;
         }
         #profile-content::-webkit-scrollbar { display: none; }
@@ -69,7 +70,6 @@
 
         .section-title { font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; }
 
-        /* --- BARRAS DE EMBLEMAS ESTILIZADAS --- */
         .badges-list { width: 100%; display: flex; flex-direction: column; gap: 10px; }
         
         .badge-item {
@@ -96,23 +96,23 @@
             cursor: pointer; margin-top: 8px; display: block; text-decoration: none;
         }
 
-        .feed-end-space { height: 20px; } /* Reducido porque ya hay padding inferior */
+        .feed-end-space { height: 20px; }
 
-        /* --- NUEVA BARRA INFERIOR FLOTANT (MÁS DELGADA, ICONOS MÁS GRANDES) --- */
+        /* ===== BARRA INFERIOR ESTÁNDAR (COOLTURE) ===== */
         .navbar {
             position: absolute;
-            bottom: 15px;
-            left: 15px;
-            right: 15px;
+            bottom: 20px;
+            left: 8px;
+            right: 8px;
             background-color: var(--green-coolture);
-            border-radius: 30px;
+            border-radius: 40px;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            height: 70px;
-            box-sizing: border-box;
-            z-index: 5000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            height: 72px;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            overflow: visible;
         }
 
         .nav-item {
@@ -120,19 +120,132 @@
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            width: 60px;
-            height: 50px;
+            width: 68px;
+            height: 56px;
+            transition: all 0.2s ease;
+            border-radius: 28px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
         }
 
+        /* El elemento activo tiene z-index alto para estar por encima del círculo verde */
         .nav-item.active {
             background-color: var(--select-bg);
-            border-radius: 20px;
+            border-radius: 32px;
+            z-index: 30;
         }
 
         .nav-icon {
             width: 48px;
             height: 48px;
             object-fit: contain;
+            display: block;
+        }
+
+        /* Desplazamientos laterales para que el rectángulo activo no sobresalga */
+        .navbar a:first-child {
+            transform: translateX(6px);
+        }
+        .navbar a:nth-child(2) {
+            transform: translateX(6px);
+        }
+        .navbar a:nth-child(4) {
+            transform: translateX(-6px);
+        }
+        .navbar a:last-child {
+            transform: translateX(-6px);
+        }
+
+        /* Zona central con el logo clicable */
+        .center-logo-link {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 76px;
+            height: 72px;
+            flex-shrink: 0;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        /* Círculo verde de fondo (detrás del rectángulo activo) */
+        .center-logo-link::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 84px;
+            background-color: var(--green-coolture);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Logo centrado */
+        .center-logo {
+            position: relative;
+            z-index: 2;
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-top: -48px;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.2s ease;
+            pointer-events: auto;
+        }
+
+        .center-logo-link:hover .center-logo {
+            transform: scale(1.02);
+        }
+
+        .navbar a:active {
+            opacity: 0.85;
+        }
+
+        @media (max-width: 400px) {
+            .navbar {
+                left: 6px;
+                right: 6px;
+                height: 68px;
+            }
+            .nav-item {
+                width: 60px;
+                height: 52px;
+            }
+            .nav-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .center-logo {
+                width: 74px;
+                height: 74px;
+                margin-top: -28px;
+            }
+            .center-logo-link::before {
+                width: 76px;
+                height: 76px;
+            }
+            .navbar a:first-child {
+                transform: translateX(4px);
+            }
+            .navbar a:nth-child(2) {
+                transform: translateX(4px);
+            }
+            .navbar a:nth-child(4) {
+                transform: translateX(-4px);
+            }
+            .navbar a:last-child {
+                transform: translateX(-4px);
+            }
         }
     </style>
 </head>
@@ -187,13 +300,16 @@
         <div class="feed-end-space"></div>
     </div>
 
-    <!-- BARRA INFERIOR FLOTANT (NUEVA) -->
+    <!-- BARRA INFERIOR ESTÁNDAR (Perfil activo con perfil2.png) -->
     <nav class="navbar">
         <a href="culturas.html" class="nav-item">
             <img src="images/forum.png" class="nav-icon" alt="Forum">
         </a>
         <a href="quizz.html" class="nav-item">
             <img src="images/quizz.png" class="nav-icon" alt="Quizz">
+        </a>
+        <a href="home.html" class="center-logo-link">
+            <img src="images/logos-03.png" class="center-logo" alt="Logo central 03">
         </a>
         <a href="pasaporte.html" class="nav-item">
             <img src="images/passaport.png" class="nav-icon" alt="Passaport">

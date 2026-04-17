@@ -12,6 +12,7 @@
             --page-color: #fffbec;
             --default-radius: 20px;
             --select-bg: #F4F1E8;
+            --shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
         }
 
         * {
@@ -27,7 +28,7 @@
             align-items: center;
             height: 100vh;
             font-family: 'Segoe UI', 'Montserrat', sans-serif;
-            overflow-x: hidden; /* Evita scroll horizontal global */
+            overflow-x: hidden;
         }
 
         .container {
@@ -35,7 +36,7 @@
             height: 812px;
             background-color: var(--bg-color);
             border-radius: 40px;
-            overflow: hidden; /* Evita desbordamiento del contenedor */
+            overflow: hidden;
             position: relative;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             display: flex;
@@ -60,14 +61,14 @@
             align-items: center;
             padding: 20px 10px 10px 10px;
             overflow-y: auto;
-            overflow-x: hidden; /* Elimina scroll horizontal */
+            overflow-x: hidden;
             scrollbar-width: none;
         }
         .main-content::-webkit-scrollbar { display: none; }
 
         .book {
             width: 280px;
-            max-width: 100%; /* Asegura que no se desborde */
+            max-width: 100%;
             height: 440px;
             position: relative;
             transform-style: preserve-3d;
@@ -167,7 +168,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: var(--page-color);
+            background-color: #fdf8ed;
             border-radius: 0 12px 12px 0;
             transform-origin: left center;
             transition: transform 1s cubic-bezier(0.4, 0.2, 0, 1);
@@ -177,30 +178,35 @@
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            overflow-x: hidden; /* Sin scroll horizontal en páginas */
-            background-image: url('images/fondopass.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-blend-mode: overlay;
-            word-wrap: break-word;
+            overflow-x: hidden;
         }
 
+        /* Páginas intermedias */
         .page li:not(:last-child) {
-            background: #fffef7;
+            background-color: #fdf8ed;
             background-image: repeating-linear-gradient(
                 to bottom,
                 rgba(0,0,0,0.05) 0px,
                 rgba(0,0,0,0.05) 1px,
                 transparent 1px,
                 transparent 30px
-            ), url('images/fondopass.png');
-            background-size: cover, cover;
-            background-repeat: no-repeat, no-repeat;
-            background-position: center, center;
-            background-blend-mode: overlay;
+            );
+            background-size: auto;
+            background-repeat: repeat;
+            background-position: 0 0;
         }
 
+        /* Última página: fondo dinámico */
+        .page li:last-child {
+            transform: rotateY(0deg);
+            z-index: 5;
+            background-color: #fdf8ed;
+            border-radius: 0 12px 12px 0;
+            padding: 20px 15px;
+            position: relative;
+        }
+
+        /* Animaciones */
         .book.open .page li:nth-child(1) { transform: rotateY(-170deg); transition-delay: 0.05s; }
         .book.open .page li:nth-child(2) { transform: rotateY(-160deg); transition-delay: 0.1s; }
         .book.open .page li:nth-child(3) { transform: rotateY(-150deg); transition-delay: 0.15s; }
@@ -208,20 +214,7 @@
         .book.open .page li:nth-child(5) { transform: rotateY(-130deg); transition-delay: 0.25s; }
         .book.open .page li:nth-child(6) { transform: rotateY(-120deg); transition-delay: 0.3s; }
 
-        .page li:last-child {
-            transform: rotateY(0deg);
-            z-index: 5;
-            background: #fffcf0;
-            background-image: url('images/fondopass.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-blend-mode: overlay;
-            border-radius: 0 12px 12px 0;
-            padding: 20px 15px;
-            position: relative;
-        }
-
+        /* ===== ESTILOS DE TEXTO ===== */
         .country-name {
             color: var(--gold-passaport);
             font-size: 28px;
@@ -233,19 +226,17 @@
             z-index: 2;
         }
 
-        /* CATEGORIES MÉS PETITES I SIMÈTRIQUES */
         .category-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             margin-top: 10px;
-            background: rgba(255, 252, 240, 0.92);
+            background: transparent;
             border-radius: 20px;
             padding: 12px 16px;
             padding-right: 75px;
             position: relative;
             z-index: 2;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
             width: 100%;
         }
 
@@ -254,8 +245,9 @@
             justify-content: space-between;
             align-items: center;
             padding: 4px 0;
-            border-bottom: 1px solid rgba(197, 166, 97, 0.2);
-            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(197, 166, 97, 0.4);
+            flex-wrap: nowrap;
+            white-space: nowrap;
         }
         .category-row:last-child {
             border-bottom: none;
@@ -266,60 +258,44 @@
             font-size: 13px;
             color: #4a3a1f;
             letter-spacing: 0.2px;
+            background: transparent;
+            flex-shrink: 0;
+            margin-right: 8px;
         }
 
         .check-group {
             display: flex;
-            gap: 6px;
-            color: var(--gold-passaport);
+            gap: 4px;
+            align-items: center;
+            flex-shrink: 0;
+            flex-wrap: nowrap;
         }
-        .check-group i {
-            font-size: 14px;
-        }
-        .check-group i.fa-square-check {
-            color: var(--gold-passaport);
-        }
-        .check-group i.fa-square {
-            color: #c0b28a;
+        
+        .tick-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+            flex-shrink: 0;
         }
 
-        /* NOVA ESTRELLA DEL SEGELL (50px) */
-        .stamp-badge {
+        /* MEDALLA - más grande */
+        .medalla-badge {
             position: absolute;
             bottom: 20px;
             right: 20px;
-            width: 50px;
-            height: 50px;
+            width: 65px;
+            height: 65px;
             z-index: 20;
         }
-        .star5 {
-            background: var(--gold-passaport);
-            width: 50px;
-            height: 50px;
-            position: relative;
-            border-radius: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        .star5::before {
-            content: "";
-            background: var(--gold-passaport);
-            width: 50px;
-            height: 50px;
-            position: absolute;
-            border-radius: 15px;
-            transform: rotate(45deg);
-        }
-        .star5 img {
-            position: relative;
-            z-index: 2;
-            width: 180px;
-            height: auto;
-            filter: brightness(0) invert(1);
+        .medalla-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
         }
 
+        /* ===== BANDERAS CON INDICADOR TIPO DONUT ===== */
         .countries-strip {
             display: flex;
             justify-content: center;
@@ -331,34 +307,61 @@
             flex-shrink: 0;
             width: 100%;
         }
+        
+        .flag-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        
         .flag-icon {
             width: 40px;
             height: 28px;
             border-radius: 6px;
             border: 1px solid #ccc;
             background-size: cover;
-            cursor: pointer;
+            background-position: center;
             transition: transform 0.2s;
-            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .flag-icon:hover {
+        
+        .flag-container:hover .flag-icon {
             transform: scale(1.1);
         }
+        
+        .flag-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: transparent;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .flag-container.active .flag-indicator {
+            border-color: var(--gold-passaport);
+            background-color: transparent;
+            box-shadow: 0 0 8px rgba(197, 164, 103, 0.5);
+        }
 
+        /* BARRA INFERIOR */
         .navbar {
             position: absolute;
-            bottom: 15px;
-            left: 15px;
-            right: 15px;
+            bottom: 20px;
+            left: 8px;
+            right: 8px;
             background-color: var(--green-coolture);
-            border-radius: 30px;
+            border-radius: 40px;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            height: 70px;
-            box-sizing: border-box;
-            z-index: 5000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            height: 72px;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            overflow: visible;
         }
 
         .nav-item {
@@ -366,19 +369,89 @@
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            width: 60px;
-            height: 50px;
+            width: 68px;
+            height: 56px;
+            transition: all 0.2s ease;
+            border-radius: 28px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
         }
 
         .nav-item.active {
             background-color: var(--select-bg);
-            border-radius: 20px;
+            border-radius: 32px;
+            z-index: 30;
         }
 
         .nav-icon {
             width: 48px;
             height: 48px;
             object-fit: contain;
+            display: block;
+        }
+
+        .navbar a:first-child { transform: translateX(6px); }
+        .navbar a:nth-child(2) { transform: translateX(6px); }
+        .navbar a:nth-child(4) { transform: translateX(-6px); }
+        .navbar a:last-child { transform: translateX(-6px); }
+
+        .center-logo-link {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 76px;
+            height: 72px;
+            flex-shrink: 0;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .center-logo-link::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 84px;
+            background-color: var(--green-coolture);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .center-logo {
+            position: relative;
+            z-index: 2;
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-top: -48px;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.2s ease;
+            pointer-events: auto;
+        }
+
+        .center-logo-link:hover .center-logo { transform: scale(1.02); }
+        .navbar a:active { opacity: 0.85; }
+
+        @media (max-width: 400px) {
+            .navbar { left: 6px; right: 6px; height: 68px; }
+            .nav-item { width: 60px; height: 52px; }
+            .nav-icon { width: 44px; height: 44px; }
+            .center-logo { width: 44px; height: 44px; margin-top: -44px; }
+            .center-logo-link::before { width: 76px; height: 76px; }
+            .navbar a:first-child { transform: translateX(4px); }
+            .navbar a:nth-child(2) { transform: translateX(4px); }
+            .navbar a:nth-child(4) { transform: translateX(-4px); }
+            .navbar a:last-child { transform: translateX(-4px); }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -409,110 +482,163 @@
     </div>
 
     <nav class="navbar">
-        <a href="culturas.html" class="nav-item"><img src="images/forum.png" class="nav-icon" alt="Forum"></a>
-        <a href="quizz.html" class="nav-item"><img src="images/quizz.png" class="nav-icon" alt="Quizz"></a>
-        <a href="pasaporte.html" class="nav-item active"><img src="images/passaport2.png" class="nav-icon" alt="Passaport"></a>
-        <a href="perfil.html" class="nav-item"><img src="images/perfil.png" class="nav-icon" alt="Perfil"></a>
+        <a href="culturas.html" class="nav-item">
+            <img src="images/forum.png" class="nav-icon" alt="Forum">
+        </a>
+        <a href="quizz.html" class="nav-item">
+            <img src="images/quizz.png" class="nav-icon" alt="Quizz">
+        </a>
+        <a href="home.html" class="center-logo-link">
+            <img src="images/logos-03.png" class="center-logo" alt="Logo central 03">
+        </a>
+        <a href="pasaporte.html" class="nav-item active">
+            <img src="images/passaport2.png" class="nav-icon" alt="Passaport">
+        </a>
+        <a href="perfil.html" class="nav-item">
+            <img src="images/perfil.png" class="nav-icon" alt="Perfil">
+        </a>
     </nav>
 </div>
 
 <script>
     const countriesData = {
-        "Japó": {
-            name: "JAPÓ",
-            levels: [3, 2, 4, 2, 1, 2, 1]
-        },
-        "Espanya": {
-            name: "ESPANYA",
-            levels: [3, 3, 2, 4, 1, 3, 2]
-        },
-        "Itàlia": {
-            name: "ITÀLIA",
-            levels: [4, 2, 3, 3, 2, 4, 1]
-        },
-        "Brasil": {
-            name: "BRASIL",
-            levels: [2, 1, 4, 3, 2, 2, 3]
-        },
-        "França": {
-            name: "FRANÇA",
-            levels: [3, 2, 3, 2, 2, 3, 2]
-        },
-        "Alemanya": {
-            name: "ALEMANYA",
-            levels: [3, 3, 3, 2, 1, 3, 2]
-        }
+        "Japó": { name: "JAPÓ", levels: [3, 2, 4, 2, 1, 2, 1] },
+        "Espanya": { name: "ESPANYA", levels: [3, 3, 2, 4, 1, 3, 2] },
+        "Itàlia": { name: "ITÀLIA", levels: [4, 2, 3, 3, 2, 4, 1] },
+        "Brasil": { name: "BRASIL", levels: [2, 1, 4, 3, 2, 2, 3] },
+        "França": { name: "FRANÇA", levels: [3, 2, 3, 2, 2, 3, 2] },
+        "Alemanya": { name: "ALEMANYA", levels: [3, 3, 3, 2, 1, 3, 2] }
+    };
+
+    const countryBackgrounds = {
+        "Japó": "images/fondopassjapo.png",
+        "Espanya": "images/f_fondopassespanya.png",
+        "Itàlia": "images/f_fondopassitalia.png",
+        "Brasil": "images/f_fondopassbrasil.png",
+        "França": "images/f_fondopassfrancia.png",
+        "Alemanya": "images/f_fondopassalemania.png"
+    };
+
+    const medallasPorPais = {
+        "Japó": "medalla-03.png",
+        "Espanya": "medalla-01.png",
+        "Itàlia": "medalla-02.png",
+        "Brasil": "medalla-01.png",
+        "França": "medalla-02.png",
+        "Alemanya": "medalla-03.png"
     };
 
     const categories = ["Gastronomia", "Llenguatge", "Música i art", "Celebracions", "Llegendes", "Arquitectura", "Vivències"];
     const flagList = [
-        { code: "jp", name: "Japó" },
-        { code: "es", name: "Espanya" },
+        { code: "jp", name: "Japó" }, 
+        { code: "es", name: "Espanya" }, 
         { code: "it", name: "Itàlia" },
-        { code: "br", name: "Brasil" },
-        { code: "fr", name: "França" },
+        { code: "br", name: "Brasil" }, 
+        { code: "fr", name: "França" }, 
         { code: "de", name: "Alemanya" }
     ];
 
-    function generateChecks(level, max = 4) {
+    let currentActiveFlag = null;
+
+    function generateChecks(level) {
         let html = '';
-        for (let i = 0; i < max; i++) {
-            if (i < level) {
-                html += '<i class="fa-regular fa-square-check"></i>';
-            } else {
-                html += '<i class="fa-regular fa-square"></i>';
-            }
+        for (let i = 0; i < level; i++) {
+            html += `<img src="images/passtick.png" class="tick-icon" alt="✓">`;
         }
         return html;
     }
 
-    function updateCountry(countryKey) {
+    function updateCountry(countryKey, flagElement) {
         const country = countriesData[countryKey];
         if (!country) return;
+        
         const lastPage = document.getElementById('dynamicPage');
+        
+        const backgroundImageUrl = countryBackgrounds[countryKey];
+        if (backgroundImageUrl) {
+            lastPage.style.backgroundImage = `url('${backgroundImageUrl}')`;
+            lastPage.style.backgroundSize = "cover";
+            lastPage.style.backgroundRepeat = "no-repeat";
+            lastPage.style.backgroundPosition = "center";
+        } else {
+            lastPage.style.backgroundImage = "none";
+        }
+        
         let categoriesHtml = '';
         for (let i = 0; i < categories.length; i++) {
             categoriesHtml += `
                 <div class="category-row">
                     <span class="category-name">${categories[i]}</span>
                     <div class="check-group">
-                        ${generateChecks(country.levels[i], 4)}
+                        ${generateChecks(country.levels[i])}
                     </div>
                 </div>
             `;
         }
+
+        let medallaSrc = medallasPorPais[countryKey] || "medalla-01.png";
 
         lastPage.innerHTML = `
             <h1 class="country-name">${country.name}</h1>
             <div class="category-list">
                 ${categoriesHtml}
             </div>
-            <div class="stamp-badge">
-                <div class="star5">
-                    <img src="images/logos-03.png" alt="logo">
-                </div>
+            <div class="medalla-badge">
+                <img src="images/${medallaSrc}" alt="medalla">
             </div>
         `;
+        
+        if (currentActiveFlag) {
+            currentActiveFlag.classList.remove('active');
+        }
+        if (flagElement) {
+            flagElement.classList.add('active');
+            currentActiveFlag = flagElement;
+        } else {
+            document.querySelectorAll('.flag-container').forEach(container => {
+                if (container.getAttribute('data-country') === countryKey) {
+                    container.classList.add('active');
+                    currentActiveFlag = container;
+                }
+            });
+        }
     }
 
     const strip = document.getElementById('countriesStrip');
+    
     flagList.forEach(flag => {
+        const flagContainer = document.createElement('div');
+        flagContainer.className = 'flag-container';
+        flagContainer.setAttribute('data-country', flag.name);
+        
         const flagDiv = document.createElement('div');
         flagDiv.className = 'flag-icon';
         flagDiv.style.backgroundImage = `url('https://flagcdn.com/${flag.code}.svg')`;
-        flagDiv.setAttribute('data-country', flag.name);
-        flagDiv.addEventListener('click', (e) => {
+        
+        const indicator = document.createElement('div');
+        indicator.className = 'flag-indicator';
+        
+        flagContainer.appendChild(flagDiv);
+        flagContainer.appendChild(indicator);
+        
+        flagContainer.addEventListener('click', (e) => {
             e.stopPropagation();
-            updateCountry(flag.name);
+            updateCountry(flag.name, flagContainer);
         });
-        strip.appendChild(flagDiv);
+        
+        strip.appendChild(flagContainer);
+        
+        if (flag.name === "Japó") {
+            flagContainer.classList.add('active');
+            currentActiveFlag = flagContainer;
+        }
     });
 
     updateCountry("Japó");
 
     const book = document.getElementById('passportBook');
     book.addEventListener('click', (e) => {
-        if (e.target.closest('.flag-icon')) return;
+        if (e.target.closest('.flag-container')) return;
         book.classList.toggle('open');
     });
 </script>
