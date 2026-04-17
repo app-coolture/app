@@ -2,7 +2,7 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Coolture - Forum Pro</title>
     <style>
         :root {
@@ -21,10 +21,13 @@
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            overflow-x: hidden;
         }
 
+        /* CONTENEDOR PRINCIPAL: OCUPA EL 100% DEL ANCHO (SIN LÍMITE FIJO) */
         .container {
-            width: 390px;
+            width: 100%;
             min-height: 100vh;
             background-color: var(--bg-color);
             position: relative;
@@ -33,9 +36,10 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             border-radius: 0;
             overflow: hidden;
+            /* Espacio dinámico para el notch */
+            padding-top: constant(safe-area-inset-top);
+            padding-top: env(safe-area-inset-top);
         }
-
-        /* Notch eliminado */
 
         /* --- MENÚ BURGER --- */
         .menu-overlay {
@@ -65,13 +69,13 @@
         .pill.selected { background: var(--green-coolture); color: white; border-color: var(--green-coolture); }
         .divider-green { height: 4px; background: var(--green-coolture); margin: 20px 0; border-radius: 10px; opacity: 0.3; }
 
-        /* --- HEADER (amb marge superior augmentat a 30px) --- */
+        /* --- HEADER (margen superior 43px + espacio del notch ya aplicado por el container) --- */
         .header { 
             display: flex; 
             align-items: center; 
             justify-content: flex-start; 
             padding: 10px 20px; 
-            margin-top: 43px;   /* Aumentado de 20px a 30px */
+            margin-top: 43px;   /* mantiene separación original */
             flex-shrink: 0; 
             z-index: 1000;
             gap: 12px;
@@ -277,7 +281,7 @@
             margin-left: 2px;
         }
         
-        .tags { display: flex; gap: 5px; margin-bottom: 8px; margin-top: 6px; }
+        .tags { display: flex; gap: 5px; margin-bottom: 8px; margin-top: 6px; flex-wrap: wrap; }
         .tag-pill { font-size: 9px; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; font-weight: bold; background: #e8ede4; color: var(--green-coolture); }
         .post-title { font-size: 16px; margin: 5px 0; color: #1c1c1c; font-weight: 700; }
         .post-text { font-size: 14px; color: #444; line-height: 1.4; }
@@ -285,7 +289,7 @@
         /* Imagen del post */
         .post-image {
             width: auto;
-            max-width: 85%;
+            max-width: 100%;
             display: block;
             margin: 10px 0;
             margin-left: 0;
@@ -390,7 +394,7 @@
         }
         .send-btn:active { transform: scale(0.94); background: #4e643f; }
 
-        /* ===== BARRA INFERIOR (con márgenes laterales originales y logo subido) ===== */
+        /* ===== BARRA INFERIOR (con márgenes laterales originales) ===== */
         .navbar {
             position: fixed;
             bottom: max(20px, env(safe-area-inset-bottom, 20px));
@@ -433,18 +437,10 @@
             display: block;
         }
 
-        .navbar a:first-child {
-            transform: translateX(6px);
-        }
-        .navbar a:nth-child(2) {
-            transform: translateX(6px);
-        }
-        .navbar a:nth-child(4) {
-            transform: translateX(-6px);
-        }
-        .navbar a:last-child {
-            transform: translateX(-6px);
-        }
+        .navbar a:first-child { transform: translateX(6px); }
+        .navbar a:nth-child(2) { transform: translateX(6px); }
+        .navbar a:nth-child(4) { transform: translateX(-6px); }
+        .navbar a:last-child { transform: translateX(-6px); }
 
         .center-logo-link {
             position: relative;
@@ -497,7 +493,8 @@
             opacity: 0.85;
         }
 
-        @media (max-width: 400px) {
+        /* MEDIA QUERIES RESPONSIVAS */
+        @media (max-width: 450px) {
             .navbar {
                 left: 6px;
                 right: 6px;
@@ -520,17 +517,58 @@
                 width: 76px;
                 height: 76px;
             }
-            .navbar a:first-child {
-                transform: translateX(4px);
+            .navbar a:first-child { transform: translateX(4px); }
+            .navbar a:nth-child(2) { transform: translateX(4px); }
+            .navbar a:nth-child(4) { transform: translateX(-4px); }
+            .navbar a:last-child { transform: translateX(-4px); }
+        }
+
+        @media (max-width: 400px) {
+            .header {
+                padding: 10px 16px;
+                margin-top: 38px;
             }
-            .navbar a:nth-child(2) {
-                transform: translateX(4px);
+            .post-card {
+                padding: 12px;
             }
-            .navbar a:nth-child(4) {
-                transform: translateX(-4px);
+            .post-title {
+                font-size: 15px;
             }
-            .navbar a:last-child {
-                transform: translateX(-4px);
+            .post-text {
+                font-size: 13px;
+            }
+            .tag-pill {
+                font-size: 8px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .header {
+                padding: 10px 12px;
+                margin-top: 35px;
+            }
+            .burger {
+                font-size: 32px;
+            }
+            .post-card {
+                padding: 10px;
+            }
+            .avatar {
+                width: 32px;
+                height: 32px;
+            }
+            .username-line {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .header {
+                padding: 10px 10px;
+                margin-top: 32px;
+            }
+            .post-title {
+                font-size: 14px;
             }
         }
     </style>

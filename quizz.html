@@ -2,7 +2,7 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Coolture - Selecció Quizz</title>
     <style>
         :root {
@@ -24,31 +24,32 @@
         body, html {
             margin: 0;
             padding: 0;
-            background-color: #1a1a1a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            background-color: #1a1a1a; /* fondo de respaldo, pero el container lo cubrirá */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            overflow-x: hidden;
         }
 
+        /* CONTENEDOR PRINCIPAL: OCUPA EL 100% DE LA PANTALLA SIN NINGÚN MÁXIMO */
         .container {
-            width: 390px;
+            width: 100%;
             min-height: 100vh;
             background-color: var(--bg-color);
-            position: relative;
             display: flex;
             flex-direction: column;
-            margin: 0 auto;
-            padding-top: env(safe-area-inset-top, 0px);
-            padding-bottom: env(safe-area-inset-bottom, 0px);
-            border-radius: 0;
-            box-shadow: none;
+            position: relative;
+            margin: 0;
+            padding: 0;
         }
 
         .content {
             flex-grow: 1;
-            padding: 43px 20px 100px 20px;  /* padding-top aumentado de 20px a 43px */
+            /* Margen superior de 60px + espacio para el notch */
+            padding-top: calc(60px + constant(safe-area-inset-top));
+            padding-top: calc(60px + env(safe-area-inset-top));
+            padding-right: 20px;
+            padding-bottom: 100px;
+            padding-left: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -58,7 +59,7 @@
         .content::-webkit-scrollbar { display: none; }
 
         .header-title {
-            font-size: 24px;
+            font-size: clamp(20px, 6vw, 26px);
             font-weight: 800;
             color: var(--text-dark);
             margin-top: 10px;
@@ -67,7 +68,7 @@
         }
 
         .sub-title {
-            font-size: 14px;
+            font-size: clamp(12px, 3.5vw, 14px);
             color: var(--text-grey);
             margin-bottom: 30px;
             text-align: center;
@@ -135,8 +136,8 @@
         .level-card.experto { border-left: 8px solid #D4B066; }
 
         .level-img {
-            width: 45px;
-            height: 45px;
+            width: clamp(36px, 10vw, 45px);
+            height: clamp(36px, 10vw, 45px);
             object-fit: contain;
             display: block;
             margin-left: 10px;
@@ -146,8 +147,16 @@
             flex: 1;
             text-align: left;
         }
-        .level-text h3 { margin: 0; font-size: 18px; color: var(--text-dark); }
-        .level-text p { margin: 3px 0 0 0; font-size: 13px; color: var(--text-grey); }
+        .level-text h3 { 
+            margin: 0; 
+            font-size: clamp(14px, 4.5vw, 18px); 
+            color: var(--text-dark); 
+        }
+        .level-text p { 
+            margin: 3px 0 0 0; 
+            font-size: clamp(11px, 3.5vw, 13px); 
+            color: var(--text-grey); 
+        }
 
         .modal-overlay {
             position: fixed;
@@ -199,7 +208,7 @@
             cursor: pointer;
         }
 
-        /* BARRA INFERIOR amb els marges originals (left/right 8px) */
+        /* BARRA INFERIOR: ahora ocupa todo el ancho con pequeños márgenes laterales */
         .navbar {
             position: fixed;
             bottom: max(20px, env(safe-area-inset-bottom, 20px));
@@ -295,21 +304,80 @@
             transform: scale(1.02);
         }
 
-        @media (max-width: 400px) {
-            .navbar { left: 6px; right: 6px; height: 68px; }
-            .nav-item { width: 60px; height: 52px; }
-            .nav-icon { width: 44px; height: 44px; }
-            .center-logo { width: 60px; height: 60px; margin-top: -33px; }
-            .center-logo-link::before { width: 76px; height: 76px; }
+        /* MEDIA QUERIES: ajustes laterales para pantallas pequeñas */
+        @media (max-width: 450px) {
+            .navbar {
+                left: 6px;
+                right: 6px;
+                height: 68px;
+            }
+            .nav-item {
+                width: 60px;
+                height: 52px;
+            }
+            .nav-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .center-logo {
+                width: 60px;
+                height: 60px;
+                margin-top: -33px;
+            }
+            .center-logo-link::before {
+                width: 76px;
+                height: 76px;
+            }
             .navbar a:first-child { transform: translateX(4px); }
             .navbar a:nth-child(2) { transform: translateX(4px); }
             .navbar a:nth-child(4) { transform: translateX(-4px); }
             .navbar a:last-child { transform: translateX(-4px); }
         }
+
+        @media (max-width: 400px) {
+            .content {
+                padding-right: 16px;
+                padding-left: 16px;
+            }
+            .country-selector {
+                padding: 12px 16px;
+                margin-bottom: 25px;
+            }
+            .level-card {
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .content {
+                padding-right: 14px;
+                padding-left: 14px;
+            }
+            .level-img {
+                margin-left: 8px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .content {
+                padding-right: 12px;
+                padding-left: 12px;
+            }
+            .country-selector {
+                padding: 10px 14px;
+            }
+            .level-card {
+                padding: 14px;
+            }
+        }
+
+        /* Evitar scroll horizontal */
+        body, .container, .content {
+            overflow-x: hidden;
+        }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="content">
         <h1 class="header-title">Quizz Challenge</h1>

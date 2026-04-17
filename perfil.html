@@ -1,7 +1,7 @@
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
 <title>Coolture - Perfil de Miquel Campos</title>
 <style>
 :root {
@@ -19,6 +19,8 @@
 
 * {
 box-sizing: border-box;
+margin: 0;
+padding: 0;
 }
 
 body, html {
@@ -32,6 +34,7 @@ min-height: 100vh;
 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* ----- CONTENEDOR PRINCIPAL: RESPONSIVE Y CON PADDING SUPERIOR PARA NOTCH ----- */
 .container {
 width: 100%;
 max-width: 430px;
@@ -42,14 +45,28 @@ display: flex;
 flex-direction: column;
 box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 margin: 0 auto;
+/* Espacio dinámico para el notch (como en home.html) */
+padding-top: constant(safe-area-inset-top, 0px);
 padding-top: env(safe-area-inset-top, 0px);
+padding-bottom: constant(safe-area-inset-bottom, 0px);
 padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (max-width: 430px) {
+.container {
+max-width: 100%;
+}
 }
 
 #profile-content {
 flex-grow: 1;
 overflow-y: auto;
-padding: 63px 30px 100px 30px;  /* ← aumentado de 53px a 63px */
+/* Padding superior dinámico: 63px base + espacio del notch */
+padding-top: calc(63px + constant(safe-area-inset-top));
+padding-top: calc(63px + env(safe-area-inset-top));
+padding-right: 30px;
+padding-bottom: 100px;
+padding-left: 30px;
 scrollbar-width: none;
 }
 #profile-content::-webkit-scrollbar { display: none; }
@@ -134,7 +151,7 @@ text-decoration: none;
 
 .feed-end-space { height: 20px; }
 
-/* ===== BARRA INFERIOR ===== */
+/* ===== BARRA INFERIOR (fija, con soporte notch inferior) ===== */
 .navbar {
 position: fixed;
 bottom: max(20px, env(safe-area-inset-bottom, 20px));
@@ -236,7 +253,8 @@ transform: scale(1.02);
 opacity: 0.85;
 }
 
-@media (max-width: 400px) {
+/* ----- MEDIA QUERIES RESPONSIVAS (AJUSTES DINÁMICOS CON NOTCH) ----- */
+@media (max-width: 450px) {
 .navbar {
 left: 6px;
 right: 6px;
@@ -264,6 +282,85 @@ height: 76px;
 .navbar a:nth-child(2) { transform: translateX(4px); }
 .navbar a:nth-child(4) { transform: translateX(-4px); }
 .navbar a:last-child { transform: translateX(-4px); }
+}
+
+@media (max-width: 400px) {
+#profile-content {
+padding-right: 20px;
+padding-left: 20px;
+/* Padding superior dinámico también en este breakpoint */
+padding-top: calc(58px + constant(safe-area-inset-top));
+padding-top: calc(58px + env(safe-area-inset-top));
+}
+.profile-name {
+font-size: 24px;
+}
+.profile-handle, .profile-info, .profile-description {
+font-size: 14px;
+}
+.section-title {
+font-size: 18px;
+}
+.badge-item {
+height: 36px;
+padding: 0 16px;
+}
+.badge-text {
+font-size: 14px;
+}
+.check-icon {
+width: 18px;
+height: 18px;
+font-size: 11px;
+}
+}
+
+@media (max-width: 360px) {
+#profile-content {
+padding-right: 16px;
+padding-left: 16px;
+padding-top: calc(55px + constant(safe-area-inset-top));
+padding-top: calc(55px + env(safe-area-inset-top));
+}
+.profile-name {
+font-size: 22px;
+}
+.profile-photo-container {
+max-width: 280px;
+}
+.badge-item {
+height: 34px;
+padding: 0 14px;
+}
+.badge-text {
+font-size: 13px;
+}
+}
+
+@media (max-width: 320px) {
+#profile-content {
+padding-right: 14px;
+padding-left: 14px;
+padding-top: calc(50px + constant(safe-area-inset-top));
+padding-top: calc(50px + env(safe-area-inset-top));
+}
+.profile-name {
+font-size: 20px;
+}
+.section-title {
+font-size: 16px;
+}
+.badge-item {
+height: 32px;
+}
+.badge-text {
+font-size: 12px;
+}
+.check-icon {
+width: 16px;
+height: 16px;
+font-size: 10px;
+}
 }
 </style>
 </head>

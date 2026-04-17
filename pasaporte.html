@@ -2,7 +2,7 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Coolture - Passaport 3D</title>
     <style>
         :root { 
@@ -22,29 +22,30 @@
         }
 
         body, html {
+            margin: 0;
+            padding: 0;
             background-color: #1a1a1a;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             font-family: 'Segoe UI', 'Montserrat', sans-serif;
+            width: 100%;
             overflow-x: hidden;
         }
 
-        /* Contenedor principal: 390px, sin bordes redondeados, sin notch */
+        /* Contenedor principal: OCUPA EL 100% DE LA PANTALLA (sin límite de ancho) */
         .container {
-            width: 390px;
+            width: 100%;
             min-height: 100vh;
             background-color: var(--bg-color);
-            position: relative;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border-radius: 0;
-            overflow: hidden;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
         }
-
-        /* Notch eliminado - ya no está */
 
         .main-content {
             flex: 1;
@@ -52,7 +53,12 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding: 20px 10px 10px 10px;
+            /* Margen superior dinámico para el notch + 20px base */
+            padding-top: calc(20px + constant(safe-area-inset-top));
+            padding-top: calc(20px + env(safe-area-inset-top));
+            padding-right: 10px;
+            padding-bottom: 100px;
+            padding-left: 10px;
             overflow-y: auto;
             overflow-x: hidden;
             scrollbar-width: none;
@@ -69,7 +75,7 @@
             border-radius: 0 15px 15px 0;
             box-shadow: 0 0 10px rgba(0,0,0,0.3);
             margin-bottom: 20px;
-            margin-top: 120px;   /* <-- NUEVO: desplaza el pasaporte 120px hacia abajo */
+            margin-top: 120px;   /* margen superior fijo para separar del borde */
             flex-shrink: 0;
         }
 
@@ -341,7 +347,7 @@
             box-shadow: 0 0 8px rgba(197, 164, 103, 0.5);
         }
 
-        /* BARRA INFERIOR (mismos márgenes que en el quizz) */
+        /* BARRA INFERIOR (mismos márgenes que en el quizz, ahora ocupa todo el ancho con left/right 8px) */
         .navbar {
             position: fixed;
             bottom: max(20px, env(safe-area-inset-bottom, 20px));
@@ -436,24 +442,121 @@
         .center-logo-link:hover .center-logo { transform: scale(1.02); }
         .navbar a:active { opacity: 0.85; }
 
-        @media (max-width: 400px) {
-            .navbar { left: 6px; right: 6px; height: 68px; }
-            .nav-item { width: 60px; height: 52px; }
-            .nav-icon { width: 44px; height: 44px; }
-            .center-logo { width: 60px; height: 60px; margin-top: -33px; }
-            .center-logo-link::before { width: 76px; height: 76px; }
+        /* MEDIA QUERIES RESPONSIVAS (igual que en el quizz corregido) */
+        @media (max-width: 450px) {
+            .navbar {
+                left: 6px;
+                right: 6px;
+                height: 68px;
+            }
+            .nav-item {
+                width: 60px;
+                height: 52px;
+            }
+            .nav-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .center-logo {
+                width: 60px;
+                height: 60px;
+                margin-top: -33px;
+            }
+            .center-logo-link::before {
+                width: 76px;
+                height: 76px;
+            }
             .navbar a:first-child { transform: translateX(4px); }
             .navbar a:nth-child(2) { transform: translateX(4px); }
             .navbar a:nth-child(4) { transform: translateX(-4px); }
             .navbar a:last-child { transform: translateX(-4px); }
+        }
+
+        @media (max-width: 400px) {
+            .main-content {
+                padding-right: 8px;
+                padding-left: 8px;
+            }
+            .book {
+                width: 260px;
+                height: 410px;
+                margin-top: 100px;
+            }
+            .country-name {
+                font-size: 24px;
+            }
+            .category-name {
+                font-size: 12px;
+            }
+            .tick-icon {
+                width: 18px;
+                height: 18px;
+            }
+            .medalla-badge {
+                width: 55px;
+                height: 55px;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .book {
+                width: 240px;
+                height: 380px;
+                margin-top: 80px;
+            }
+            .country-name {
+                font-size: 22px;
+            }
+            .category-list {
+                padding: 8px 12px;
+                padding-right: 60px;
+            }
+            .category-name {
+                font-size: 11px;
+            }
+            .tick-icon {
+                width: 16px;
+                height: 16px;
+            }
+            .medalla-badge {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .book {
+                width: 220px;
+                height: 350px;
+                margin-top: 60px;
+            }
+            .country-name {
+                font-size: 20px;
+            }
+            .category-list {
+                padding: 6px 10px;
+                padding-right: 50px;
+            }
+            .category-name {
+                font-size: 10px;
+            }
+            .tick-icon {
+                width: 14px;
+                height: 14px;
+            }
+        }
+
+        /* Evitar scroll horizontal */
+        body, .container, .main-content {
+            overflow-x: hidden;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 <div class="container">
-    <!-- Notch eliminado -->
-
     <div class="main-content">
         <div class="book" id="passportBook">
             <ul class="hardcover-front">
