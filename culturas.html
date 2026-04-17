@@ -12,6 +12,7 @@
             --white: #ffffff;
             --reddit-grey: #7c7c7c;
             --reddit-border: #cccbc4;
+            --shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
         }
 
         body, html {
@@ -77,10 +78,10 @@
             line-height: 1; 
             flex-shrink: 0;
             position: relative;
-            top: -2px; /* mover un poco hacia arriba */
+            top: -2px;
         }
         
-        /* ----- NUEVA BARRA DE BÚSQUEDA ANIMADA ----- */
+        /* ----- BARRA DE BÚSQUEDA ANIMADA ----- */
         #search {
             flex: 1;
             display: grid;
@@ -293,43 +294,6 @@
         .action-icon { width: 18px; height: 18px; vertical-align: middle; margin-right: 4px; }
         .btn-comment { cursor: pointer; display: inline-flex; align-items: center; gap: 4px; color: var(--green-coolture); }
 
-        /* --- NUEVA BARRA INFERIOR FLOTANT --- */
-        .navbar {
-            position: absolute;
-            bottom: 15px;
-            left: 15px;
-            right: 15px;
-            background-color: var(--green-coolture);
-            border-radius: 30px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            height: 70px;
-            box-sizing: border-box;
-            z-index: 5000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            width: 60px;
-            height: 50px;
-        }
-
-        .nav-item.active {
-            background-color: var(--select-bg);
-            border-radius: 20px;
-        }
-
-        .nav-icon {
-            width: 48px;
-            height: 48px;
-            object-fit: contain;
-        }
-
         /* --- MODAL COMENTARIOS --- */
         .modal {
             position: absolute; bottom: -100%; left: 0; width: 100%; height: 75%;
@@ -420,6 +384,150 @@
             transition: 0.2s;
         }
         .send-btn:active { transform: scale(0.94); background: #4e643f; }
+
+        /* ===== BARRA INFERIOR EXTRAÍDA DEL CODI 1 (SENSE CAP CANVI) ===== */
+        .navbar {
+            position: absolute;
+            bottom: 20px;
+            left: 8px;
+            right: 8px;
+            background-color: var(--green-coolture);
+            border-radius: 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 72px;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            overflow: visible;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 68px;
+            height: 56px;
+            transition: all 0.2s ease;
+            border-radius: 28px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-item.active {
+            background-color: var(--select-bg);
+            border-radius: 32px;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .navbar a:first-child {
+            transform: translateX(6px);
+        }
+        .navbar a:nth-child(2) {
+            transform: translateX(6px);
+        }
+        .navbar a:nth-child(4) {
+            transform: translateX(-6px);
+        }
+        .navbar a:last-child {
+            transform: translateX(-6px);
+        }
+
+        .center-logo-link {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 76px;
+            height: 72px;
+            flex-shrink: 0;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .center-logo-link::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 84px;
+            background-color: var(--green-coolture);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .center-logo {
+            position: relative;
+            z-index: 2;
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-top: -48px;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.2s ease;
+            pointer-events: auto;
+        }
+
+        .center-logo-link:hover .center-logo {
+            transform: scale(1.02);
+        }
+
+        .navbar a:active {
+            opacity: 0.85;
+        }
+
+        @media (max-width: 400px) {
+            .navbar {
+                left: 6px;
+                right: 6px;
+                height: 68px;
+            }
+            .nav-item {
+                width: 60px;
+                height: 52px;
+            }
+            .nav-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .center-logo {
+                width: 74px;
+                height: 74px;
+                margin-top: -28px;
+            }
+            .center-logo-link::before {
+                width: 76px;
+                height: 76px;
+            }
+            .navbar a:first-child {
+                transform: translateX(4px);
+            }
+            .navbar a:nth-child(2) {
+                transform: translateX(4px);
+            }
+            .navbar a:nth-child(4) {
+                transform: translateX(-4px);
+            }
+            .navbar a:last-child {
+                transform: translateX(-4px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -466,7 +574,6 @@
 
     <div class="header">
         <div class="burger" onclick="toggleMenu()">☰</div>
-        <!-- NUEVA BARRA DE BÚSQUEDA ANIMADA -->
         <div id="search">
             <svg viewBox="0 0 420 60" xmlns="http://www.w3.org/2000/svg">
                 <rect class="bar"/>
@@ -510,17 +617,21 @@
 
     <div id="feed"></div>
 
+    <!-- BARRA INFERIOR DEL CODI 1 (ÍNTEGRAMENT) -->
     <nav class="navbar">
         <a href="culturas.html" class="nav-item active">
             <img src="images/forum2.png" class="nav-icon" alt="Forum">
         </a>
-        <a href="quizz.html" class="nav-item">
+        <a href="quizz.html" class="nav-item" id="quizzLink">
             <img src="images/quizz.png" class="nav-icon" alt="Quizz">
         </a>
-        <a href="pasaporte.html" class="nav-item">
+        <a href="home.html" class="center-logo-link">
+            <img src="images/logos-03.png" class="center-logo" alt="Logo central 03">
+        </a>
+        <a href="pasaporte.html" class="nav-item" id="pasaporteLink">
             <img src="images/passaport.png" class="nav-icon" alt="Passaport">
         </a>
-        <a href="perfil.html" class="nav-item">
+        <a href="perfil.html" class="nav-item" id="perfilLink">
             <img src="images/perfil.png" class="nav-icon" alt="Perfil">
         </a>
     </nav>
@@ -579,7 +690,6 @@
         "Naturaleza y espiritualidad se unen de forma magistral."
     ];
     
-    // Generar avatares con UI Avatars
     function getAvatarUrl(username) {
         return `https://ui-avatars.com/api/?background=667F57&color=fff&rounded=true&size=64&bold=true&name=${encodeURIComponent(username.charAt(0))}`;
     }
@@ -600,7 +710,6 @@
             const cuerpoExtendido = cuerpoBase + " " + (Math.random() > 0.5 ? "Comparte la teva opinió! 🌍" : "Què en penses? #Coolture");
             const likes = Math.floor(Math.random() * 280) + 10;
             
-            // Imagen aleatoria en el post (30% de probabilidad)
             let imageUrl = null;
             if (Math.random() < 0.3) {
                 const imageId = (postId % 80) + 10;
@@ -707,7 +816,6 @@
             uniqueIds.add(p.id);
             return true;
         });
-        // Asegurar que algunos posts tengan imagen (si no tienen, añadir aleatoriamente)
         DB.posts.forEach(post => {
             if (!post.image && Math.random() < 0.2) {
                 const imageId = (post.id % 80) + 10;
@@ -764,10 +872,9 @@
         });
     }
     
-    // Función para generar 2-3 check.png
     function getCheckIcons() {
         let icons = '';
-        const numChecks = Math.random() < 0.5 ? 2 : 3; // entre 2 y 3 aleatorio
+        const numChecks = Math.random() < 0.5 ? 2 : 3;
         for (let i = 0; i < numChecks; i++) {
             icons += `<img src="images/check.png" class="check-icon">`;
         }
@@ -780,7 +887,6 @@
         feed.innerHTML = "";
         let filtrats = DB.posts.filter(p => (filtroTema ? p.tema === filtroTema : true) && (filtroCont ? p.cont === filtroCont : true));
         
-        // Filtrar por búsqueda (título o texto)
         if (searchTerm.trim() !== "") {
             const term = searchTerm.toLowerCase();
             filtrats = filtrats.filter(p => p.title.toLowerCase().includes(term) || p.body.toLowerCase().includes(term));
@@ -877,7 +983,6 @@
         renderFeed();
     }
     
-    // Función para búsqueda en tiempo real
     function onSearchInput(e) {
         searchTerm = e.target.value;
         renderFeed();
@@ -922,6 +1027,17 @@
         saveData();
         renderFeed();
     }
+
+    // Petita correcció per assegurar que els enllaços laterals funcionin
+    document.querySelectorAll('.nav-item').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href && href !== '#') {
+                return true;
+            }
+            e.preventDefault();
+        });
+    });
 </script>
 </body>
 </html>

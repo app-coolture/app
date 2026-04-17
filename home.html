@@ -1,0 +1,486 @@
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Coolture - Descobreix cultures</title>
+    <style>
+        :root {
+            --green-coolture: #667F57;
+            --select-bg: #F4F1E8;
+            --white: #ffffff;
+            --shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+            --text-dark: #2c3e2f;
+            --text-light: #5a6e4a;
+            --card-bg: #ffffffcc;
+            --gold-line: #BE9548;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 20px;
+        }
+
+        .iphone {
+            width: 375px;
+            height: 812px;
+            background-color: #F5F1E8;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .notch {
+            width: 120px;
+            height: 35px;
+            background: black;
+            border-radius: 20px;
+            margin: 12px auto 0;
+            position: relative;
+            z-index: 200;
+        }
+
+        /* LÍNEA GRUESA (60px) */
+        .header-decoration {
+            position: relative;
+            width: 100%;
+            border-bottom: 60px solid var(--gold-line);
+            margin: 8px 0 0 0;
+        }
+
+        /* Círculo centrado y sin solapar: bottom: -70px */
+        .half-circle {
+            position: absolute;
+            bottom: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 70px;
+            background-color: var(--gold-line);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .half-circle img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+        }
+
+        /* Foto perfil más grande (40px) */
+        .profile-pic {
+            position: absolute;
+            right: 12px;
+            top: 10px;
+            bottom: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: #fff;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 20px 90px 20px;
+            scroll-behavior: smooth;
+        }
+
+        /* Hero rectangle verd amb marge superior per no solapar el cercle */
+        .hero {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%"><defs><pattern id="hojas" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M20,10 Q30,0 40,10 Q50,20 40,30 Q30,40 20,30 Q10,20 20,10Z" fill="rgba(255,255,255,0.08)"/><path d="M50,40 Q55,35 60,40 Q65,45 60,50 Q55,55 50,50 Q45,45 50,40Z" fill="rgba(255,255,255,0.06)"/></pattern></defs><rect width="100%" height="100%" fill="%23355E2E"/><rect width="100%" height="100%" fill="url(%23hojas)"/></svg>');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            padding: 16px 20px;
+            text-align: center;
+            margin-bottom: 12px;
+            margin-top: 24px;   /* separació del cercle */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            width: 100%;
+        }
+
+        .hero h1 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--gold-line);
+            line-height: 1.2;
+            margin-bottom: 4px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 12px;
+            color: white;
+            font-weight: 500;
+            margin: 8px 0 0 0;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Botó independent sota el rectangle */
+        .btn-explorar-wrapper {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .btn-explorar {
+            display: inline-block;
+            background-color: var(--green-coolture);
+            border: none;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 6px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            text-decoration: none;
+        }
+
+        .btn-explorar:hover {
+            transform: scale(1.02);
+            background-color: #557046;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 20px 0 12px 0;
+            border-left: 5px solid var(--green-coolture);
+            padding-left: 12px;
+        }
+
+        /* CARRUSEL MÉS GRAN */
+        .carrusel {
+            display: flex;
+            overflow-x: auto;
+            gap: 14px;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 6px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .carrusel-item {
+            flex: 0 0 auto;
+            width: 150px;
+            scroll-snap-align: start;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+
+        .carrusel-item img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Targetes comunitat amb avatar a la dreta */
+        .comunitat-card {
+            background-color: var(--card-bg);
+            backdrop-filter: blur(2px);
+            border-radius: 18px;
+            padding: 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e0dcd0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .comunitat-text {
+            flex: 1;
+        }
+
+        .comunitat-text p:first-child {
+            font-weight: 600;
+            font-size: 16px;
+            color: #2c3e2f;
+            margin-bottom: 6px;
+        }
+
+        .comunitat-text p:last-child {
+            font-size: 13px;
+            color: #7a8a6a;
+            font-style: italic;
+        }
+
+        .comunitat-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 2px solid var(--green-coolture);
+        }
+
+        /* Targetes experiències clients */
+        .experiencia-client-card {
+            background-color: var(--green-coolture);
+            border-radius: 18px;
+            padding: 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .experiencia-client-card p:first-child {
+            font-weight: 600;
+            font-size: 16px;
+            color: white;
+            margin-bottom: 6px;
+        }
+
+        .experiencia-client-card p:last-child {
+            font-size: 13px;
+            color: #f0f0e0;
+            font-style: italic;
+        }
+
+        /* BARRA INFERIOR (sense canvis) */
+        .navbar {
+            position: absolute;
+            bottom: 20px;
+            left: 8px;
+            right: 8px;
+            background-color: var(--green-coolture);
+            border-radius: 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 72px;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            overflow: visible;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 68px;
+            height: 56px;
+            transition: all 0.2s ease;
+            border-radius: 28px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-item.active {
+            background-color: var(--select-bg);
+            border-radius: 32px;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .navbar a:first-child { transform: translateX(6px); }
+        .navbar a:nth-child(2) { transform: translateX(6px); }
+        .navbar a:nth-child(4) { transform: translateX(-6px); }
+        .navbar a:last-child { transform: translateX(-6px); }
+
+        .center-logo-link {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 76px;
+            height: 72px;
+            flex-shrink: 0;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .center-logo-link::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 84px;
+            background-color: var(--green-coolture);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .center-logo-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 68px;
+            height: 68px;
+            background-color: var(--select-bg);
+            border-radius: 50%;
+            border: 4px solid var(--green-coolture);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .center-logo {
+            position: relative;
+            z-index: 3;
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-top: -48px;
+            margin-left: auto;
+            margin-right: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.2s ease;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 400px) {
+            .navbar { left: 6px; right: 6px; height: 68px; }
+            .nav-item { width: 60px; height: 52px; }
+            .nav-icon { width: 44px; height: 44px; }
+            .center-logo { width: 60px; height: 60px; margin-top: -18px; }
+            .center-logo-link::before { width: 76px; height: 76px; }
+            .center-logo-link.active::after { width: 62px; height: 62px; border-width: 3px; }
+            .carrusel-item { width: 130px; }
+            .carrusel-item img { height: 165px; }
+            .profile-pic { width: 34px; height: 34px; right: 8px; top: 13px; bottom: 13px; }
+            .half-circle { width: 60px; height: 60px; bottom: -60px; }
+            .half-circle img { width: 38px; height: 38px; }
+            .hero h1 { font-size: 16px; }
+            .hero p { font-size: 11px; }
+            .comunitat-avatar { width: 38px; height: 38px; }
+            .btn-explorar { font-size: 11px; padding: 5px 16px; }
+            .hero { margin-top: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="iphone">
+        <div class="notch"></div>
+
+        <div class="header-decoration">
+            <div class="half-circle">
+                <img src="images/logos-03.png" alt="logo">
+            </div>
+            <div class="profile-pic">
+                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="usuari">
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Rectangle verd amb marge superior separat del cercle -->
+            <div class="hero">
+                <h1>DESCOBREIX CULTURES.<br>CONNECTA AMB EL MÓN.</h1>
+                <p>La teva guia de més de 50 països, amb informació verificada</p>
+            </div>
+
+            <!-- Botó just a sota -->
+            <div class="btn-explorar-wrapper">
+                <a href="culturas.html" class="btn-explorar">Comença a explorar</a>
+            </div>
+
+            <div class="section-title">Destacats</div>
+            <div class="carrusel">
+                <div class="carrusel-item"><img src="https://picsum.photos/id/104/300/400" alt="destacado1"></div>
+                <div class="carrusel-item"><img src="https://picsum.photos/id/106/300/400" alt="destacado2"></div>
+                <div class="carrusel-item"><img src="https://picsum.photos/id/15/300/400" alt="destacado3"></div>
+                <div class="carrusel-item"><img src="https://picsum.photos/id/169/300/400" alt="destacado4"></div>
+                <div class="carrusel-item"><img src="https://picsum.photos/id/155/300/400" alt="destacado5"></div>
+            </div>
+
+            <div class="section-title">Comunitat</div>
+            <div class="comunitat-card">
+                <div class="comunitat-text">
+                    <p>“Japó em va sorprendre molt…”</p>
+                    <p>Algú més ha tingut aquesta sensació?</p>
+                </div>
+                <img class="comunitat-avatar" src="images/homeuser1.png" alt="avatar">
+            </div>
+            <div class="comunitat-card">
+                <div class="comunitat-text">
+                    <p>“El menjar a Mèxic és un altre nivell”</p>
+                    <p>No té res a veure amb Europa.</p>
+                </div>
+                <img class="comunitat-avatar" src="images/homeuser2.png" alt="avatar">
+            </div>
+            <div class="comunitat-card">
+                <div class="comunitat-text">
+                    <p>“Busco llocs secrets a Kyoto?”</p>
+                    <p>Alguna recomanació real?</p>
+                </div>
+                <img class="comunitat-avatar" src="images/homeuser3.png" alt="avatar">
+            </div>
+
+            <div class="section-title">Experiències dels clients</div>
+            <div class="experiencia-client-card">
+                <p>“Una immersió cultural inoblidable”</p>
+                <p>Els guies locals em van fer sentir com a casa.</p>
+            </div>
+            <div class="experiencia-client-card">
+                <p>“Recomanaria Coolture a tothom”</p>
+                <p>Informació verificada i molt ben organitzada.</p>
+            </div>
+            <div class="experiencia-client-card">
+                <p>“Els quizzos són molt divertits!”</p>
+                <p>He après un munt mentre jugava.</p>
+            </div>
+        </div>
+
+        <nav class="navbar">
+            <a href="culturas.html" class="nav-item">
+                <img src="images/forum.png" class="nav-icon" alt="Forum">
+            </a>
+            <a href="quizz.html" class="nav-item">
+                <img src="images/quizz.png" class="nav-icon" alt="Quizz">
+            </a>
+            <a href="home.html" class="center-logo-link active">
+                <img src="images/logos-032.png" class="center-logo" alt="Logo central 032">
+            </a>
+            <a href="pasaporte.html" class="nav-item">
+                <img src="images/passaport.png" class="nav-icon" alt="Passaport">
+            </a>
+            <a href="perfil.html" class="nav-item">
+                <img src="images/perfil.png" class="nav-icon" alt="Perfil">
+            </a>
+        </nav>
+    </div>
+</body>
+</html>

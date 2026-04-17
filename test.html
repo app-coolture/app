@@ -1,110 +1,245 @@
-<!DOCTYPE html>
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barra inferior flotant - Coolture</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Silueta iPhone + Notch | Barra Coolture</title>
     <style>
+        /* VARIABLES: exactament els mateixos colors que la primera barra d'èxit */
+        :root {
+            --green-coolture: #667F57;      /* Verd principal de la barra */
+            --select-bg: #F4F1E8;           /* Fons per a l'element actiu (clar) */
+            --white: #ffffff;
+            --shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* Fons extern (simula l'entorn) */
         body {
             background-color: #1a1a1a;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 20px;
         }
 
-        .phone-mock {
+        /* ---------- SILUETA IPHONE (AMB NOTCH) ---------- */
+        .iphone {
             width: 375px;
             height: 812px;
             background-color: #F5F1E8;
             border-radius: 40px;
-            overflow: hidden;
+            overflow: visible;
             position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
+        /* Notch */
         .notch {
             width: 120px;
             height: 35px;
-            background-color: black;
+            background: black;
             border-radius: 20px;
-            margin: 12px auto 0 auto;
+            margin: 12px auto 0;
+            position: relative;
+            z-index: 200;
         }
 
-        .content-placeholder {
-            position: absolute;
-            top: 100px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: #667F57;
-            font-weight: bold;
-            padding: 20px;
-        }
-
-        :root {
-            --green-coolture: #667F57;
-            --select-bg: #F4F1E8;
-        }
-
+        /* ---------- BARRA INFERIOR FLOTANT (MÉS AMPLA) ---------- */
         .navbar {
             position: absolute;
-            bottom: 15px;
-            left: 15px;
-            right: 15px;
+            bottom: 20px;
+            left: 8px;
+            right: 8px;
             background-color: var(--green-coolture);
-            border-radius: 30px;
+            border-radius: 40px;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            height: 70px;
-            box-sizing: border-box;
-            z-index: 5000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            height: 72px;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            overflow: visible;
         }
 
+        /* Cada ítem de navegació */
         .nav-item {
             display: flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            width: 60px;
-            height: 50px;
+            width: 68px;
+            height: 56px;
+            transition: all 0.2s ease;
+            border-radius: 28px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
         }
 
+        /* Estil actiu per als ítems laterals */
         .nav-item.active {
             background-color: var(--select-bg);
-            border-radius: 20px;
+            border-radius: 32px;
         }
 
+        /* Icones grans */
         .nav-icon {
             width: 48px;
             height: 48px;
             object-fit: contain;
+            display: block;
+        }
+
+        /* ----- AJUSTOS PER EVITAR QUE EL RECTANGLE ACTIU SOBRESURTI ----- */
+        .navbar a:first-child {
+            transform: translateX(6px);
+        }
+        .navbar a:nth-child(2) {
+            transform: translateX(6px);
+        }
+        .navbar a:nth-child(4) {
+            transform: translateX(-6px);
+        }
+        .navbar a:last-child {
+            transform: translateX(-6px);
+        }
+
+        /* ----- ZONA CENTRAL: PROTUBERÀNCIA AMB DOBLE CERCLE I BORDE DE 4px ----- */
+        .center-logo-link {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 76px;
+            height: 72px;
+            flex-shrink: 0;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        /* Cercle exterior (sempre verd) */
+        .center-logo-link::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 84px;
+            background-color: var(--green-coolture);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Cercle interior (només visible quan l'enllaç està actiu) */
+        .center-logo-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 68px;                /* Diàmetre interior per deixar espai al borde */
+            height: 68px;
+            background-color: var(--select-bg);
+            border-radius: 50%;
+            border: 4px solid var(--green-coolture);  /* Borde de 4px del mateix verd */
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Imatge "032" ara més petita perquè no sobresurti del cercle */
+        .center-logo {
+            position: relative;
+            z-index: 3;
+            width: 48px;         
+            height: 48px;           
+            object-fit: contain;
+            margin-top: -48px;         /* Ajustat per mantenir la posició elevada però sense desbordar */
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.2s ease;
+            pointer-events: auto;
+        }
+
+        .center-logo-link:hover .center-logo {
+            transform: scale(1.02);
+        }
+
+        .navbar a:active {
+            opacity: 0.85;
+        }
+
+        /* Ajust responsive */
+        @media (max-width: 400px) {
+            .navbar {
+                left: 6px;
+                right: 6px;
+                height: 68px;
+            }
+            .nav-item {
+                width: 60px;
+                height: 52px;
+            }
+            .nav-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .center-logo {
+                width: 60px;
+                height: 60px;
+                margin-top: -18px;
+            }
+            .center-logo-link::before {
+                width: 76px;
+                height: 76px;
+            }
+            .center-logo-link.active::after {
+                width: 62px;
+                height: 62px;
+                border-width: 3px;
+            }
+            .navbar a:first-child {
+                transform: translateX(4px);
+            }
+            .navbar a:nth-child(2) {
+                transform: translateX(4px);
+            }
+            .navbar a:nth-child(4) {
+                transform: translateX(-4px);
+            }
+            .navbar a:last-child {
+                transform: translateX(-4px);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="phone-mock">
+    <div class="iphone">
         <div class="notch"></div>
-        <div class="content-placeholder">
-            (Contingut de la pantalla)<br>
-            Barra flotant prima, icona més gran sense engrandir el botó
-        </div>
 
         <nav class="navbar">
+            <!-- Fòrum (no actiu) -->
             <a href="culturas.html" class="nav-item">
                 <img src="images/forum.png" class="nav-icon" alt="Forum">
             </a>
-            <a href="quizz.html" class="nav-item active">
-                <img src="images/quizz2.png" class="nav-icon" alt="Quizz">
+            <a href="quizz.html" class="nav-item">
+                <img src="images/quizz.png" class="nav-icon" alt="Quizz">
+            </a>
+            <!-- Logo central actiu (home.html) amb doble cercle i borde de 4px -->
+            <a href="home.html" class="center-logo-link active">
+                <img src="images/logos-032.png" class="center-logo" alt="Logo central 032">
             </a>
             <a href="pasaporte.html" class="nav-item">
                 <img src="images/passaport.png" class="nav-icon" alt="Passaport">
@@ -113,6 +248,10 @@
                 <img src="images/perfil.png" class="nav-icon" alt="Perfil">
             </a>
         </nav>
+
+        <div style="padding: 20px; text-align: center; margin-top: 40px;">
+            <h2 style="color: #2c3e2f; font-weight: 500;">HOME</h2>
+        </div>
     </div>
 </body>
 </html>
