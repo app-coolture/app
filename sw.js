@@ -19,7 +19,6 @@ const urlsToCache = [
   'images/quizz.png',
   'images/passaport.png',
   'images/perfil.png'
-  // Añade aquí más recursos si es necesario (ej. imágenes de fondo, otros CSS, etc.)
 ];
 
 self.addEventListener('install', event => {
