@@ -2,30 +2,38 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Coolture - Inici</title>
     <style>
-        /* ===== ESTILS EXISTENTS (NO MODIFICATS) ===== */
+        /* ===== VARIABLES ===== */
         :root {
             --gold: #c5a866;
             --green: #6b7a5a;
             --white: #ffffff;
         }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body, html {
             margin: 0;
             padding: 0;
-            font-family: sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #1a1a1a;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
         }
 
-        /* Contenidor principal: ample fix 390px, sense cantonades arrodonides */
+        /* Contenidor principal: OCUPA EL 100% DEL ANCHO (SIN LÍMITE FIJO) */
         .container {
-            width: 390px;
+            width: 100%;
             min-height: 100vh;
             background-color: var(--gold);
             position: relative;
@@ -35,100 +43,131 @@
             overflow: hidden;
             border-radius: 0;
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            /* Espacio dinámico para el notch */
+            padding-top: constant(safe-area-inset-top);
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: constant(safe-area-inset-bottom);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Notch eliminat completament */
-
         .content {
-            width: 80%;
+            width: 85%;
+            max-width: 320px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
+            flex: 1;
+            justify-content: center;
         }
 
-        /* LOGO: més gran (300px) */
+        /* LOGO: responsive con clamp */
         .logo { 
-            width: 300px;       /* abans 250px → més gran */
-            margin-top: 140px;
+            width: clamp(200px, 70vw, 300px);
+            margin-top: clamp(80px, 20vh, 140px);
+            margin-bottom: 10px;
         }
-        .logo-center { margin-top: 280px; width: 120px; }
 
         .tagline {
             color: var(--white);
-            font-size: 14px;
-            margin-top: -10px;
-            margin-bottom: 50px;
+            font-size: clamp(12px, 4vw, 14px);
+            margin-top: 5px;
+            margin-bottom: clamp(30px, 8vh, 50px);
             opacity: 0.9;
         }
 
-        /* Formulario */
-        .form { width: 100%; margin-top: 20px; }
-        input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid var(--white);
-            color: var(--white);
-            padding: 10px 0;
-            margin-bottom: 15px;
-            outline: none;
-            font-size: 16px;
-        }
-        input::placeholder { color: rgba(255,255,255,0.7); }
-
-        .small-text {
-            color: var(--white);
-            font-size: 10px;
-            text-align: left;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-
-        /* Botones */
-        .btn {
-            padding: 8px;
-            border-radius: 25px;
-            border: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-decoration: none;
-            display: inline-block;
-            margin-bottom: 0;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .btn-white { background: var(--white); color: #333; }
-        .btn-outline { background: transparent; border: 1px solid var(--white); color: var(--white); }
-
         /* Botones más arriba (margin-top reducido) y con separación */
         .botones-estrechos {
-            margin-top: 260px;      /* abans 340px → més amunt */
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 16px;
-        }
-        .botones-estrechos .btn {
-            width: 70%;
-            max-width: 220px;
-            text-align: center;
+            margin-top: clamp(120px, 25vh, 260px);
         }
 
-        /* Imagen del icono */
-        .nav-icon {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
+        .btn {
+            padding: 10px 16px;
+            border-radius: 30px;
+            border: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            font-size: clamp(12px, 3.5vw, 14px);
+            transition: transform 0.2s ease, opacity 0.2s;
+            text-align: center;
+            width: 70%;
+            max-width: 220px;
+        }
+        .btn:active {
+            transform: scale(0.96);
+        }
+        .btn-white { 
+            background: var(--white); 
+            color: #333; 
+        }
+        .btn-outline { 
+            background: transparent; 
+            border: 1px solid var(--white); 
+            color: var(--white); 
+        }
+
+        /* Ajustes para pantallas muy pequeñas */
+        @media (max-width: 400px) {
+            .content {
+                width: 90%;
+            }
+            .btn {
+                width: 80%;
+                padding: 8px 14px;
+            }
+            .botones-estrechos {
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .logo {
+                margin-top: clamp(60px, 15vh, 100px);
+            }
+            .tagline {
+                margin-bottom: clamp(20px, 6vh, 40px);
+            }
+            .botones-estrechos {
+                margin-top: clamp(80px, 20vh, 200px);
+            }
+        }
+
+        @media (max-width: 320px) {
+            .btn {
+                font-size: 11px;
+                padding: 7px 12px;
+            }
+            .botones-estrechos {
+                gap: 10px;
+            }
+        }
+
+        /* Para pantallas muy altas, centrar mejor el contenido */
+        @media (min-height: 800px) {
+            .content {
+                justify-content: center;
+            }
+            .logo {
+                margin-top: 0;
+            }
+            .botones-estrechos {
+                margin-top: clamp(40px, 10vh, 80px);
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- Notch eliminat -->
     <div class="content">
-        <img src="images/logos-02.png" class="logo">
+        <img src="images/logos-02.png" class="logo" alt="Coolture Logo">
         <p class="tagline">Explora cultures, Aprèn, Connecta</p>
         
         <div class="botones-estrechos">

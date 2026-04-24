@@ -2,10 +2,10 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Coolture - Registre</title>
     <style>
-        /* ===== ESTILS BASE ===== */
+        /* ===== VARIABLES ===== */
         :root {
             --gold: #c5a866;
             --green: #6b7a5a;
@@ -25,11 +25,13 @@
             align-items: center;
             min-height: 100vh;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            width: 100%;
+            overflow-x: hidden;
         }
 
-        /* Contenidor principal: 390px, sense cantonades arrodonides */
+        /* Contenidor principal: OCUPA EL 100% DEL ANCHO (SIN LÍMITE FIJO) */
         .container {
-            width: 390px;
+            width: 100%;
             min-height: 100vh;
             background-color: var(--gold);
             position: relative;
@@ -39,30 +41,37 @@
             overflow: hidden;
             border-radius: 0;
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            /* Espacio dinámico para el notch */
+            padding-top: constant(safe-area-inset-top);
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: constant(safe-area-inset-bottom);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Notch eliminat */
         .content {
-            width: 80%;
+            width: 85%;
+            max-width: 320px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             padding: 20px 0 40px;
+            flex: 1;
+            justify-content: center;
         }
 
         .logo {
-            width: 180px;
-            margin-top: 50px;
+            width: clamp(140px, 40vw, 180px);
+            margin-top: clamp(10px, 5vh, 30px);
         }
 
-        /* Formulari amb estil unificat */
+        /* Formulari */
         .form {
             width: 100%;
             margin-top: 40px;
         }
 
-        /* Camps d'entrada: transparents, línia inferior blanca */
+        /* Camps d'entrada */
         .form input {
             width: 100%;
             background: transparent;
@@ -70,7 +79,7 @@
             border-bottom: 1px solid var(--white);
             color: var(--white);
             padding: 12px 0;
-            font-size: 14px;
+            font-size: clamp(13px, 4vw, 14px);
             margin-bottom: 5px;
             outline: none;
             box-sizing: border-box;
@@ -85,6 +94,7 @@
             position: relative;
             width: 110px;
             font-family: 'Segoe UI', sans-serif;
+            flex-shrink: 0;
         }
 
         .select-trigger {
@@ -95,7 +105,7 @@
             border-left: none;
             border-right: none;
             padding: 12px 0;
-            font-size: 13px;
+            font-size: clamp(12px, 3.5vw, 13px);
             color: var(--white);
             cursor: pointer;
             display: flex;
@@ -109,6 +119,7 @@
             top: 100%;
             left: 0;
             width: 250px;
+            max-width: 90vw;
             max-height: 200px;
             background: white;
             border: 1px solid #ccc;
@@ -151,13 +162,13 @@
 
         .small-text {
             color: var(--white);
-            font-size: 10px;
+            font-size: clamp(9px, 3vw, 10px);
             text-align: left;
             width: 100%;
             margin-bottom: 15px;
         }
 
-        /* Botó: fons blanc, text daurat, vora arrodonida */
+        /* Botó */
         .btn-white {
             background: var(--white);
             color: var(--gold);
@@ -172,19 +183,75 @@
             border-radius: 25px;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 14px;
+            font-size: clamp(12px, 3.5vw, 14px);
             transition: all 0.2s ease;
         }
 
         .btn-white:active {
             transform: scale(0.96);
         }
+
+        /* Fila telèfon: adaptativa */
+        .phone-row {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .phone-row input[type="text"] {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        /* Media queries per a pantalles petites */
+        @media (max-width: 400px) {
+            .content {
+                width: 88%;
+                padding: 15px 0 30px;
+            }
+            .custom-select-container {
+                width: 100px;
+            }
+            .select-trigger {
+                padding: 10px 0;
+            }
+            .form input {
+                padding: 10px 0;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .content {
+                width: 90%;
+            }
+            .phone-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .custom-select-container {
+                width: 100%;
+            }
+            .phone-row input[type="text"] {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .form input {
+                font-size: 12px;
+            }
+            .btn-white {
+                font-size: 12px;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="content">
-        <img src="images/logos-02.png" class="logo" style="margin-top: 10px;">
+        <img src="images/logos-02.png" class="logo" style="margin-top: 10px;" alt="Coolture Logo">
         
         <form class="form" action="comenca.html" onsubmit="return checkPrefix()">
             <input type="email" placeholder="Email*" required>
@@ -192,7 +259,7 @@
             <input type="text" placeholder="Nom*" required>
             <input type="text" placeholder="Cognom*" required>
             
-            <div style="display: flex; gap: 8px; align-items: flex-start; margin-bottom: 10px;">
+            <div class="phone-row">
                 <div class="custom-select-container">
                     <div class="select-trigger" id="selectTrigger">
                         <span id="selectedLabel">Prefix*</span>
@@ -207,7 +274,7 @@
                     <input type="hidden" id="prefixValue" name="prefix" required>
                 </div>
 
-                <input type="text" placeholder="Telèfon*" style="flex-grow: 1; margin:0;" required>
+                <input type="text" placeholder="Telèfon*" required>
             </div>
             
             <p class="small-text">T'enviarem un SMS per verificar el teu telèfon</p>

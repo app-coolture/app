@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Coolture - Selecció Quizz</title>
+    <title>Coolture · FòrumQuiz · Fons únic per a cada país i nivell</title>
     <style>
+        /* ===== BASE ESTABLE ===== */
         :root {
-            --bg-color: #F5F1E8; 
+            --bg-color: #FFF7DE;
             --green-coolture: #667F57;
             --select-bg: #F4F1E8;
             --white: #ffffff;
@@ -24,191 +25,198 @@
         body, html {
             margin: 0;
             padding: 0;
-            background-color: #1a1a1a; /* fondo de respaldo, pero el container lo cubrirá */
+            background-color: #1a1a1a;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             width: 100%;
             overflow-x: hidden;
         }
 
-        /* CONTENEDOR PRINCIPAL: OCUPA EL 100% DE LA PANTALLA SIN NINGÚN MÁXIMO */
         .container {
             width: 100%;
             min-height: 100vh;
-            background-color: var(--bg-color);
+            background-color: #F4F1E8;
             display: flex;
             flex-direction: column;
             position: relative;
-            margin: 0;
-            padding: 0;
         }
 
         .content {
             flex-grow: 1;
-            /* Margen superior de 60px + espacio para el notch */
             padding-top: calc(60px + constant(safe-area-inset-top));
             padding-top: calc(60px + env(safe-area-inset-top));
             padding-right: 20px;
             padding-bottom: 100px;
-            padding-left: 20px;
+            padding-left: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: stretch;
             overflow-y: auto;
             scrollbar-width: none;
         }
         .content::-webkit-scrollbar { display: none; }
 
         .header-title {
-            font-size: clamp(20px, 6vw, 26px);
+            font-size: clamp(26px, 7vw, 34px);
             font-weight: 800;
             color: var(--text-dark);
             margin-top: 10px;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             text-align: center;
+            letter-spacing: -0.5px;
+            padding-left: 20px;
+            padding-right: 0;
         }
 
         .sub-title {
-            font-size: clamp(12px, 3.5vw, 14px);
+            font-size: 14px;
             color: var(--text-grey);
-            margin-bottom: 30px;
+            margin-bottom: 32px;
             text-align: center;
+            font-weight: 500;
+            padding-left: 20px;
+            padding-right: 0;
         }
 
-        .country-selector {
-            width: 100%;
-            background: var(--white);
-            padding: 15px 20px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            cursor: pointer;
-            transition: 0.2s;
+        .seccio-rol {
+            margin-bottom: 28px;
         }
-        .country-selector:active { transform: scale(0.98); }
 
-        .country-info { display: flex; align-items: center; gap: 12px; }
-        .flag-icon { width: 30px; height: 20px; object-fit: cover; border-radius: 3px; }
-        .country-name { font-weight: 700; color: var(--text-dark); }
+        .titol-rol {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            padding-left: 20px;
+            border-left: 6px solid var(--green-coolture);
+            text-transform: lowercase;
+            letter-spacing: 0.3px;
+        }
+        .titol-rol::first-letter {
+            text-transform: uppercase;
+        }
 
-        .level-card {
-            width: 100%;
-            background: var(--white);
-            border-radius: 25px;
-            padding: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: transform 0.2s;
-            border: 2px solid transparent;
-            box-sizing: border-box;
+        .pais-card {
             position: relative;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 0 100px 100px 0;
+            margin-bottom: 12px;
+            margin-right: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid rgba(102,127,87,0.2);
+            border-left: none;
+            transition: all 0.15s;
+            cursor: pointer;
+            min-height: 80px;
             overflow: hidden;
-            flex-direction: row-reverse;
         }
-        .level-card:active { transform: scale(0.97); }
-        
-        .level-card::before {
+
+        .pais-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><circle cx="15" cy="15" r="4" fill="%23667F57" opacity="0.3"/><circle cx="40" cy="30" r="3" fill="%23667F57" opacity="0.25"/><circle cx="70" cy="55" r="5" fill="%23667F57" opacity="0.2"/><circle cx="85" cy="20" r="3" fill="%23667F57" opacity="0.3"/><circle cx="20" cy="70" r="4" fill="%23667F57" opacity="0.2"/></svg>');
-            background-repeat: repeat;
-            background-size: 40px 40px;
-            opacity: 0.5;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .level-card > * {
-            position: relative;
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 0 100px 100px 0;
             z-index: 1;
+            transition: background 0.2s;
         }
 
-        .level-card.novato { border-left: 8px solid #A3B899; }
-        .level-card.explorador { border-left: 8px solid #B8A27A; }
-        .level-card.experto { border-left: 8px solid #D4B066; }
+        .pais-card:hover::before {
+            background: rgba(0, 0, 0, 0.01);
+        }
 
-        .level-img {
-            width: clamp(36px, 10vw, 45px);
-            height: clamp(36px, 10vw, 45px);
+        .pais-card:active {
+            transform: scale(0.99);
+        }
+
+        .pais-info {
+            position: relative;
+            z-index: 2;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .pais-nom {
+            font-weight: 800;
+            font-size: 26px;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            flex: 1;
+        }
+
+        .medalla-img {
+            width: 52px;
+            height: 52px;
             object-fit: contain;
             display: block;
-            margin-left: 10px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            z-index: 2;
+            position: relative;
         }
 
-        .level-text {
-            flex: 1;
-            text-align: left;
-        }
-        .level-text h3 { 
-            margin: 0; 
-            font-size: clamp(14px, 4.5vw, 18px); 
-            color: var(--text-dark); 
-        }
-        .level-text p { 
-            margin: 3px 0 0 0; 
-            font-size: clamp(11px, 3.5vw, 13px); 
-            color: var(--text-grey); 
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 10000;
+        .medalla-fallback {
+            width: 52px;
+            height: 52px;
+            background: #e0dcd0;
+            border-radius: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.2s;
-        }
-        .modal-overlay.active {
-            visibility: visible;
-            opacity: 1;
-        }
-        .modal-container {
-            background: var(--bg-color);
-            width: 280px;
-            border-radius: 40px;
-            padding: 20px;
-            text-align: center;
-            max-height: 70%;
-            overflow-y: auto;
-        }
-        .modal-container h3 {
-            margin-top: 0;
-            color: var(--green-coolture);
-        }
-        .pais-opcio {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .pais-opcio:hover { background: #e8e4d8; border-radius: 30px; }
-        .pais-opcio img { width: 30px; height: 20px; object-fit: cover; border-radius: 3px; }
-        .close-modal {
-            margin-top: 15px;
-            background: var(--green-coolture);
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 30px;
-            cursor: pointer;
+            font-size: 28px;
+            z-index: 2;
+            position: relative;
         }
 
-        /* BARRA INFERIOR: ahora ocupa todo el ancho con pequeños márgenes laterales */
+        /* ===== JOEL AQUI FONS PER A CADA PAÍS I NIVELL ===== */
+        /* JAPÓ */
+        .pais-card[data-pais="japo"][data-nivell="ambaixador"] { background-image: url('images/quizz_images/japo/fondojapon1.webp'); }
+        .pais-card[data-pais="japo"][data-nivell="explorador"] { background-image: url('images/quizz_images/japo/fondojapon2.jpg'); }
+        .pais-card[data-pais="japo"][data-nivell="turista"]    { background-image: url('images/quizz_images/japo/fondojapon3.jpg'); }
+
+        /* PERÚ */
+        .pais-card[data-pais="peru"][data-nivell="ambaixador"] { background-image: url('images/quizz_images/peru/fondoperu1.jpg'); }
+        .pais-card[data-pais="peru"][data-nivell="explorador"] { background-image: url('images/quizz_images/peru/fondoperu2.jpg'); }
+        .pais-card[data-pais="peru"][data-nivell="turista"]    { background-image: url('images/quizz_images/peru/fondoperu3.jpeg'); }
+
+        /* ITÀLIA */
+        .pais-card[data-pais="italia"][data-nivell="ambaixador"] { background-image: url('images/quizz_images/italia/fondoitalia1.jpg'); }
+        .pais-card[data-pais="italia"][data-nivell="explorador"] { background-image: url('images/quizz_images/italia/fondoitalia2.webp'); }
+        .pais-card[data-pais="italia"][data-nivell="turista"]    { background-image: url('images/quizz_images/italia/fondoitalia3.webp'); }
+
+        /* ESPANYA */
+        .pais-card[data-pais="espanya"][data-nivell="ambaixador"] { background-image: url('images/quizz_images/espanya/fondoespanya1.webp'); }
+        .pais-card[data-pais="espanya"][data-nivell="explorador"] { background-image: url('images/quizz_images/espanya/fondoespanya2.jpg'); }
+        .pais-card[data-pais="espanya"][data-nivell="turista"]    { background-image: url('images/quizz_images/espanya/fondoespanya3.webp'); }
+
+        /* FRANÇA */
+        .pais-card[data-pais="frança"][data-nivell="ambaixador"] { background-image: url('images/quizz_images/frança/fondofrança1.jpg'); }
+        .pais-card[data-pais="frança"][data-nivell="explorador"] { background-image: url('images/quizz_images/frança/fondofrança2.avif'); }
+        .pais-card[data-pais="frança"][data-nivell="turista"]    { background-image: url('images/quizz_images/frança/fondofrança3.jpg'); }
+
+        /* BRASIL */
+        .pais-card[data-pais="brasil"][data-nivell="ambaixador"] { background-image: url('images/quizz_images/brasil/fondobrasil1.jpg'); }
+        .pais-card[data-pais="brasil"][data-nivell="explorador"] { background-image: url('images/quizz_images/brasil/fondobrasil2.jpg'); }
+        .pais-card[data-pais="brasil"][data-nivell="turista"]    { background-image: url('images/quizz_images/brasil/fondobrasil3.jpg'); }
+
+        .pais-card.fallback-bg {
+            background-image: none !important;
+            background-color: #8a9a7a;
+        }
+
+        /* BARRA INFERIOR (SENSE CANVIS) */
         .navbar {
             position: fixed;
             bottom: max(20px, env(safe-area-inset-bottom, 20px));
@@ -300,34 +308,12 @@
             pointer-events: auto;
         }
 
-        .center-logo-link:hover .center-logo {
-            transform: scale(1.02);
-        }
-
-        /* MEDIA QUERIES: ajustes laterales para pantallas pequeñas */
         @media (max-width: 450px) {
-            .navbar {
-                left: 6px;
-                right: 6px;
-                height: 68px;
-            }
-            .nav-item {
-                width: 60px;
-                height: 52px;
-            }
-            .nav-icon {
-                width: 44px;
-                height: 44px;
-            }
-            .center-logo {
-                width: 60px;
-                height: 60px;
-                margin-top: -33px;
-            }
-            .center-logo-link::before {
-                width: 76px;
-                height: 76px;
-            }
+            .navbar { left: 6px; right: 6px; height: 68px; }
+            .nav-item { width: 60px; height: 52px; }
+            .nav-icon { width: 44px; height: 44px; }
+            .center-logo { width: 60px; height: 60px; margin-top: -33px; }
+            .center-logo-link::before { width: 76px; height: 76px; }
             .navbar a:first-child { transform: translateX(4px); }
             .navbar a:nth-child(2) { transform: translateX(4px); }
             .navbar a:nth-child(4) { transform: translateX(-4px); }
@@ -335,192 +321,118 @@
         }
 
         @media (max-width: 400px) {
-            .content {
-                padding-right: 16px;
-                padding-left: 16px;
-            }
-            .country-selector {
-                padding: 12px 16px;
-                margin-bottom: 25px;
-            }
-            .level-card {
-                padding: 16px;
-            }
+            .content { padding-right: 16px; }
+            .header-title, .sub-title, .titol-rol { padding-left: 16px; }
+            .pais-nom { font-size: 22px; }
+            .pais-info { padding: 10px 14px; }
         }
-
         @media (max-width: 360px) {
-            .content {
-                padding-right: 14px;
-                padding-left: 14px;
-            }
-            .level-img {
-                margin-left: 8px;
-            }
-        }
-
-        @media (max-width: 320px) {
-            .content {
-                padding-right: 12px;
-                padding-left: 12px;
-            }
-            .country-selector {
-                padding: 10px 14px;
-            }
-            .level-card {
-                padding: 14px;
-            }
-        }
-
-        /* Evitar scroll horizontal */
-        body, .container, .content {
-            overflow-x: hidden;
+            .pais-nom { font-size: 20px; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="content">
-        <h1 class="header-title">Quizz Challenge</h1>
-        <p class="sub-title">Demostra el que saps sobre el món</p>
+        <h1 class="header-title">ELS TEUS QUIZZES!</h1>
+        <p class="sub-title">Demostra el que saps · Tria un repte</p>
 
-        <div class="country-selector" id="countrySelector">
-            <div class="country-info">
-                <img id="currentFlag" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/1200px-Flag_of_Spain.svg.png" class="flag-icon" alt="bandera">
-                <span id="currentCountry" class="country-name">Espanya</span>
-            </div>
-            <span style="color: var(--green-coolture); font-weight: bold;">Canviar</span>
+        <!-- SECCIÓ AMBAIXADOR (tots 6 països, fons 1 per a cadascun) -->
+        <div class="seccio-rol">
+            <div class="titol-rol">Ambaixador</div>
+            <div class="pais-card" data-pais="japo" data-nivell="ambaixador"><div class="pais-info"><span class="pais-nom">JAPÓ</span><img class="medalla-img" src="images/medalla-03.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="peru" data-nivell="ambaixador"><div class="pais-info"><span class="pais-nom">PERÚ</span><img class="medalla-img" src="images/medalla-03.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="italia" data-nivell="ambaixador"><div class="pais-info"><span class="pais-nom">ITÀLIA</span><img class="medalla-img" src="images/medalla-03.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="espanya" data-nivell="ambaixador"><div class="pais-info"><span class="pais-nom">ESPANYA</span><img class="medalla-img" src="images/medalla-03.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="frança" data-nivell="ambaixador"><div class="pais-info"><span class="pais-nom">FRANÇA</span><img class="medalla-img" src="images/medalla-03.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="brasil" data-nivell="ambaixador"><div class="pais-info"><span class="pais-nom">BRASIL</span><img class="medalla-img" src="images/medalla-03.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
         </div>
 
-        <div class="level-card novato" id="btnNovato">
-            <img class="level-img" src="images/medalla-01.png" alt="Novato">
-            <div class="level-text">
-                <h3>Nivell Principiant</h3>
-                <p>15 preguntes bàsiques</p>
-            </div>
+        <!-- SECCIÓ EXPLORADOR (tots 6 països, fons 2 per a cadascun) -->
+        <div class="seccio-rol">
+            <div class="titol-rol">Explorador</div>
+            <div class="pais-card" data-pais="japo" data-nivell="explorador"><div class="pais-info"><span class="pais-nom">JAPÓ</span><img class="medalla-img" src="images/medalla-02.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="peru" data-nivell="explorador"><div class="pais-info"><span class="pais-nom">PERÚ</span><img class="medalla-img" src="images/medalla-02.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="italia" data-nivell="explorador"><div class="pais-info"><span class="pais-nom">ITÀLIA</span><img class="medalla-img" src="images/medalla-02.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="espanya" data-nivell="explorador"><div class="pais-info"><span class="pais-nom">ESPANYA</span><img class="medalla-img" src="images/medalla-02.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="frança" data-nivell="explorador"><div class="pais-info"><span class="pais-nom">FRANÇA</span><img class="medalla-img" src="images/medalla-02.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="brasil" data-nivell="explorador"><div class="pais-info"><span class="pais-nom">BRASIL</span><img class="medalla-img" src="images/medalla-02.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
         </div>
 
-        <div class="level-card explorador" id="btnExplorador">
-            <img class="level-img" src="images/medalla-02.png" alt="Explorador">
-            <div class="level-text">
-                <h3>Nivell Explorador</h3>
-                <p>15 preguntes d'exploració cultural</p>
-            </div>
+        <!-- SECCIÓ TURISTA (tots 6 països, fons 3 per a cadascun) -->
+        <div class="seccio-rol">
+            <div class="titol-rol">Turista</div>
+            <div class="pais-card" data-pais="japo" data-nivell="turista"><div class="pais-info"><span class="pais-nom">JAPÓ</span><img class="medalla-img" src="images/medalla-01.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="peru" data-nivell="turista"><div class="pais-info"><span class="pais-nom">PERÚ</span><img class="medalla-img" src="images/medalla-01.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="italia" data-nivell="turista"><div class="pais-info"><span class="pais-nom">ITÀLIA</span><img class="medalla-img" src="images/medalla-01.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="espanya" data-nivell="turista"><div class="pais-info"><span class="pais-nom">ESPANYA</span><img class="medalla-img" src="images/medalla-01.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="frança" data-nivell="turista"><div class="pais-info"><span class="pais-nom">FRANÇA</span><img class="medalla-img" src="images/medalla-01.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
+            <div class="pais-card" data-pais="brasil" data-nivell="turista"><div class="pais-info"><span class="pais-nom">BRASIL</span><img class="medalla-img" src="images/medalla-01.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="medalla-fallback" style="display: none;">🏅</div></div></div>
         </div>
-
-        <div class="level-card experto" id="btnExperto">
-            <img class="level-img" src="images/medalla-03.png" alt="Expert">
-            <div class="level-text">
-                <h3>Nivell Expert</h3>
-                <p>15 preguntes avançades</p>
-            </div>
-        </div>
+        <div style="height: 10px;"></div>
     </div>
 
+    <!-- BARRA INFERIOR -->
     <nav class="navbar">
-        <a href="culturas.html" class="nav-item">
-            <img src="images/forum.png" class="nav-icon" alt="Forum">
-        </a>
-        <a href="quizz.html" class="nav-item active">
-            <img src="images/quizz2.png" class="nav-icon" alt="Quizz">
-        </a>
-        <a href="home.html" class="center-logo-link">
-            <img src="images/logos-033.png" class="center-logo" alt="Logo central 03">
-        </a>
-        <a href="pasaporte.html" class="nav-item">
-            <img src="images/passaport.png" class="nav-icon" alt="Passaport">
-        </a>
-        <a href="perfil.html" class="nav-item">
-            <img src="images/perfil.png" class="nav-icon" alt="Perfil">
-        </a>
+        <a href="culturas.html" class="nav-item"><img src="images/forum.png" class="nav-icon" alt="Forum"></a>
+        <a href="quizz.html" class="nav-item active"><img src="images/quizz2.png" class="nav-icon" alt="Quizz"></a>
+        <a href="home.html" class="center-logo-link"><img src="images/logos-033.png" class="center-logo" alt="Logo central 03"></a>
+        <a href="pasaporte.html" class="nav-item"><img src="images/passaport.png" class="nav-icon" alt="Passaport"></a>
+        <a href="perfil.html" class="nav-item"><img src="images/perfil.png" class="nav-icon" alt="Perfil"></a>
     </nav>
 </div>
 
-<div id="modalPais" class="modal-overlay">
-    <div class="modal-container">
-        <h3>Selecciona un país</h3>
-        <div id="llistaPaisos"></div>
-        <button class="close-modal" id="tancarModal">Tancar</button>
-    </div>
-</div>
-
 <script>
-    const paises = [
-        { nom: "Espanya", carpeta: "Espanya", bandera: "images/banderas/espanya.png" },
-        { nom: "Perú", carpeta: "Perú", bandera: "images/banderas/perú.svg" },
-        { nom: "Itàlia", carpeta: "Itàlia", bandera: "images/banderas/italia.svg" },
-        { nom: "Japó", carpeta: "Japó", bandera: "images/banderas/japon.svg" },
-        { nom: "Tailàndia", carpeta: "Tailàndia", bandera: "images/banderas/tailandia.svg" },
-        { nom: "Àustria", carpeta: "Àustria", bandera: "images/banderas/austria.png" },
-        { nom: "Noruega", carpeta: "Noruega", bandera: "images/banderas/noruega.png" }
-    ];
+    (function() {
+        // Funció per a la ruta dels quizzes (sense canvis)
+        const generarRuta = (nomPais, nivell) => {
+            const paisCodigo = { "JAPÓ":"jp", "PERÚ":"pu", "ITÀLIA":"it", "ESPANYA":"sp", "FRANÇA":"fr", "BRASIL":"br" };
+            const codi = paisCodigo[nomPais];
+            return codi ? `quizz/${nomPais}/quizz${codi}_${nivell}.html` : null;
+        };
 
-    let paisActual = "Espanya";
-    let carpetaActual = "Espanya";
-
-    if (localStorage.getItem('quizPais')) {
-        const stored = localStorage.getItem('quizPais');
-        const found = paises.find(p => p.nom === stored);
-        if (found) {
-            paisActual = found.nom;
-            carpetaActual = found.carpeta;
-        }
-    } else {
-        localStorage.setItem('quizPais', paisActual);
-    }
-
-    function updateCountryUI() {
-        const paisData = paises.find(p => p.nom === paisActual);
-        if (paisData) {
-            document.getElementById('currentFlag').src = paisData.bandera;
-            document.getElementById('currentCountry').innerText = paisData.nom;
-            carpetaActual = paisData.carpeta;
-        }
-    }
-
-    function obrirModalPais() {
-        const modal = document.getElementById('modalPais');
-        const llistaDiv = document.getElementById('llistaPaisos');
-        llistaDiv.innerHTML = '';
-        paises.forEach(p => {
-            const div = document.createElement('div');
-            div.className = 'pais-opcio';
-            div.innerHTML = `<img src="${p.bandera}" alt="${p.nom}"><span>${p.nom}</span>`;
-            div.onclick = () => {
-                paisActual = p.nom;
-                carpetaActual = p.carpeta;
-                localStorage.setItem('quizPais', paisActual);
-                updateCountryUI();
-                modal.classList.remove('active');
-            };
-            llistaDiv.appendChild(div);
-        });
-        modal.classList.add('active');
-    }
-
-    document.getElementById('tancarModal').onclick = () => {
-        document.getElementById('modalPais').classList.remove('active');
-    };
-    document.getElementById('countrySelector').onclick = obrirModalPais;
-
-    function iniciarQuiz(nivell) {
-        window.location.href = `quizz/${carpetaActual}/${nivell}.html`;
-    }
-
-    document.getElementById('btnNovato').onclick = () => iniciarQuiz('novato');
-    document.getElementById('btnExplorador').onclick = () => iniciarQuiz('explorador');
-    document.getElementById('btnExperto').onclick = () => iniciarQuiz('experto');
-
-    updateCountryUI();
-
-    document.querySelectorAll('.nav-item').forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href && href !== '#') {
-                return true;
+        // Gestiona clic i fallback d'imatges de fons
+        document.querySelectorAll('.pais-card').forEach(card => {
+            // Comprovar si la imatge de fons es carrega
+            const bgUrl = window.getComputedStyle(card).backgroundImage;
+            if (bgUrl && bgUrl !== 'none') {
+                const url = bgUrl.slice(5, -2);
+                const testImg = new Image();
+                testImg.onerror = () => card.classList.add('fallback-bg');
+                testImg.src = url;
+            } else {
+                card.classList.add('fallback-bg');
             }
-            e.preventDefault();
+
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => this.style.transform = '', 120);
+                const nomPais = this.querySelector('.pais-nom')?.innerText.trim() || '';
+                const nivell = this.getAttribute('data-nivell');
+                const ruta = generarRuta(nomPais, nivell);
+                if (ruta) window.location.href = ruta;
+                else console.warn(`Ruta no trobada: ${nomPais} - ${nivell}`);
+            });
         });
-    });
+
+        // Fallback per a medalles
+        document.querySelectorAll('.medalla-img').forEach(img => {
+            img.addEventListener('error', function() {
+                this.style.display = 'none';
+                const fallback = this.nextElementSibling;
+                if (fallback?.classList.contains('medalla-fallback')) fallback.style.display = 'flex';
+            });
+            if (img.complete && img.naturalHeight > 0) {
+                const fallback = img.nextElementSibling;
+                if (fallback?.classList.contains('medalla-fallback')) fallback.style.display = 'none';
+            } else {
+                img.addEventListener('load', () => {
+                    const fallback = img.nextElementSibling;
+                    if (fallback?.classList.contains('medalla-fallback')) fallback.style.display = 'none';
+                });
+            }
+        });
+    })();
 </script>
 </body>
 </html>

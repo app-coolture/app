@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Perfil · Belén Esteban</title>
+    <style>
+        /* ---------- VARIABLES ---------- */
+        :root {
+            --green-coolture: #667F57;
+            --select-bg: #F4F1E8;
+            --white: #ffffff;
+            --shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+            --bg-iphone: #F5F1E8;
+            --text-soft: #2c3e2f;
+            --border-light: #e0dcd3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* ---------- CONTENIDOR PRINCIPAL: OCUPA EL 100% DE L'AMPLE ---------- */
+        .iphone {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-iphone);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-radius: 0;
+            overflow: hidden;
+            /* Espai dinàmic per al notch */
+            padding-top: constant(safe-area-inset-top);
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: constant(safe-area-inset-bottom);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        /* ---------- CONTINGUT DESPLAÇABLE (PERFIL) ---------- */
+        .profile-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 16px 20px 16px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            margin-top: 40px;
+        }
+        .profile-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .profile-container {
+            padding-bottom: 100px;
+        }
+
+        /* ---------- CAPÇALERA ---------- */
+        .profile-header-row {
+            display: flex;
+            align-items: center;
+            gap: clamp(12px, 4vw, 16px);
+            margin-top: 8px;
+            margin-bottom: 12px;
+        }
+
+        .avatar-wrapper {
+            width: clamp(70px, 20vw, 88px);
+            height: clamp(70px, 20vw, 88px);
+            border-radius: 50%;
+            border: 3px solid var(--green-coolture);
+            padding: 3px;
+            background: var(--white);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            background-color: #d9d2c0;
+        }
+
+        .profile-info-right {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: clamp(18px, 5vw, 20px);
+            font-weight: 700;
+            color: #1e2b1e;
+            line-height: 1.2;
+            letter-spacing: -0.3px;
+        }
+
+        .profile-username {
+            font-size: clamp(12px, 3.5vw, 14px);
+            color: #5e6b5a;
+            margin: 2px 0 4px;
+        }
+
+        .profile-meta {
+            font-size: clamp(12px, 3.5vw, 14px);
+            color: #4a5746;
+            background: rgba(102, 127, 87, 0.08);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        /* Biografia */
+        .bio {
+            font-size: clamp(13px, 4vw, 15px);
+            color: #2e3d2a;
+            padding: 12px 16px;
+            background: var(--white);
+            border-radius: 24px;
+            margin: 6px 0 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-light);
+            line-height: 1.45;
+        }
+
+        /* Estadístiques */
+        .stats-inline {
+            display: flex;
+            gap: clamp(16px, 6vw, 24px);
+            margin: 8px 0 16px;
+            flex-wrap: wrap;
+        }
+
+        .stat-inline-item {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .stat-inline-number {
+            font-size: clamp(16px, 4.5vw, 18px);
+            font-weight: 700;
+            color: var(--green-coolture);
+        }
+
+        .stat-inline-label {
+            font-size: clamp(13px, 4vw, 15px);
+            color: #4a5c44;
+            font-weight: 500;
+        }
+
+        /* Seccions */
+        .section-title {
+            display: flex;
+            align-items: baseline;
+            margin: 20px 0 12px 4px;
+            flex-wrap: wrap;
+        }
+        .section-title h3 {
+            font-size: clamp(16px, 4.5vw, 18px);
+            font-weight: 700;
+            color: #1e2b1e;
+            letter-spacing: -0.3px;
+        }
+        .section-title span {
+            margin-left: 8px;
+            font-size: clamp(12px, 3.5vw, 14px);
+            color: #667F57;
+            font-weight: 500;
+            background: rgba(102, 127, 87, 0.1);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        /* Graella de fotos (3 columnes) */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .photo-card {
+            aspect-ratio: 1 / 1;
+            background-color: #d4cfc2;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Destacats (scroll horitzontal) */
+        .highlight-grid {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 4px 0 10px;
+            scrollbar-width: none;
+        }
+        .highlight-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .highlight-item {
+            flex: 0 0 clamp(70px, 20vw, 90px);
+            text-align: center;
+        }
+        .highlight-circle {
+            width: clamp(60px, 18vw, 80px);
+            height: clamp(60px, 18vw, 80px);
+            border-radius: 50%;
+            background: #dbd5c5;
+            border: 3px solid var(--green-coolture);
+            margin-bottom: 6px;
+            overflow: hidden;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+        }
+        .highlight-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #b3aa95;
+        }
+        .highlight-name {
+            font-size: clamp(11px, 3.5vw, 13px);
+            font-weight: 600;
+            color: #2e3d2a;
+        }
+
+        /* Publicacions */
+        .post-item {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.02);
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .post-avatar-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #b1a992;
+            border: 2px solid var(--green-coolture);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .post-avatar-small img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .post-author {
+            font-weight: 700;
+            color: #1e2b1e;
+            font-size: clamp(14px, 4vw, 16px);
+        }
+        .post-time {
+            font-size: clamp(11px, 3vw, 12px);
+            color: #6f7a68;
+        }
+        .post-content {
+            color: #2e3d2a;
+            font-size: clamp(13px, 4vw, 14px);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .post-image {
+            width: 100%;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid #b9b1a0;
+        }
+        .post-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* ---------- BARRA INFERIOR (FIXA, AMB MÀRGENS LATERALS) ---------- */
+        .navbar {
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom, 20px));
+            left: 8px;
+            right: 8px;
+            background-color: var(--green-coolture);
+            border-radius: 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 72px;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            overflow: visible;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 68px;
+            height: 56px;
+            transition: all 0.2s ease;
+            border-radius: 28px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-item.active {
+            background-color: var(--select-bg);
+            border-radius: 32px;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .navbar a:first-child { transform: translateX(6px); }
+        .navbar a:nth-child(2) { transform: translateX(6px); }
+        .navbar a:nth-child(4) { transform: translateX(-6px); }
+        .navbar a:last-child { transform: translateX(-6px); }
+
+        .center-logo-link {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 76px;
+            height: 72px;
+            flex-shrink: 0;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .center-logo-link::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 84px;
+            background-color: var(--green-coolture);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .center-logo-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 68px;
+            height: 68px;
+            background-color: var(--select-bg);
+            border-radius: 50%;
+            border: 4px solid var(--green-coolture);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .center-logo {
+            position: relative;
+            z-index: 3;
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-top: -58px;
+            margin-left: auto;
+            margin-right: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.2s ease;
+            pointer-events: auto;
+        }
+
+        .center-logo-link:hover .center-logo {
+            transform: scale(1.02);
+        }
+
+        .navbar a:active {
+            opacity: 0.85;
+        }
+
+        /* ---------- MEDIA QUERIES ---------- */
+        @media (max-width: 450px) {
+            .navbar {
+                left: 6px;
+                right: 6px;
+                height: 68px;
+            }
+            .nav-item {
+                width: 60px;
+                height: 52px;
+            }
+            .nav-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .center-logo {
+                width: 60px;
+                height: 60px;
+                margin-top: -33px;
+            }
+            .center-logo-link::before {
+                width: 76px;
+                height: 76px;
+            }
+            .center-logo-link.active::after {
+                width: 62px;
+                height: 62px;
+                border-width: 3px;
+            }
+            .navbar a:first-child { transform: translateX(4px); }
+            .navbar a:nth-child(2) { transform: translateX(4px); }
+            .navbar a:nth-child(4) { transform: translateX(-4px); }
+            .navbar a:last-child { transform: translateX(-4px); }
+        }
+
+        @media (max-width: 400px) {
+            .profile-scroll {
+                padding: 8px 12px 20px 12px;
+            }
+            .avatar-wrapper {
+                width: 70px;
+                height: 70px;
+            }
+            .post-item {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .profile-scroll {
+                padding: 6px 10px 20px 10px;
+            }
+            .avatar-wrapper {
+                width: 60px;
+                height: 60px;
+            }
+            .bio, .post-content {
+                font-size: 13px;
+            }
+            .photo-grid {
+                gap: 6px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .stats-inline {
+                gap: 12px;
+            }
+            .stat-inline-number {
+                font-size: 16px;
+            }
+            .stat-inline-label {
+                font-size: 13px;
+            }
+            .section-title h3 {
+                font-size: 16px;
+            }
+        }
+
+        /* Separador */
+        .separator {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--border-light), transparent);
+            margin: 8px 0 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="iphone">
+        <!-- Notch eliminat (ja no es necessari) -->
+
+        <div class="profile-scroll">
+            <div class="profile-container">
+
+                <!-- CAPÇALERA: FOTO ESQUERRA, TEXT DRETA -->
+                <div class="profile-header-row">
+                    <div class="avatar-wrapper">
+                        <img src="images/perfil2.jpg" alt="Belén Esteban" class="avatar">
+                    </div>
+                    <div class="profile-info-right">
+                        <div class="profile-name">Belén Esteban</div>
+                        <div class="profile-username">@BelenEsteban</div>
+                        <div class="profile-meta">26 anys · Madrid</div>
+                    </div>
+                </div>
+
+                <!-- BIOGRAFIA -->
+                <div class="bio">
+                    💃 Apasionada del arte, la moda y viajar. Amante de los atardeceres, el café y las buenas vibras. ✨ #ArteyVida
+                </div>
+
+                <!-- ESTADÍSTIQUES -->
+                <div class="stats-inline">
+                    <div class="stat-inline-item">
+                        <span class="stat-inline-number">342</span>
+                        <span class="stat-inline-label">seguidors</span>
+                    </div>
+                    <div class="stat-inline-item">
+                        <span class="stat-inline-number">7</span>
+                        <span class="stat-inline-label">publicacions</span>
+                    </div>
+                </div>
+
+                <div class="separator"></div>
+
+                <!-- FOTOGRAFIES PUBLICADES -->
+                <div class="section-title">
+                    <h3>📸 Fotografies publicades</h3>
+                    <span>6</span>
+                </div>
+                <div class="photo-grid">
+                    <div class="photo-card">
+                        <img src="https://images.pexels.com/photos/1884581/pexels-photo-1884581.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop" alt="Moda">
+                    </div>
+                    <div class="photo-card">
+                        <img src="https://images.pexels.com/photos/1021693/pexels-photo-1021693.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop" alt="Retrat artístic">
+                    </div>
+                    <div class="photo-card">
+                        <img src="https://images.pexels.com/photos/1857157/pexels-photo-1857157.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop" alt="Posta de sol">
+                    </div>
+                    <div class="photo-card">
+                        <img src="https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop" alt="Cafè i llibre">
+                    </div>
+                    <div class="photo-card">
+                        <img src="https://images.pexels.com/photos/1831234/pexels-photo-1831234.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop" alt="Galeria d'art">
+                    </div>
+                    <div class="photo-card">
+                        <img src="https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop" alt="Viatge">
+                    </div>
+                </div>
+
+                <!-- CONTINGUT DESTACAT -->
+                <div class="section-title">
+                    <h3>⭐ Contingut destacat</h3>
+                    <span>3</span>
+                </div>
+                <div class="highlight-grid">
+                    <div class="highlight-item">
+                        <div class="highlight-circle">
+                            <img src="https://images.pexels.com/photos/1485630/pexels-photo-1485630.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&fit=crop" alt="Moda" class="highlight-img">
+                        </div>
+                        <div class="highlight-name">Moda</div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-circle">
+                            <img src="https://images.pexels.com/photos/3225517/pexels-photo-3225517.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&fit=crop" alt="Fotografia" class="highlight-img">
+                        </div>
+                        <div class="highlight-name">Fotografia</div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-circle">
+                            <img src="https://images.pexels.com/photos/450441/pexels-photo-450441.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&fit=crop" alt="Viatges" class="highlight-img">
+                        </div>
+                        <div class="highlight-name">Viatges</div>
+                    </div>
+                </div>
+
+                <div class="separator"></div>
+
+                <!-- PUBLICACIONS -->
+                <div class="section-title">
+                    <h3>📝 Publicacions</h3>
+                </div>
+
+                <!-- Publicació 1 (amb imatge) -->
+                <div class="post-item">
+                    <div class="post-header">
+                        <div class="post-avatar-small">
+                            <img src="images/perfil2.jpg" alt="Belén Esteban">
+                        </div>
+                        <div>
+                            <div class="post-author">Belén Esteban</div>
+                            <div class="post-time">fa 1 dia · 🎨</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        Acabo de visitar el Museo del Prado i m'he quedat sense paraules. Goya, Velázquez... quina meravella! 🖼️✨
+                    </div>
+                    <div class="post-image">
+                        <img src="https://images.pexels.com/photos/69903/pexels-photo-69903.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Museu del Prado">
+                    </div>
+                </div>
+
+                <!-- Publicació 2 (amb imatge) -->
+                <div class="post-item">
+                    <div class="post-header">
+                        <div class="post-avatar-small">
+                            <img src="images/perfil2.jpg" alt="Belén Esteban">
+                        </div>
+                        <div>
+                            <div class="post-author">Belén Esteban</div>
+                            <div class="post-time">fa 3 dies · 🌅</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        Capvespre màgic al Retiro. Moments així fan que valgui la pena viure a Madrid. 💛
+                    </div>
+                    <div class="post-image">
+                        <img src="https://images.pexels.com/photos/374710/pexels-photo-374710.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Capvespre Retiro">
+                    </div>
+                </div>
+
+                <!-- Publicació 3 -->
+                <div class="post-item">
+                    <div class="post-header">
+                        <div class="post-avatar-small">
+                            <img src="images/perfil2.jpg" alt="Belén Esteban">
+                        </div>
+                        <div>
+                            <div class="post-author">Belén Esteban</div>
+                            <div class="post-time">fa 5 dies · ☕</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        He descobert una cafeteria amb encant a Malasaña. Perfecta per llegir i desconnectar. Recomanat 100%! 📖☕
+                    </div>
+                </div>
+
+                <div style="height: 10px;"></div>
+            </div>
+        </div>
+
+        <!-- BARRA INFERIOR (ACTIU: FÒRUM) -->
+        <nav class="navbar">
+            <a href="culturas.html" class="nav-item active">
+                <img src="images/forum2.png" class="nav-icon" alt="Fòrum">
+            </a>
+            <a href="quizz.html" class="nav-item">
+                <img src="images/quizz.png" class="nav-icon" alt="Quizz">
+            </a>
+            <a href="home.html" class="center-logo-link">
+                <img src="images/logos-033.png" class="center-logo" alt="Logo central 032">
+            </a>
+            <a href="pasaporte.html" class="nav-item">
+                <img src="images/passaport.png" class="nav-icon" alt="Passaport">
+            </a>
+            <a href="perfil2.html" class="nav-item">
+                <img src="images/perfil.png" class="nav-icon" alt="Perfil">
+            </a>
+        </nav>
+    </div>
+</body>
+</html>

@@ -2,14 +2,20 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Coolture - Selecció de País</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Coolture · Tria el teu país</title>
     <style>
         :root {
             --verde: #6b7a5a;
             --crema: #f5f2eb;
             --oro: #c5a866;
             --blanco: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -20,11 +26,12 @@
             min-height: 100vh;
             background-color: #1a1a1a;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            overflow-x: hidden;
         }
 
-        /* Contenedor principal: 390px, sin bordes redondeados */
         .container {
-            width: 390px;
+            width: 100%;
             min-height: 100vh;
             background-color: var(--crema);
             border-radius: 0;
@@ -33,34 +40,56 @@
             display: flex;
             flex-direction: column;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            padding-top: constant(safe-area-inset-top);
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: constant(safe-area-inset-bottom);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Notch eliminado */
-
+        /* ===== HEADER FIJO (FIXED) ===== */
         .header {
             background-color: var(--verde);
-            padding-bottom: 40px; 
+            padding-bottom: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
             color: var(--blanco);
-            z-index: 10;
+            z-index: 20;
             flex-shrink: 0;
             width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            margin-top: constant(safe-area-inset-top);
+            margin-top: env(safe-area-inset-top);
+        }
+
+        .spacer {
+            height: calc( 
+                clamp(45px, 12vh, 70px) +  
+                clamp(110px, 25vw, 140px) + 
+                20px + 
+                clamp(20px, 8vh, 40px) + 
+                clamp(20px, 6vw, 26px) * 1.2 + 
+                40px  
+            );
         }
 
         .logo-peque {
-            width: 70px;
-            margin-top: 20px;
+            width: clamp(110px, 25vw, 140px);
+            margin-top: clamp(45px, 12vh, 70px);
         }
 
         .pregunta {
-            margin-top: 40px;
-            font-size: 26px;
+            margin-top: clamp(20px, 8vh, 40px);
+            font-size: clamp(20px, 6vw, 26px);
             font-weight: 300;
             text-align: center;
+            padding: 0 20px;
         }
 
+        /* ===== CONTENIDOR AMB SCROLL I DEGRADATS ===== */
         .columna-letras {
             display: flex;
             flex-direction: column;
@@ -68,8 +97,53 @@
             overflow-y: auto;
             flex-grow: 1;
             padding: 40px 0;
-            gap: 35px;
+            gap: clamp(20px, 5vh, 35px);
             scrollbar-width: none;
+            position: relative;
+            margin-top: calc(
+                clamp(45px, 12vh, 70px) +
+                clamp(110px, 25vw, 140px) +
+                20px +
+                clamp(20px, 8vh, 40px) +
+                clamp(20px, 6vw, 26px) * 1.2 +
+                40px +
+                constant(safe-area-inset-top)
+            );
+            margin-top: calc(
+                clamp(45px, 12vh, 70px) +
+                clamp(110px, 25vw, 140px) +
+                20px +
+                clamp(20px, 8vh, 40px) +
+                clamp(20px, 6vw, 26px) * 1.2 +
+                40px +
+                env(safe-area-inset-top)
+            );
+        }
+
+        /* Degradat superior - ara absolut */
+        .columna-letras::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--crema), transparent);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Degradat inferior - ara absolut */
+        .columna-letras::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to top, var(--crema), transparent);
+            pointer-events: none;
+            z-index: 5;
         }
 
         .columna-letras::-webkit-scrollbar {
@@ -77,7 +151,7 @@
         }
 
         .letra-item {
-            font-size: 45px;
+            font-size: clamp(28px, 8vw, 45px);
             color: #333;
             cursor: pointer;
             transition: 0.2s;
@@ -97,6 +171,50 @@
             padding: 20px 0;
             scrollbar-width: none;
             width: 100%;
+            position: relative;
+            margin-top: calc(
+                clamp(45px, 12vh, 70px) +
+                clamp(110px, 25vw, 140px) +
+                20px +
+                clamp(20px, 8vh, 40px) +
+                clamp(20px, 6vw, 26px) * 1.2 +
+                40px +
+                constant(safe-area-inset-top)
+            );
+            margin-top: calc(
+                clamp(45px, 12vh, 70px) +
+                clamp(110px, 25vw, 140px) +
+                20px +
+                clamp(20px, 8vh, 40px) +
+                clamp(20px, 6vw, 26px) * 1.2 +
+                40px +
+                env(safe-area-inset-top)
+            );
+        }
+
+        /* Degradats per a la llista de països - ara absoluts */
+        .lista-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--crema), transparent);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .lista-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to top, var(--crema), transparent);
+            pointer-events: none;
+            z-index: 5;
         }
 
         .lista-container::-webkit-scrollbar {
@@ -111,21 +229,52 @@
         }
 
         .pais-item {
-            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 12px;
+            padding: clamp(10px, 3.5vh, 15px) 16px;
             font-style: italic;
             color: #333;
             text-transform: uppercase;
-            font-size: 14px;
+            font-size: clamp(12px, 3.5vw, 14px);
             letter-spacing: 1px;
             border-bottom: 0.5px solid rgba(197, 168, 102, 0.3);
-            text-align: center;
+            text-align: left;
             cursor: pointer;
-            width: 80%;
+            width: 85%;
+            max-width: 320px;
             box-sizing: border-box;
+            transition: background 0.15s;
+            margin: 0 auto;
         }
 
         .pais-item:active {
-            background-color: rgba(197, 168, 102, 0.1);
+            background-color: rgba(197, 168, 102, 0.15);
+        }
+
+        .flag-mini {
+            width: 32px;
+            height: 24px;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(107, 122, 90, 0.15);
+            background: #f9f9f9;
+            flex-shrink: 0;
+        }
+
+        .flag-fallback {
+            width: 32px;
+            height: 24px;
+            border-radius: 6px;
+            background: #e0e4d9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #6b7a5a;
+            flex-shrink: 0;
         }
 
         .btn-back {
@@ -136,34 +285,51 @@
             padding: 20px;
             cursor: pointer;
             text-transform: uppercase;
-            font-size: 12px;
+            font-size: clamp(11px, 3.5vw, 12px);
             margin: 10px auto;
         }
 
         .btn-back:active {
             opacity: 0.7;
         }
+
+        @media (max-width: 400px) {
+            .columna-letras { padding: 30px 0; gap: 25px; }
+            .pais-item { width: 90%; gap: 10px; }
+            .flag-mini { width: 28px; height: 20px; }
+        }
+
+        @media (max-width: 360px) {
+            .columna-letras { padding: 20px 0; gap: 20px; }
+            .pregunta { margin-top: 20px; }
+        }
+
+        @media (max-width: 320px) {
+            .pais-item { padding: 10px 12px; font-size: 11px; }
+            .btn-back { padding: 15px; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Notch eliminado -->
-        
-        <div class="header">
-            <img src="images/logos-02.png" class="logo-peque" alt="Logo">
-            <h2 id="display-texto" class="pregunta">De quin país ets?</h2>
-        </div>
-
-        <div id="vista-alfabeto" class="columna-letras"></div>
-
-        <div id="vista-lista" class="lista-container">
-            <div id="lista-dinamica"></div>
-            <button class="btn-back" onclick="mostrarAlfabeto()">← Tornar a l'alfabet</button>
-        </div>
+<div class="container">
+    <div class="header">
+        <img src="images/logos-02.png" class="logo-peque" alt="Logo Coolture">
+        <h2 id="display-texto" class="pregunta">De quin país ets?</h2>
     </div>
 
-    <script>
+    <div id="vista-alfabeto" class="columna-letras"></div>
+
+    <div id="vista-lista" class="lista-container">
+        <div id="lista-dinamica"></div>
+        <button class="btn-back" onclick="mostrarAlfabeto()">← Tornar a l'alfabet</button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
         const paises = {
             "A": ["AFEGANISTAN", "ALBÀNIA", "ALEMANYA", "ALGÈRIA", "ANDORRA", "ANGOLA", "ANTIGUA I BARBUDA", "ARÀBIA SAUDITA", "ARGENTINA", "ARMÈNIA", "AUSTRÀLIA", "ÀUSTRIA", "AZERBAIDJAN"],
             "B": ["BAHAMES", "BAHREIN", "BANGLADESH", "BARBADOS", "BÈLGICA", "BELICE", "BENÍN", "BIELORÚSSIA", "BIRMANIA", "BOLÍVIA", "BOSNIA I HERCEGOVINA", "BOTSWANA", "BRASIL", "BRUNEI", "BULGÀRIA", "BURKINA FASO", "BURUNDI", "BUTAN"],
@@ -191,6 +357,104 @@
             "Z": ["ZÀMBIA", "ZIMBABWE"]
         };
 
+        const PAISOS_ISO = [
+            { iso: "af", name: "Afganistan" }, { iso: "al", name: "Albània" }, { iso: "de", name: "Alemanya" },
+            { iso: "dz", name: "Algèria" }, { iso: "ad", name: "Andorra" }, { iso: "ao", name: "Angola" },
+            { iso: "ag", name: "Antigua i Barbuda" }, { iso: "sa", name: "Aràbia Saudita" }, { iso: "ar", name: "Argentina" },
+            { iso: "am", name: "Armènia" }, { iso: "au", name: "Austràlia" }, { iso: "at", name: "Àustria" },
+            { iso: "az", name: "Azerbaidjan" }, { iso: "bs", name: "Bahames" }, { iso: "bh", name: "Bahrain" },
+            { iso: "bd", name: "Bangladesh" }, { iso: "bb", name: "Barbados" }, { iso: "be", name: "Bèlgica" },
+            { iso: "bz", name: "Belize" }, { iso: "bj", name: "Benín" }, { iso: "by", name: "Bielorússia" },
+            { iso: "mm", name: "Myanmar" }, { iso: "bo", name: "Bolívia" }, { iso: "ba", name: "Bòsnia i Hercegovina" },
+            { iso: "bw", name: "Botswana" }, { iso: "br", name: "Brasil" }, { iso: "bn", name: "Brunei" },
+            { iso: "bg", name: "Bulgària" }, { iso: "bf", name: "Burkina Faso" }, { iso: "bi", name: "Burundi" },
+            { iso: "bt", name: "Bhutan" }, { iso: "cv", name: "Cap Verd" }, { iso: "kh", name: "Cambodja" },
+            { iso: "cm", name: "Camerun" }, { iso: "ca", name: "Canadà" }, { iso: "qa", name: "Qatar" },
+            { iso: "va", name: "Ciutat del Vaticà" }, { iso: "co", name: "Colòmbia" }, { iso: "km", name: "Comores" },
+            { iso: "kp", name: "Corea del Nord" }, { iso: "kr", name: "Corea del Sud" }, { iso: "ci", name: "Costa d'Ivori" },
+            { iso: "cr", name: "Costa Rica" }, { iso: "hr", name: "Croàcia" }, { iso: "cu", name: "Cuba" },
+            { iso: "dk", name: "Dinamarca" }, { iso: "dj", name: "Djibouti" }, { iso: "dm", name: "Dominica" },
+            { iso: "ec", name: "Equador" }, { iso: "eg", name: "Egipte" }, { iso: "sv", name: "El Salvador" },
+            { iso: "ae", name: "Emirats Àrabs Units" }, { iso: "er", name: "Eritrea" }, { iso: "sk", name: "Eslovàquia" },
+            { iso: "si", name: "Eslovènia" }, { iso: "es", name: "Espanya" }, { iso: "us", name: "Estats Units" },
+            { iso: "ee", name: "Estònia" }, { iso: "sz", name: "Eswatini" }, { iso: "et", name: "Etiòpia" },
+            { iso: "fj", name: "Fiji" }, { iso: "ph", name: "Filipines" }, { iso: "fi", name: "Finlàndia" },
+            { iso: "fr", name: "França" }, { iso: "ga", name: "Gabon" }, { iso: "gm", name: "Gàmbia" },
+            { iso: "ge", name: "Geòrgia" }, { iso: "gh", name: "Ghana" }, { iso: "gd", name: "Grenada" },
+            { iso: "gr", name: "Grècia" }, { iso: "gt", name: "Guatemala" }, { iso: "gn", name: "Guinea" },
+            { iso: "gq", name: "Guinea Equatorial" }, { iso: "gw", name: "Guinea Bissau" }, { iso: "gy", name: "Guyana" },
+            { iso: "ht", name: "Haití" }, { iso: "hn", name: "Hondures" }, { iso: "hu", name: "Hongria" },
+            { iso: "in", name: "Índia" }, { iso: "id", name: "Indonèsia" }, { iso: "ir", name: "Iran" },
+            { iso: "iq", name: "Iraq" }, { iso: "ie", name: "Irlanda" }, { iso: "is", name: "Islàndia" },
+            { iso: "mh", name: "Illes Marshall" }, { iso: "sb", name: "Illes Salomó" }, { iso: "il", name: "Israel" },
+            { iso: "it", name: "Itàlia" }, { iso: "ye", name: "Iemen" }, { iso: "jm", name: "Jamaica" },
+            { iso: "jp", name: "Japó" }, { iso: "jo", name: "Jordània" }, { iso: "kz", name: "Kazakhstan" },
+            { iso: "ke", name: "Kenya" }, { iso: "kg", name: "Kirguizistan" }, { iso: "ki", name: "Kiribati" },
+            { iso: "kw", name: "Kuwait" }, { iso: "la", name: "Laos" }, { iso: "ls", name: "Lesotho" },
+            { iso: "lv", name: "Letònia" }, { iso: "lb", name: "Líban" }, { iso: "lr", name: "Libèria" },
+            { iso: "ly", name: "Líbia" }, { iso: "li", name: "Liechtenstein" }, { iso: "lt", name: "Lituània" },
+            { iso: "lu", name: "Luxemburg" }, { iso: "mg", name: "Madagascar" }, { iso: "my", name: "Malàisia" },
+            { iso: "mw", name: "Malawi" }, { iso: "mv", name: "Maldives" }, { iso: "ml", name: "Mali" },
+            { iso: "mt", name: "Malta" }, { iso: "ma", name: "Marroc" }, { iso: "mu", name: "Maurici" },
+            { iso: "mr", name: "Mauritània" }, { iso: "mx", name: "Mèxic" }, { iso: "fm", name: "Micronèsia" },
+            { iso: "md", name: "Moldàvia" }, { iso: "mc", name: "Mònaco" }, { iso: "mn", name: "Mongòlia" },
+            { iso: "me", name: "Montenegro" }, { iso: "mz", name: "Moçambic" }, { iso: "na", name: "Namíbia" },
+            { iso: "nr", name: "Nauru" }, { iso: "np", name: "Nepal" }, { iso: "ni", name: "Nicaragua" },
+            { iso: "ne", name: "Níger" }, { iso: "ng", name: "Nigèria" }, { iso: "no", name: "Noruega" },
+            { iso: "nz", name: "Nova Zelanda" }, { iso: "om", name: "Oman" }, { iso: "nl", name: "Països Baixos" },
+            { iso: "pk", name: "Pakistan" }, { iso: "pw", name: "Palau" }, { iso: "pa", name: "Panamà" },
+            { iso: "pg", name: "Papua Nova Guinea" }, { iso: "py", name: "Paraguai" }, { iso: "pe", name: "Perú" },
+            { iso: "pl", name: "Polònia" }, { iso: "pt", name: "Portugal" }, { iso: "gb", name: "Regne Unit" },
+            { iso: "cf", name: "República Centreafricana" }, { iso: "cd", name: "República Democràtica del Congo" },
+            { iso: "cg", name: "República del Congo" }, { iso: "do", name: "República Dominicana" },
+            { iso: "za", name: "Sud-àfrica" }, { iso: "cz", name: "República Txeca" },
+            { iso: "mk", name: "Macedònia del Nord" }, { iso: "ro", name: "Romania" }, { iso: "rw", name: "Ruanda" },
+            { iso: "ru", name: "Rússia" }, { iso: "ws", name: "Samoa" }, { iso: "sm", name: "San Marino" },
+            { iso: "kn", name: "Saint Christopher i Nevis" }, { iso: "st", name: "São Tomé i Príncipe" },
+            { iso: "vc", name: "Saint Vincent i les Grenadines" }, { iso: "lc", name: "Saint Lucia" },
+            { iso: "sn", name: "Senegal" }, { iso: "rs", name: "Sèrbia" }, { iso: "sc", name: "Seychelles" },
+            { iso: "sl", name: "Sierra Leone" }, { iso: "sg", name: "Singapur" }, { iso: "sy", name: "Síria" },
+            { iso: "so", name: "Somàlia" }, { iso: "lk", name: "Sri Lanka" }, { iso: "sd", name: "Sudan" },
+            { iso: "ss", name: "Sudan del Sud" }, { iso: "se", name: "Suècia" }, { iso: "ch", name: "Suïssa" },
+            { iso: "sr", name: "Surinam" }, { iso: "th", name: "Tailàndia" }, { iso: "tz", name: "Tanzània" },
+            { iso: "tj", name: "Tadjikistan" }, { iso: "tl", name: "Timor Oriental" }, { iso: "tg", name: "Togo" },
+            { iso: "to", name: "Tonga" }, { iso: "tt", name: "Trinitat i Tobago" }, { iso: "tn", name: "Tunísia" },
+            { iso: "tm", name: "Turkmenistan" }, { iso: "tr", name: "Turquia" }, { iso: "tv", name: "Tuvalu" },
+            { iso: "td", name: "Txad" }, { iso: "ua", name: "Ucraïna" }, { iso: "ug", name: "Uganda" },
+            { iso: "uy", name: "Uruguai" }, { iso: "uz", name: "Uzbekistan" }, { iso: "vu", name: "Vanuatu" },
+            { iso: "ve", name: "Veneçuela" }, { iso: "vn", name: "Vietnam" }, { iso: "cl", name: "Xile" },
+            { iso: "cn", name: "Xina" }, { iso: "cy", name: "Xipre" }, { iso: "zm", name: "Zàmbia" },
+            { iso: "zw", name: "Zimbàbwe" }
+        ];
+
+        function normalitzar(text) {
+            return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[-\s'’]/g, '').toLowerCase();
+        }
+
+        const mapaISO = new Map();
+        PAISOS_ISO.forEach(p => mapaISO.set(normalitzar(p.name), p.iso));
+
+        const sinonims = {
+            'birmania': 'myanmar', 'butan': 'bhutan', 'granada': 'grenada', 'illes salomo': 'illes salomó',
+            'republica sudafricana': 'sud-àfrica', 'republica de macedonia': 'macedònia del nord', 'catar': 'qatar',
+            'bahrein': 'bahrain', 'belice': 'belize', 'sant cristofol i nevis': 'saint christopher i nevis',
+            'sant tome i princep': 'são tomé i príncipe', 'sant vicenc i les granadines': 'saint vincent i les grenadines',
+            'santa llucia': 'saint lucia', 'timor oriental': 'timor oriental', 'txad': 'txad'
+        };
+
+        function obtenirIso(nomPais) {
+            const norm = normalitzar(nomPais);
+            if (mapaISO.has(norm)) return mapaISO.get(norm);
+            if (sinonims[norm]) {
+                const clauSinonim = normalitzar(sinonims[norm]);
+                if (mapaISO.has(clauSinonim)) return mapaISO.get(clauSinonim);
+            }
+            for (let [key, iso] of mapaISO.entries()) {
+                if (key.includes(norm) || norm.includes(key)) return iso;
+            }
+            return null;
+        }
+
         const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
         const columna = document.getElementById('vista-alfabeto');
 
@@ -205,29 +469,48 @@
         function mostrarPaises(letra) {
             const listaDinamica = document.getElementById('lista-dinamica');
             listaDinamica.innerHTML = "";
-
             const listaFiltrada = paises[letra] || ["No hi ha països"];
-            
-            listaFiltrada.forEach(p => {
+            listaFiltrada.forEach(nomPais => {
                 const item = document.createElement('div');
                 item.className = 'pais-item';
-                item.innerText = p;
-                
+                const iso = obtenirIso(nomPais);
+                if (iso) {
+                    const img = document.createElement('img');
+                    img.className = 'flag-mini';
+                    img.src = `https://flagcdn.com/${iso}.svg`;
+                    img.alt = `Bandera de ${nomPais}`;
+                    img.loading = 'lazy';
+                    img.onerror = function() {
+                        const fallback = document.createElement('span');
+                        fallback.className = 'flag-fallback';
+                        fallback.textContent = '🏳️';
+                        this.replaceWith(fallback);
+                    };
+                    item.appendChild(img);
+                } else {
+                    const placeholder = document.createElement('span');
+                    placeholder.className = 'flag-fallback';
+                    placeholder.textContent = '🌐';
+                    item.appendChild(placeholder);
+                }
+                const textSpan = document.createElement('span');
+                textSpan.textContent = nomPais;
+                textSpan.style.flex = '1';
+                item.appendChild(textSpan);
                 item.onclick = function() {
-                    window.location.href = 'pregunta2.html?pais=' + encodeURIComponent(p);
+                    window.location.href = 'pregunta2.html?pais=' + encodeURIComponent(nomPais);
                 };
-                
                 listaDinamica.appendChild(item);
             });
-
             document.getElementById('vista-alfabeto').style.display = 'none';
             document.getElementById('vista-lista').style.display = 'flex';
         }
 
-        function mostrarAlfabeto() {
+        window.mostrarAlfabeto = function() {
             document.getElementById('vista-alfabeto').style.display = 'flex';
             document.getElementById('vista-lista').style.display = 'none';
-        }
-    </script>
+        };
+    })();
+</script>
 </body>
 </html>

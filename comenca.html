@@ -2,15 +2,21 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Coolture - Comença</title>
     <style>
-        /* --- MODIFICA ESTO PARA CAMBIAR EL DISEÑO --- */
+        /* --- VARIABLES PERSONALIZABLES (sin cambios) --- */
         :root {
             --color-oro: #c5a866;       /* Color de la parte superior */
             --color-verde: #6b7a5a;     /* Color de la parte inferior */
             --angulo: 115deg;           /* Ajusta aquí los grados (ej: 120deg, 160deg) */
             --separacion: 50%;          /* Dónde corta la línea (50% es la mitad) */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -20,12 +26,14 @@
             align-items: center;
             min-height: 100vh;
             background-color: #1a1a1a;
-            font-family: sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            overflow-x: hidden;
         }
 
-        /* Contenedor principal: 390px, sin bordes redondeados */
+        /* Contenedor principal: OCUPA EL 100% DEL ANCHO (sin límite fijo) */
         .container {
-            width: 390px;
+            width: 100%;
             min-height: 100vh;
             border-radius: 0;
             overflow: hidden;
@@ -34,9 +42,12 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
+            /* Espacio dinámico para el notch */
+            padding-top: constant(safe-area-inset-top);
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: constant(safe-area-inset-bottom);
+            padding-bottom: env(safe-area-inset-bottom);
         }
-
-        /* Notch eliminado */
 
         .content {
             display: flex;
@@ -49,9 +60,10 @@
             color: white;
         }
 
+        /* Logo responsive: se adapta entre 180px y 280px según el ancho */
         .logo {
-            width: 280px;
-            margin-top: 180px; /* Ajustado para centrar verticalmente en 390px */
+            width: clamp(180px, 70vw, 280px);
+            margin-top: clamp(80px, 25vh, 180px); /* Margen superior dinámico */
         }
 
         .bottom-area {
@@ -60,7 +72,7 @@
         }
 
         .small-text {
-            font-size: 11px;
+            font-size: clamp(10px, 3.5vw, 11px);
             margin-bottom: 15px;
             opacity: 0.9;
         }
@@ -74,30 +86,72 @@
             border-radius: 30px;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 14px;
+            font-size: clamp(12px, 4vw, 14px);
             letter-spacing: 1px;
             transition: transform 0.2s;
+            width: 80%;
+            max-width: 260px;
+            margin: 0 auto;
         }
 
         .btn-comenca:active {
             transform: scale(0.96);
         }
+
+        /* Ajustes para pantallas muy pequeñas */
+        @media (max-width: 400px) {
+            .content {
+                padding: 30px 16px;
+            }
+            .btn-comenca {
+                width: 90%;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .logo {
+                margin-top: clamp(40px, 15vh, 120px);
+            }
+            .bottom-area {
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .btn-comenca {
+                font-size: 11px;
+                padding: 10px;
+            }
+            .small-text {
+                font-size: 9px;
+            }
+        }
+
+        /* Para pantallas muy altas, centramos mejor el contenido */
+        @media (min-height: 800px) {
+            .logo {
+                margin-top: 0;
+            }
+            .content {
+                justify-content: center;
+                gap: 40px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Notch eliminado -->
+<div class="container">
+    <div class="content">
+        <img src="images/logos-01.png" class="logo" alt="Coolture Logo">
         
-        <div class="content">
-            <img src="images/logos-01.png" class="logo" alt="Coolture Logo">
-            
-            <div class="bottom-area">
-                <p class="small-text">Tenim unes preguntes importants...</p>
-                <a href="paises.html" class="btn-comenca">Comença</a>
-            </div>
+        <div class="bottom-area">
+            <p class="small-text">Tenim unes preguntes importants...</p>
+            <a href="paises.html" class="btn-comenca">Comença</a>
         </div>
     </div>
+</div>
 
 </body>
 </html>

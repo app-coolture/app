@@ -2,10 +2,10 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Coolture - Registre</title>
     <style>
-        /* ===== ESTILS EXISTENTS (NO MODIFICATS) ===== */
+        /* ===== VARIABLES ===== */
         :root {
             --gold: #c5a866;
             --green: #6b7a5a;
@@ -21,17 +21,19 @@
         body, html {
             margin: 0;
             padding: 0;
-            font-family: sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #1a1a1a;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
         }
 
-        /* Contenidor principal: ample fix 390px, sense cantonades arrodonides */
+        /* Contenidor principal: OCUPA EL 100% DEL ANCHO (SIN LÍMITE FIJO) */
         .container {
-            width: 390px;
+            width: 100%;
             min-height: 100vh;
             background-color: var(--gold);
             position: relative;
@@ -41,29 +43,35 @@
             overflow: hidden;
             border-radius: 0;
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            /* Espacio dinámico para el notch */
+            padding-top: constant(safe-area-inset-top);
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: constant(safe-area-inset-bottom);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Notch eliminat completament */
-
         .content {
-            width: 80%;
+            width: 85%;
+            max-width: 320px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             padding: 20px 0 40px 0;
+            flex: 1;
+            justify-content: center;
         }
 
         .logo {
-            width: 180px;
-            margin-top: 50px;
+            width: clamp(140px, 40vw, 180px);
+            margin-top: clamp(30px, 10vh, 50px);
         }
 
         .tagline {
             color: var(--white);
-            font-size: 14px;
-            margin-top: -10px;
-            margin-bottom: 50px;
+            font-size: clamp(12px, 3.5vw, 14px);
+            margin-top: 5px;
+            margin-bottom: clamp(20px, 8vh, 50px);
             opacity: 0.9;
         }
 
@@ -82,7 +90,7 @@
             padding: 10px 0;
             margin-bottom: 5px;
             outline: none;
-            font-size: 16px;
+            font-size: clamp(14px, 4vw, 16px);
             box-sizing: border-box;
         }
 
@@ -92,7 +100,7 @@
 
         .small-text {
             color: var(--white);
-            font-size: 10px;
+            font-size: clamp(9px, 3vw, 10px);
             text-align: left;
             width: 100%;
             margin: 15px 0 5px 0;
@@ -110,7 +118,11 @@
             display: inline-block;
             margin-bottom: 15px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: clamp(12px, 3.5vw, 14px);
+            transition: transform 0.2s ease;
+        }
+        .btn:active {
+            transform: scale(0.97);
         }
 
         .btn-white {
@@ -133,28 +145,65 @@
             text-decoration: none;
             padding: 12px;
             font-family: inherit;
+            margin-top: clamp(20px, 6vh, 40px);
         }
 
         /* 🔴 Error visual */
         .input-error {
             border: 1px solid #e74c3c !important;
+            border-radius: 4px;
         }
 
         /* 📝 Texto error */
         .error-text {
-            font-size: 11px;
+            font-size: clamp(10px, 3vw, 11px);
             color: #e74c3c;
             margin: 4px 0 8px 2px;
             display: none;
             text-align: left;
         }
+
+        /* Media queries para pantallas pequeñas */
+        @media (max-width: 400px) {
+            .content {
+                width: 88%;
+                padding: 15px 0 30px 0;
+            }
+            .form input {
+                padding: 8px 0;
+            }
+            .btn {
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .content {
+                width: 90%;
+            }
+            .logo {
+                margin-top: clamp(20px, 5vh, 30px);
+            }
+        }
+
+        @media (max-width: 320px) {
+            .form input {
+                font-size: 13px;
+            }
+            .btn {
+                font-size: 12px;
+                padding: 8px;
+            }
+            .small-text {
+                font-size: 8px;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- Notch eliminat -->
     <div class="content">
-        <img src="images/logos-02.png" class="logo">
+        <img src="images/logos-02.png" class="logo" alt="Coolture Logo">
         
         <form class="form" style="margin-top: 40px;" onsubmit="return validateForm()" action="comenca.html">
             
@@ -169,7 +218,7 @@
             
             <p class="small-text">T'enviarem un codi per verificar el teu correu</p>
             
-            <button type="submit" class="btn btn-white btn-submit" style="margin-top: 40px;">
+            <button type="submit" class="btn btn-white btn-submit">
                 Inicia sessió
             </button>
             
