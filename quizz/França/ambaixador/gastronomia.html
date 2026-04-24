@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Coolture · Ambaixador | França - Gastronomia</title>
+    <style>
+        /* ===== ESTILOS EXACTAMENTE IGUALES ===== */
+        :root {
+            --bg-color: #F5F1E8;
+            --green-coolture: #667F57;
+            --select-bg: #F4F1E8;
+            --white: #ffffff;
+            --text-dark: #1c1c1c;
+            --text-grey: #7c7c7c;
+            --danger: #e67e22;
+            --correct: #2ecc71;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body, html {
+            margin: 0; padding: 0;
+            background-color: #1a1a1a;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border-radius: 0;
+            overflow: hidden;
+            padding-top: constant(safe-area-inset-top);
+            padding-top: env(safe-area-inset-top);
+        }
+        
+        /* ----- TÍTULO BONITO ----- */
+        .quiz-title {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 5px;
+            padding: 0 20px;
+        }
+        .quiz-title h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--green-coolture);
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #667F57, #8BA87A);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .quiz-title p {
+            font-size: 14px;
+            color: var(--text-grey);
+            margin-top: 4px;
+            font-style: italic;
+        }
+        .quiz-title .emoji {
+            font-size: 32px;
+            display: inline-block;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .quiz-content {
+            flex-grow: 1;
+            padding: 10px 20px 100px 20px;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        .quiz-content::-webkit-scrollbar { display: none; }
+        
+        .progress-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .question-counter {
+            font-size: clamp(12px, 3.5vw, 13px);
+            background: var(--green-coolture);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+        }
+        .timer-box {
+            background: var(--white);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-weight: bold;
+            color: var(--text-dark);
+            font-size: clamp(16px, 4.5vw, 18px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .question-text {
+            background: var(--white);
+            border-radius: 28px;
+            padding: 22px 18px;
+            font-size: clamp(16px, 4.5vw, 18px);
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 10px 0 25px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            line-height: 1.3;
+        }
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .option-btn {
+            background: var(--white);
+            border: 1px solid #ddd;
+            border-radius: 60px;
+            padding: 14px 18px;
+            font-size: clamp(13px, 4vw, 14px);
+            font-weight: 500;
+            color: var(--text-dark);
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .option-btn:hover { background: #f9f9f9; transform: scale(0.99); }
+        .option-btn.disabled { cursor: not-allowed; opacity: 0.7; pointer-events: none; }
+        .option-btn.correct { background: var(--correct); color: white; border-color: var(--correct); }
+        .option-btn.wrong { background: var(--danger); color: white; border-color: var(--danger); }
+        .next-btn {
+            background: var(--green-coolture);
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            font-size: clamp(14px, 4vw, 16px);
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+        .next-btn:active { transform: scale(0.97); background: #4e643f; }
+        .result-card {
+            background: white;
+            border-radius: 35px;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .result-score {
+            font-size: clamp(36px, 10vw, 48px);
+            font-weight: 800;
+            color: var(--green-coolture);
+            margin: 15px 0;
+        }
+        .btn-retry {
+            background: var(--green-coolture);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            margin: 10px;
+            cursor: pointer;
+            font-size: clamp(13px, 3.5vw, 14px);
+        }
+        
+        /* ===== BARRA INFERIOR ===== */
+        .navbar {
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom, 20px));
+            left: 8px;
+            right: 8px;
+            background-color: var(--green-coolture);
+            border-radius: 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 72px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            overflow: visible;
+        }
+
+        .nav-item {
+            position: relative;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 68px;
+            height: 56px;
+            transition: all 0.2s ease;
+            border-radius: 28px;
+            flex-shrink: 0;
+        }
+
+        .nav-item.active {
+            background-color: var(--select-bg);
+            border-radius: 32px;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .navbar a:first-child { transform: translateX(6px); }
+        .navbar a:nth-child(2) { transform: translateX(6px); }
+        .navbar a:nth-child(4) { transform: translateX(-6px); }
+        .navbar a:last-child { transform: translateX(-6px); }
+
+        .center-logo-link {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 76px;
+            height: 72px;
+            flex-shrink: 0;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .center-logo-link::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 84px;
+            background-color: var(--green-coolture);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .center-logo {
+            position: relative;
+            z-index: 10;
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-top: -58px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.2s ease;
+            pointer-events: auto;
+        }
+
+        .center-logo-link:hover .center-logo { transform: scale(1.02); }
+
+        /* MEDIA QUERIES */
+        @media (max-width: 450px) {
+            .navbar {
+                left: 6px;
+                right: 6px;
+                height: 68px;
+            }
+            .nav-item {
+                width: 60px;
+                height: 52px;
+            }
+            .nav-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .center-logo {
+                width: 60px;
+                height: 60px;
+                margin-top: -33px;
+            }
+            .center-logo-link::before {
+                width: 76px;
+                height: 76px;
+            }
+            .navbar a:first-child { transform: translateX(4px); }
+            .navbar a:nth-child(2) { transform: translateX(4px); }
+            .navbar a:nth-child(4) { transform: translateX(-4px); }
+            .navbar a:last-child { transform: translateX(-4px); }
+            .quiz-title h1 {
+                font-size: 22px;
+            }
+            .quiz-title .emoji {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .quiz-content {
+                padding: 10px 16px 100px 16px;
+            }
+            .question-text {
+                padding: 18px 14px;
+            }
+            .option-btn {
+                padding: 12px 16px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .quiz-content {
+                padding: 8px 14px 100px 14px;
+            }
+            .question-text {
+                padding: 15px 12px;
+            }
+            .option-btn {
+                padding: 10px 14px;
+            }
+            .quiz-title h1 {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .quiz-content {
+                padding: 8px 12px 100px 12px;
+            }
+            .question-text {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- TÍTULO BONITO ACTUALIZADO -->
+    <div class="quiz-title">
+        <span class="emoji">🇫🇷🍷</span>
+        <h1>Gastronomia Francesa</h1>
+        <p>AOC, Grand Cru, tècniques mare i plats llegendaris</p>
+    </div>
+    
+    <div class="quiz-content" id="quizContent"></div>
+    
+    <nav class="navbar">
+        <a href="../../culturas.html" class="nav-item">
+            <img src="../../../images/forum.png" class="nav-icon" alt="Forum">
+        </a>
+        <a href="../../quizz.html" class="nav-item active">
+            <img src="../../../images/quizz2.png" class="nav-icon" alt="Quizz">
+        </a>
+        <a href="../../home.html" class="center-logo-link">
+            <img src="../../../images/logos-033.png" class="center-logo" alt="Logo central 03">
+        </a>
+        <a href="../../pasaporte.html" class="nav-item">
+            <img src="../../../images/passaport.png" class="nav-icon" alt="Passaport">
+        </a>
+        <a href="../../perfil.html" class="nav-item">
+            <img src="../../../images/perfil.png" class="nav-icon" alt="Perfil">
+        </a>
+    </nav>
+</div>
+
+<script>
+    // ===== 15 PREGUNTES DIFÍCILS SOBRE GASTRONOMIA FRANCESA (NIVELL AMBAIXADOR) =====
+    const QUESTIONS = [
+        { text: "Quina salsa mare de la cuina francesa, elaborada amb mantega, farina i llet, és la base de la salsa Mornay o de les croquetes cremoses?", options: ["Salsa Espanyola", "Salsa Velouté", "Salsa Beixamel", "Salsa Holandesa"], correct: 2 },
+        { text: "Quin formatge de l'illa de Còrsega, elaborat amb llet d'ovella i reconegut amb una AOC des de 1996, es caracteritza per la seva forma plana i quadrada i el seu sabor intens?", options: ["Roquefort", "Ossau-Iraty", "Brocciu", "Tomme de Savoie"], correct: 2 },
+        { text: "Quin vi negre de la Borgonya, elaborat exclusivament amb raïm Pinot Noir, és considerat un dels més cars i prestigiosos del món, provinent d'un sol vinyer de la Côte de Nuits?", options: ["Chambertin", "Romanée-Conti", "Clos de Vougeot", "Corton-Charlemagne"], correct: 1 },
+        { text: "Quin plat típic de la regió de Llenguadoc consisteix en un guisat de mongetes blanques amb carn de porc, ànec o salsitxa, cuit lentament en una cassola de terrissa (cassole)?", options: ["Pot-au-feu", "Cassoulet", "Choucroute garnie", "Baeckeoffe"], correct: 1 },
+        { text: "Quin pastisser francès del segle XIX és famós per haver creat el 'Saint-Honoré', un pastís amb profiterols i crema xantillí, i per haver perfeccionat la tècnica del pasta fullada?", options: ["Antonin Carême", "Auguste Escoffier", "Gaston Lenôtre", "Marie-Antoine Carême"], correct: 3 },
+        { text: "Quina és la denominació d'origen controlada (AOC) més antiga de França, que regula la producció d'un vi dolç natural elaborat amb raïm Muscat a la regió de Llenguadoc-Rosselló?", options: ["Châteauneuf-du-Pape", "Muscat de Frontignan", "Vin de Constance", "Sauternes"], correct: 1 },
+        { text: "Quin plat de la cuina burgesa francesa consisteix en un filet de bou embolicat en pasta fullada amb una capa de 'duxelles' (bolets picats) i paté, i cuit al forn?", options: ["Tournedos Rossini", "Bœuf Bourguignon", "Filet de Bœuf Wellington", "Steak au Poivre"], correct: 2 },
+        { text: "Quin tipus de crema pastissera, aromatitzada amb vainilla, és la base de les postres 'Île flottante' (illa flotant) i s'utilitza per acompanyar el pastís d'arròs 'Teurgoule' de Normandia?", options: ["Crème pâtissière", "Crème anglaise", "Crème brûlée", "Crème Chantilly"], correct: 1 },
+        { text: "Quin xef francès del segle XX, conegut com el 'Cuiner del Segle', va revolucionar la cuina amb la 'Nouvelle Cuisine', alleugerint les salses i escurçant els temps de cocció?", options: ["Paul Bocuse", "Alain Chapel", "Joël Robuchon", "Michel Guérard"], correct: 0 },
+        { text: "Quin licor d'herbes, elaborat des del segle XVI pels monjos cartoixans a la regió de Grenoble, deu el seu nom al massís muntanyós on es troba el monestir de la Grande Chartreuse?", options: ["Bénédictine", "Cointreau", "Chartreuse", "Grand Marnier"], correct: 2 },
+        { text: "Quin formatge de pasta tova i escorça florida, originari de la regió de Brie (Illa de França), és conegut com el 'rei dels formatges' i va ser un dels preferits de Lluís XVI?", options: ["Camembert", "Coulommiers", "Brie de Meaux", "Chaource"], correct: 2 },
+        { text: "Quin plat típic de Niça consisteix en una amanida d'estiu amb tomàquet, ou dur, anxoves, olives negres i tonyina, però estrictament sense patata ni verdures cuites segons la recepta original?", options: ["Salade Niçoise", "Pan Bagnat", "Ratatouille", "Pissaladière"], correct: 0 },
+        { text: "Quin vi blanc dolç de Bordeus, elaborat amb raïm afectat per la 'podridura noble' (Botrytis cinerea), és famós per la seva untuositat i capacitat d'envelliment?", options: ["Graves", "Entre-Deux-Mers", "Sauternes", "Monbazillac"], correct: 2 },
+        { text: "Quina tècnica de cocció francesa consisteix a cuinar un aliment (carn o peix) submergit completament en greix d'ànec o oca a baixa temperatura, com es fa amb el 'Confit de Canard'?", options: ["Sous-vide", "Braiser", "Pocher", "Confire"], correct: 3 },
+        { text: "Quin pastís rodó, fet amb ametlla i decorat amb fruita confita, és tradicionalment el 'pastís dels Reis' a la regió de Provença i al sud de França per l'Epifania?", options: ["Galette des Rois", "Brioche des Rois", "Gâteau des Rois", "Couronne des Rois"], correct: 1 }
+    ];
+
+    let currentIndex = 0, score = 0, timerInterval = null, timeLeft = 20;
+    let selectedOption = null;
+    let questionLocked = false;
+    const quizContainer = document.getElementById('quizContent');
+
+    function stopTimer() { if (timerInterval) clearInterval(timerInterval); timerInterval = null; }
+    function startTimer() {
+        stopTimer();
+        timeLeft = 20;
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            if (timeLeft > 0) {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft === 0) { 
+                    stopTimer();
+                    if (!questionLocked) {
+                        handleTimeout();
+                    }
+                }
+            } else {
+                stopTimer();
+            }
+        }, 1000);
+    }
+    function updateTimerDisplay() {
+        const timerSpan = document.getElementById('timerValue');
+        if (timerSpan) timerSpan.innerText = timeLeft;
+        const timerBox = document.querySelector('.timer-box');
+        if (timerBox && timeLeft <= 5) timerBox.style.color = '#e67e22';
+        else if (timerBox) timerBox.style.color = 'var(--text-dark)';
+    }
+    function handleTimeout() {
+        if (questionLocked) return;
+        questionLocked = true;
+        document.querySelectorAll('.option-btn').forEach(btn => btn.classList.add('disabled'));
+        goToNextQuestion();
+    }
+    function renderQuestion() {
+        if (currentIndex >= QUESTIONS.length) return showResults();
+        questionLocked = false;
+        selectedOption = null;
+        const q = QUESTIONS[currentIndex];
+        quizContainer.innerHTML = `
+            <div class="progress-area">
+                <div class="question-counter">Pregunta ${currentIndex+1}/${QUESTIONS.length}</div>
+                <div class="timer-box">⏱ <span id="timerValue">20</span> s</div>
+            </div>
+            <div class="question-text">${q.text}</div>
+            <div class="options-list" id="optionsList">
+                ${q.options.map((opt, idx) => `<div class="option-btn" data-opt-index="${idx}">${opt}</div>`).join('')}
+            </div>
+            <button class="next-btn" id="nextBtn">Següent</button>
+        `;
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if (questionLocked) return;
+                const idx = parseInt(btn.dataset.optIndex);
+                document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('correct'));
+                btn.classList.add('correct');
+                selectedOption = idx;
+            });
+        });
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (questionLocked) return;
+            if (selectedOption !== null) {
+                const isCorrect = (selectedOption === QUESTIONS[currentIndex].correct);
+                if (isCorrect) score++;
+            }
+            questionLocked = true;
+            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.add('disabled'));
+            goToNextQuestion();
+        });
+        startTimer();
+    }
+    function goToNextQuestion() {
+        currentIndex++;
+        renderQuestion();
+    }
+    function showResults() {
+        stopTimer();
+        const percent = Math.round((score / QUESTIONS.length) * 100);
+        let mensaje = percent === 100 ? "🏆 Magnifique! Ets un veritable 'Cordon Bleu' de la gastronomia francesa!" : 
+                      percent >= 70 ? "🎓 Impressionant! La teva saviesa culinària francesa és excepcional." : 
+                      percent >= 50 ? "📖 Bon nivell d'ambaixador. Coneixes els secrets de la 'Haute Cuisine'!" : 
+                      "📚 Un repte deliciós! Revisa les salses mare i els formatges AOC per millorar!";
+        quizContainer.innerHTML = `
+            <div class="result-card">
+                <h2>🎉 Quizz finalitzat!</h2>
+                <div class="result-score">${score} / ${QUESTIONS.length}</div>
+                <p>${mensaje}</p>
+                <button class="btn-retry" id="retryBtn">🔄 Tornar a intentar</button>
+                <button class="btn-retry" id="backMenuBtn">📋 Tornar al quizz</button>
+            </div>
+        `;
+        document.getElementById('retryBtn')?.addEventListener('click', () => {
+            currentIndex = 0;
+            score = 0;
+            selectedOption = null;
+            questionLocked = false;
+            stopTimer();
+            renderQuestion();
+        });
+        document.getElementById('backMenuBtn')?.addEventListener('click', () => { window.location.href = '../../quizz.html'; });
+    }
+    renderQuestion();
+</script>
+</body>
+</html>
