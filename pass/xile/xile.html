@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Coolture · XILE</title>
+    <style>
+        /* ===== PALETA DE COLORS EXACTA ===== */
+        :root {
+            --verde: #6b7a5a;
+            --crema: #f5f2eb;
+            --oro: #c5a866;
+            --blanco: #ffffff;
+            --green-coolture: #667F57;
+            --select-bg: #F4F1E8;
+            --shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+            --gris-clar: #b0b0b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a1a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--crema);
+            border-radius: 0;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            padding-top: constant(safe-area-inset-top);
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: constant(safe-area-inset-bottom);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        /* ===== CAPÇALERA NOMÉS AMB FLETXA ESQUERRA ===== */
+        .header-ab {
+            background-color: transparent;
+            padding: 40px 20px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            color: var(--verde);
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+        .fletxa {
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .fletxa:active {
+            transform: scale(0.9);
+        }
+
+        /* Contenidor principal */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 20px 100px;
+            scrollbar-width: none;
+        }
+        .main-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* ===== TARGETA VERDA (OCUPA DUES COLUMNES) ===== */
+        .targeta-verda {
+            background-color: var(--green-coolture);
+            border-radius: 18px;
+            padding: 16px 24px 18px;
+            margin-bottom: 20px;
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
+            color: white;
+        }
+
+        .info-esquerra {
+            flex: 2;
+            min-width: 200px;
+        }
+
+        .nom-pais-blanc {
+            font-size: 44px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progres-label {
+            font-size: 11px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-top: 10px;
+            margin-bottom: 2px;
+        }
+
+        .barra-progres {
+            width: 100%;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            margin-top: 2px;
+            overflow: hidden;
+        }
+        .barra-progres .progres-omplert {
+            width: 68%;
+            height: 100%;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 0 6px rgba(255,255,240,0.6);
+        }
+
+        /* Imatge del mapa a la dreta */
+        .mapa-container {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            min-width: 100px;
+            margin-left: 16px;
+        }
+
+        .mapa-img {
+            width: 90px;   /* més petita */
+            height: 90px;
+            /* Sense fons ni vores: eliminat background-color, border, box-shadow */
+            border-radius: 0;  /* sense arrodoniment perquè no hi ha contenidor */
+            background-size: contain; /* imatge sencera, sense zoom */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: url('mapa_xile.png');
+            /* Cap ombra ni vora */
+            box-shadow: none;
+            border: none;
+            background-color: transparent;
+        }
+
+        /* ===== GRAELLA DE CATEGORIES (7 elements) ===== */
+        .categorias-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px 20px;
+            margin-top: 4px;
+        }
+
+        .cat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .cat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .cat-titulo {
+            font-size: 12px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: #2e3b40;
+            margin: 0;
+            padding-left: 0;
+        }
+
+        .circles {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .circle.gris {
+            background-color: var(--gris-clar);
+        }
+        .circle.verde {
+            background-color: var(--verde);
+        }
+        .circle.oro {
+            background-color: var(--oro);
+        }
+
+        .imagen-captura {
+            width: 100%;
+            aspect-ratio: 4 / 2.4;
+            background-color: #d9d2c5;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #cbc1b3;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* NOMS D'IMATGES ORIGINALS (NO ES CANVIEN) */
+        .img-gastro { background-image: url('gastronomia.png'); }
+        .img-arq { background-image: url('arquitectura.png'); }
+        .img-musica { background-image: url('arte.png'); }
+        .img-celebs { background-image: url('celebracions.png'); }
+        .img-vivencias { background-image: url('vivencies.png'); }
+        .img-arq2 { background-image: url('llegendes.png'); }
+        .img-entorno { background-image: url('entorn.png'); }
+
+        /* ===== BARRA INFERIOR ===== */
+        .navbar {
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom, 20px));
+            left: 8px;
+            right: 8px;
+            background-color: var(--green-coolture);
+            border-radius: 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 72px;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            overflow: visible;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 68px;
+            height: 56px;
+            transition: all 0.2s ease;
+            border-radius: 28px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-item.active {
+            background-color: var(--select-bg);
+            border-radius: 32px;
+            z-index: 30;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .navbar a:first-child { transform: translateX(6px); }
+        .navbar a:nth-child(2) { transform: translateX(6px); }
+        .navbar a:nth-child(4) { transform: translateX(-6px); }
+        .navbar a:last-child { transform: translateX(-6px); }
+
+        .center-logo-link {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 76px;
+            height: 72px;
+            flex-shrink: 0;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .center-logo-link::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 84px;
+            background-color: var(--green-coolture);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .center-logo {
+            position: relative;
+            z-index: 2;
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-top: -48px;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.2s ease;
+            pointer-events: auto;
+        }
+
+        .center-logo-link:hover .center-logo { transform: scale(1.02); }
+        .navbar a:active { opacity: 0.85; }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .nom-pais-blanc {
+                font-size: 32px;
+            }
+            .mapa-img {
+                width: 80px;
+                height: 80px;
+            }
+            .targeta-verda {
+                padding: 14px 16px 16px;
+                margin-top: 10px;
+            }
+        }
+        @media (max-width: 450px) {
+            .navbar {
+                left: 6px;
+                right: 6px;
+                height: 68px;
+            }
+            .nav-item {
+                width: 60px;
+                height: 52px;
+            }
+            .nav-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .center-logo {
+                width: 60px;
+                height: 60px;
+                margin-top: -33px;
+            }
+            .center-logo-link::before {
+                width: 76px;
+                height: 76px;
+            }
+            .navbar a:first-child { transform: translateX(4px); }
+            .navbar a:nth-child(2) { transform: translateX(4px); }
+            .navbar a:nth-child(4) { transform: translateX(-4px); }
+            .navbar a:last-child { transform: translateX(-4px); }
+            .fletxa {
+                width: 20px;
+                height: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CAPÇALERA NOMÉS AMB LA FLETXA ESQUERRA (retorn) -->
+    <div class="header-ab">
+        <img src="../../images/flechai.png" class="fletxa" alt="Anterior" id="fletxaEsquerra">
+    </div>
+
+    <div class="main-content">
+        <div class="targeta-verda">
+            <div class="info-esquerra">
+                <div class="nom-pais-blanc">XILE</div>
+                <div class="progres-label">Progrés Global</div>
+                <div class="barra-progres">
+                    <div class="progres-omplert"></div>
+                </div>
+            </div>
+            <div class="mapa-container">
+                <div class="mapa-img" title="mapa_xile.png"></div>
+            </div>
+        </div>
+
+        <div class="categorias-grid">
+            <!-- Gastronomia -->
+            <div class="cat-item">
+                <div class="cat-header">
+                    <div class="cat-titulo">Gastronomia</div>
+                    <div class="circles">
+                        <span class="circle gris"></span>
+                        <span class="circle verde"></span>
+                        <span class="circle oro"></span>
+                    </div>
+                </div>
+                <div class="imagen-captura img-gastro" title="gastronomia.png"></div>
+            </div>
+            <!-- Arquitectura -->
+            <div class="cat-item">
+                <div class="cat-header">
+                    <div class="cat-titulo">Arquitectura</div>
+                    <div class="circles">
+                        <span class="circle gris"></span>
+                        <span class="circle verde"></span>
+                        <span class="circle oro"></span>
+                    </div>
+                </div>
+                <div class="imagen-captura img-arq" title="arquitectura.png"></div>
+            </div>
+            <!-- Música i Art -->
+            <div class="cat-item">
+                <div class="cat-header">
+                    <div class="cat-titulo">Música i Art</div>
+                    <div class="circles">
+                        <span class="circle gris"></span>
+                        <span class="circle verde"></span>
+                        <span class="circle oro"></span>
+                    </div>
+                </div>
+                <div class="imagen-captura img-musica" title="arte.png"></div>
+            </div>
+            <!-- Celebracions -->
+            <div class="cat-item">
+                <div class="cat-header">
+                    <div class="cat-titulo">Celebracions</div>
+                    <div class="circles">
+                        <span class="circle gris"></span>
+                        <span class="circle verde"></span>
+                        <span class="circle oro"></span>
+                    </div>
+                </div>
+                <div class="imagen-captura img-celebs" title="celebracions.png"></div>
+            </div>
+            <!-- Vivències -->
+            <div class="cat-item">
+                <div class="cat-header">
+                    <div class="cat-titulo">Vivències</div>
+                    <div class="circles">
+                        <span class="circle gris"></span>
+                        <span class="circle verde"></span>
+                        <span class="circle oro"></span>
+                    </div>
+                </div>
+                <div class="imagen-captura img-vivencias" title="vivencies.png"></div>
+            </div>
+            <!-- Llegendes -->
+            <div class="cat-item">
+                <div class="cat-header">
+                    <div class="cat-titulo">Llegendes</div>
+                    <div class="circles">
+                        <span class="circle gris"></span>
+                        <span class="circle verde"></span>
+                        <span class="circle oro"></span>
+                    </div>
+                </div>
+                <div class="imagen-captura img-arq2" title="llegendes.png"></div>
+            </div>
+            <!-- Entorn -->
+            <div class="cat-item">
+                <div class="cat-header">
+                    <div class="cat-titulo">Entorn</div>
+                    <div class="circles">
+                        <span class="circle gris"></span>
+                        <span class="circle verde"></span>
+                        <span class="circle oro"></span>
+                    </div>
+                </div>
+                <div class="imagen-captura img-entorno" title="entorn.png"></div>
+            </div>
+        </div>
+        <div style="height: 20px;"></div>
+    </div>
+
+    <nav class="navbar">
+        <a href="../../culturas.html" class="nav-item">
+            <img src="../../images/forum.png" class="nav-icon" alt="Fòrum">
+        </a>
+        <a href="../../quizz.html" class="nav-item">
+            <img src="../../images/quizz.png" class="nav-icon" alt="Qüestionari">
+        </a>
+        <a href="../../home.html" class="center-logo-link">
+            <img src="../../images/logos-033.png" class="center-logo" alt="Logo central">
+        </a>
+        <a href="../../pasaporte.html" class="nav-item active">
+            <img src="../../images/passaport2.png" class="nav-icon" alt="Passaport">
+        </a>
+        <a href="../../perfil.html" class="nav-item">
+            <img src="../../images/perfil.png" class="nav-icon" alt="Perfil">
+        </a>
+    </nav>
+</div>
+
+<script>
+    (function() {
+        // Fletxa esquerra: redirigeix a la pàgina anterior (passAB.html)
+        document.getElementById('fletxaEsquerra').addEventListener('click', function() {
+            window.location.href = '../passWX.html';
+        });
+    })();
+</script>
+</body>
+</html>
