@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Coolture · Països O - P</title>
+    <style>
+        :root {
+            --verde: #6b7a5a;
+            --crema: #f5f2eb;
+            --oro: #c5a866;
+            --blanco: #ffffff;
+            --green-coolture: #667F57;
+            --select-bg: #F4F1E8;
+            --shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+            --gris-barra: #b0b0b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a1a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--crema);
+            border-radius: 0;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            padding-top: constant(safe-area-inset-top);
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: constant(safe-area-inset-bottom);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .header-ab {
+            background-color: transparent;
+            padding: 60px 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--verde);
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+        .fletxa {
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .fletxa:active {
+            transform: scale(0.9);
+        }
+        .title-ab {
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        .countries-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 20px 100px;
+            scrollbar-width: none;
+        }
+        .countries-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .pais-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: white;
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(107, 122, 90, 0.2);
+            border-left-width: 6px;
+            border-left-style: solid;
+            border-left-color: var(--gris-barra) !important;
+        }
+        .pais-card:active {
+            transform: scale(0.98);
+            background-color: #fef8e8;
+        }
+        /* Clases de color para los países destacados */
+        .pais-card.color-verde {
+            border-left-color: var(--verde) !important;
+        }
+        .pais-card.color-dorado {
+            border-left-color: var(--oro) !important;
+        }
+
+        .flag-mini {
+            width: 90px;
+            height: 55px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 14px;
+            border: 1px solid rgba(107, 122, 90, 0.3);
+            background: #f9f9f9;
+            flex-shrink: 0;
+            filter: grayscale(100%);
+        }
+
+        .flag-fallback {
+            width: 90px;
+            height: 55px;
+            border-radius: 14px;
+            background: #e0e4d9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #6b7a5a;
+            flex-shrink: 0;
+            filter: grayscale(100%);
+        }
+
+        /* Excepciones para países destacados: sin filtro */
+        .flag-mini.destacado-flag,
+        .flag-fallback.destacado-flag {
+            filter: none !important;
+        }
+
+        .pais-nom {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e2f;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            flex: 1;
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            gap: 8px;
+        }
+
+        .medalla-icon {
+            width: 50px;
+            height: 40px;
+            object-fit: contain;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .navbar {
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom, 20px));
+            left: 8px;
+            right: 8px;
+            background-color: var(--green-coolture);
+            border-radius: 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 72px;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            overflow: visible;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 68px;
+            height: 56px;
+            transition: all 0.2s ease;
+            border-radius: 28px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-item.active {
+            background-color: var(--select-bg);
+            border-radius: 32px;
+            z-index: 30;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .navbar a:first-child { transform: translateX(6px); }
+        .navbar a:nth-child(2) { transform: translateX(6px); }
+        .navbar a:nth-child(4) { transform: translateX(-6px); }
+        .navbar a:last-child { transform: translateX(-6px); }
+
+        .center-logo-link {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 76px;
+            height: 72px;
+            flex-shrink: 0;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .center-logo-link::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 84px;
+            background-color: var(--green-coolture);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .center-logo {
+            position: relative;
+            z-index: 2;
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-top: -48px;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.2s ease;
+            pointer-events: auto;
+        }
+
+        .center-logo-link:hover .center-logo { transform: scale(1.02); }
+        .navbar a:active { opacity: 0.85; }
+
+        @media (max-width: 450px) {
+            .navbar {
+                left: 6px;
+                right: 6px;
+                height: 68px;
+            }
+            .nav-item {
+                width: 60px;
+                height: 52px;
+            }
+            .nav-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .center-logo {
+                width: 60px;
+                height: 60px;
+                margin-top: -33px;
+            }
+            .center-logo-link::before {
+                width: 76px;
+                height: 76px;
+            }
+            .navbar a:first-child { transform: translateX(4px); }
+            .navbar a:nth-child(2) { transform: translateX(4px); }
+            .navbar a:nth-child(4) { transform: translateX(-4px); }
+            .navbar a:last-child { transform: translateX(-4px); }
+            .title-ab {
+                font-size: 24px;
+            }
+            .fletxa {
+                width: 20px;
+                height: 35px;
+            }
+            .pais-nom {
+                font-size: 16px;
+            }
+            .flag-mini, .flag-fallback {
+                width: 70px;
+                height: 43px;
+                border-radius: 12px;
+            }
+            .medalla-icon {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .countries-list {
+                padding: 16px;
+            }
+            .pais-card {
+                padding: 14px 16px;
+                gap: 12px;
+            }
+            .pais-nom {
+                font-size: 14px;
+            }
+            .flag-mini, .flag-fallback {
+                width: 60px;
+                height: 37px;
+                border-radius: 10px;
+            }
+            .medalla-icon {
+                width: 35px;
+                height: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header-ab">
+        <img src="../images/flechai.png" class="fletxa" alt="Anterior" id="fletxaEsquerra">
+        <div class="title-ab">O - P</div>
+        <img src="../images/flechad.png" class="fletxa" alt="Següent" id="fletxaDreta">
+    </div>
+
+    <div class="countries-list" id="countriesList"></div>
+
+    <nav class="navbar">
+        <a href="../culturas.html" class="nav-item">
+            <img src="../images/forum.png" class="nav-icon" alt="Forum">
+        </a>
+        <a href="../quizz.html" class="nav-item">
+            <img src="../images/quizz.png" class="nav-icon" alt="Quizz">
+        </a>
+        <a href="../home.html" class="center-logo-link">
+            <img src="../images/logos-033.png" class="center-logo" alt="Logo central 03">
+        </a>
+        <a href="../pasaporte.html" class="nav-item active">
+            <img src="../images/passaport2.png" class="nav-icon" alt="Passaport">
+        </a>
+        <a href="../perfil.html" class="nav-item">
+            <img src="../images/perfil.png" class="nav-icon" alt="Perfil">
+        </a>
+    </nav>
+</div>
+
+<script>
+    (function() {
+        // PAÏSOS O i P
+        const paises = {
+            "O": ["OMAN"],
+            "P": ["PAÏSOS BAIXOS", "PAKISTAN", "PALAUS", "PANAMÀ", "PAPUA NOVA GUINEA", "PARAGUAI", "PERÚ", "POLÒNIA", "PORTUGAL"]
+        };
+
+        // Llista ISO amb els codis necessaris per a O-P
+        const PAISOS_ISO = [
+            { iso: "om", name: "Oman" },
+            { iso: "nl", name: "Països Baixos" },
+            { iso: "pk", name: "Pakistan" },
+            { iso: "pw", name: "Palau" },
+            { iso: "pa", name: "Panamà" },
+            { iso: "pg", name: "Papua Nova Guinea" },
+            { iso: "py", name: "Paraguai" },
+            { iso: "pe", name: "Perú" },
+            { iso: "pl", name: "Polònia" },
+            { iso: "pt", name: "Portugal" }
+        ];
+
+        function normalitzar(text) {
+            return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[-\s'’]/g, '').toLowerCase();
+        }
+
+        const mapaISO = new Map();
+        PAISOS_ISO.forEach(p => mapaISO.set(normalitzar(p.name), p.iso));
+
+        const sinonims = {
+            'paisos baixos': 'països baixos',
+            'palaus': 'palau',
+            'panama': 'panamà',
+            'papua nova guinea': 'papua nova guinea',
+            'paraguai': 'paraguai',
+            'peru': 'perú',
+            'polonia': 'polònia',
+            'portugal': 'portugal'
+        };
+
+        function obtenirIso(nomPais) {
+            const norm = normalitzar(nomPais);
+            if (mapaISO.has(norm)) return mapaISO.get(norm);
+            if (sinonims[norm]) {
+                const clauSinonim = normalitzar(sinonims[norm]);
+                if (mapaISO.has(clauSinonim)) return mapaISO.get(clauSinonim);
+            }
+            for (let [key, iso] of mapaISO.entries()) {
+                if (key.includes(norm) || norm.includes(key)) return iso;
+            }
+            return null;
+        }
+
+        const container = document.getElementById('countriesList');
+        let colorIndex = 0;
+        const colorClasses = ['color-verde', 'color-dorado'];
+
+        // Países destacados (tendrán barra de color, bandera a color y medalla)
+        const paisesDestacados = ["PAÏSOS BAIXOS", "POLÒNIA"];
+
+        function crearPaisCard(nomPais) {
+            const card = document.createElement('div');
+            card.className = 'pais-card';
+            
+            const esDestacado = paisesDestacados.includes(nomPais);
+            
+            if (esDestacado) {
+                const claseColor = colorClasses[colorIndex % colorClasses.length];
+                card.classList.add(claseColor);
+            }
+            
+            colorIndex++;
+
+            const iso = obtenirIso(nomPais);
+            if (iso) {
+                const img = document.createElement('img');
+                img.className = 'flag-mini';
+                if (esDestacado) {
+                    img.classList.add('destacado-flag');
+                }
+                img.src = `https://flagcdn.com/${iso}.svg`;
+                img.alt = `Bandera de ${nomPais}`;
+                img.loading = 'lazy';
+                img.onerror = function() {
+                    const fallback = document.createElement('span');
+                    fallback.className = 'flag-fallback';
+                    if (esDestacado) fallback.classList.add('destacado-flag');
+                    fallback.textContent = '🏳️';
+                    this.replaceWith(fallback);
+                };
+                card.appendChild(img);
+            } else {
+                const placeholder = document.createElement('span');
+                placeholder.className = 'flag-fallback';
+                if (esDestacado) placeholder.classList.add('destacado-flag');
+                placeholder.textContent = '🌐';
+                card.appendChild(placeholder);
+            }
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'card-content';
+
+            const textSpan = document.createElement('span');
+            textSpan.className = 'pais-nom';
+            textSpan.textContent = nomPais;
+            contentDiv.appendChild(textSpan);
+
+            if (esDestacado) {
+                const medallaImg = document.createElement('img');
+                medallaImg.src = '../images/medalla-02.png';
+                medallaImg.alt = 'Medalla';
+                medallaImg.className = 'medalla-icon';
+                contentDiv.appendChild(medallaImg);
+            }
+
+            card.appendChild(contentDiv);
+
+            card.addEventListener('click', () => {
+                if (nomPais === "PAÏSOS BAIXOS") {
+                    window.location.href = 'paisosbaixos/paisosbaixos.html';
+                } else if (nomPais === "POLÒNIA") {
+                    window.location.href = 'polonia/polonia.html';
+                } else {
+                    window.location.href = 'pregunta2.html?pais=' + encodeURIComponent(nomPais);
+                }
+            });
+
+            return card;
+        }
+
+        // Afegir els països de O i P
+        if (paises["O"]) {
+            paises["O"].forEach(nom => container.appendChild(crearPaisCard(nom)));
+        }
+        if (paises["P"]) {
+            paises["P"].forEach(nom => container.appendChild(crearPaisCard(nom)));
+        }
+
+        // Navegació de les fletxes
+        const leftArrow = document.getElementById('fletxaEsquerra');
+        const rightArrow = document.getElementById('fletxaDreta');
+
+        leftArrow.addEventListener('click', () => {
+            window.location.href = 'passMN.html';
+        });
+
+        rightArrow.addEventListener('click', () => {
+            window.location.href = 'passQR.html';
+        });
+    })();
+</script>
+</body>
+</html>
