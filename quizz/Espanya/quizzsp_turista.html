@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Coolture · FòrumQuiz</title>
+    <style>
+        /* ===== CSS CON MODIFICACIONES: letra más fina, redirección por JS ===== */
+        :root {
+            --bg-color: #F4F1E8;
+            --green-coolture: #667F57;
+            --select-bg: #F4F1E8;
+            --white: #ffffff;
+            --text-dark: #1c1c1c;
+            --text-grey: #7c7c7c;
+            --shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding-top: calc(60px + constant(safe-area-inset-top));
+            padding-top: calc(60px + env(safe-area-inset-top));
+            padding-right: 20px;
+            padding-bottom: 100px;
+            padding-left: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        .content::-webkit-scrollbar { display: none; }
+
+        .header-title {
+            font-size: clamp(26px, 7vw, 34px);
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-top: 10px;
+            margin-bottom: 4px;
+            text-align: center;
+            letter-spacing: -0.5px;
+            padding-left: 20px;
+            padding-right: 0;
+        }
+
+        .sub-title {
+            font-size: 14px;
+            color: var(--text-grey);
+            margin-bottom: 32px;
+            text-align: center;
+            font-weight: 500;
+            padding-left: 20px;
+            padding-right: 0;
+        }
+
+        .seccio-rol {
+            margin-bottom: 28px;
+        }
+
+        .titol-rol {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            padding-left: 20px;
+            border-left: 6px solid var(--green-coolture);
+            text-transform: lowercase;
+            letter-spacing: 0.3px;
+        }
+        .titol-rol::first-letter {
+            text-transform: uppercase;
+        }
+
+        .pais-card {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 0 100px 100px 0;
+            margin-bottom: 12px;
+            margin-right: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid rgba(102,127,87,0.2);
+            border-left: none;
+            transition: all 0.15s;
+            cursor: pointer;
+            min-height: 64px;
+            overflow: hidden;
+        }
+
+        .pais-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 0 100px 100px 0;
+            z-index: 1;
+            transition: background 0.2s;
+        }
+
+        .pais-card:hover::before {
+            background: rgba(0, 0, 0, 0.01);
+        }
+
+        .pais-card:active {
+            transform: scale(0.99);
+        }
+
+        .pais-info {
+            position: relative;
+            z-index: 2;
+            padding: 8px 18px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .pais-nom {
+            font-weight: 400;               /* Letra más fina (normal) */
+            font-size: 24px;
+            color: #1c1c1c;
+            text-shadow: none;
+            letter-spacing: 0.5px;
+            text-transform: none;
+            flex: 1;
+        }
+
+        .medalla-img {
+            width: 46px;
+            height: 46px;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            z-index: 2;
+            position: relative;
+            margin-left: 12px;
+        }
+
+        .medalla-fallback {
+            width: 46px;
+            height: 46px;
+            background: #e0dcd0;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            z-index: 2;
+            position: relative;
+            margin-left: 12px;
+        }
+
+        /* Reglas de fondo no usadas, se mantienen sin afectar */
+        .pais-card[data-pais="japo"] { background-image: url('images/paisos/fondojapon.webp'); }
+        .pais-card[data-pais="peru"] { background-image: url('images/paisos/fondoperu.jpg'); }
+        .pais-card[data-pais="italia"] { background-image: url('images/paisos/fondoitalia.jpg'); }
+        .pais-card[data-pais="espanya"] { background-image: url('images/paisos/fondoespanya.webp'); }
+        .pais-card[data-pais="frança"] { background-image: url('images/paisos/fondofrança.jpg'); }
+        .pais-card[data-pais="brasil"] { background-image: url('images/paisos/fondobrasil.jpg'); }
+
+        .pais-card.fallback-bg {
+            background-image: none !important;
+            background-color: #8a9a7a;
+        }
+
+        .navbar {
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom, 20px));
+            left: 8px;
+            right: 8px;
+            background-color: var(--green-coolture);
+            border-radius: 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 72px;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            overflow: visible;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 68px;
+            height: 56px;
+            transition: all 0.2s ease;
+            border-radius: 28px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-item.active {
+            background-color: var(--select-bg);
+            border-radius: 32px;
+            z-index: 30;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .navbar a:first-child { transform: translateX(6px); }
+        .navbar a:nth-child(2) { transform: translateX(6px); }
+        .navbar a:nth-child(4) { transform: translateX(-6px); }
+        .navbar a:last-child { transform: translateX(-6px); }
+
+        .center-logo-link {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 76px;
+            height: 72px;
+            flex-shrink: 0;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .center-logo-link::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 84px;
+            background-color: var(--green-coolture);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .center-logo {
+            position: relative;
+            z-index: 2;
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-top: -48px;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.2s ease;
+            pointer-events: auto;
+        }
+
+        .center-logo-link:hover .center-logo {
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 450px) {
+            .navbar {
+                left: 6px;
+                right: 6px;
+                height: 68px;
+            }
+            .nav-item {
+                width: 60px;
+                height: 52px;
+            }
+            .nav-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .center-logo {
+                width: 60px;
+                height: 60px;
+                margin-top: -33px;
+            }
+            .center-logo-link::before {
+                width: 76px;
+                height: 76px;
+            }
+            .navbar a:first-child { transform: translateX(4px); }
+            .navbar a:nth-child(2) { transform: translateX(4px); }
+            .navbar a:nth-child(4) { transform: translateX(-4px); }
+            .navbar a:last-child { transform: translateX(-4px); }
+        }
+
+        @media (max-width: 400px) {
+            .content {
+                padding-right: 16px;
+            }
+            .header-title, .sub-title, .titol-rol {
+                padding-left: 16px;
+            }
+            .pais-nom {
+                font-size: 20px;
+            }
+            .pais-info {
+                padding: 6px 14px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .pais-nom {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="content">
+        <h1 class="header-title">ESPANYA!</h1>
+        <p class="sub-title">Benvingut. Tria un dels 7 temes!</p>
+
+        <!-- SECCIÓ TURISTA -->
+        <div class="seccio-rol">
+            <h2 class="titol-rol">Turista</h2>
+            <!-- 7 CATEGORÍAS TURISTA -->
+            <div style="margin-bottom: 28px;">
+                <!-- Gastronomia -->
+                <div class="pais-card" data-tema="gastronomia" style="background-image: none; background-color: #FFF7DE;">
+                    <div class="pais-info">
+                        <span class="pais-nom">Gastronomia</span>
+                        <img class="medalla-img" src="../../images/medalla-01.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="medalla-fallback" style="display: none;">🏅</div>
+                    </div>
+                </div>
+                <!-- Llenguatge -->
+                <div class="pais-card" data-tema="llenguatge" style="background-image: none; background-color: #FFF7DE;">
+                    <div class="pais-info">
+                        <span class="pais-nom">Llenguatge</span>
+                        <img class="medalla-img" src="../../images/medalla-01.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="medalla-fallback" style="display: none;">🏅</div>
+                    </div>
+                </div>
+                <!-- Música i art -->
+                <div class="pais-card" data-tema="musica-i-art" style="background-image: none; background-color: #FFF7DE;">
+                    <div class="pais-info">
+                        <span class="pais-nom">Música i art</span>
+                        <img class="medalla-img" src="../../images/medalla-01.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="medalla-fallback" style="display: none;">🏅</div>
+                    </div>
+                </div>
+                <!-- Celebracions -->
+                <div class="pais-card" data-tema="celebracions" style="background-image: none; background-color: #FFF7DE;">
+                    <div class="pais-info">
+                        <span class="pais-nom">Celebracions</span>
+                        <img class="medalla-img" src="../../images/medalla-01.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="medalla-fallback" style="display: none;">🏅</div>
+                    </div>
+                </div>
+                <!-- Llegendes -->
+                <div class="pais-card" data-tema="llegendes" style="background-image: none; background-color: #FFF7DE;">
+                    <div class="pais-info">
+                        <span class="pais-nom">Llegendes</span>
+                        <img class="medalla-img" src="../../images/medalla-01.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="medalla-fallback" style="display: none;">🏅</div>
+                    </div>
+                </div>
+                <!-- Arquitectura -->
+                <div class="pais-card" data-tema="arquitectura" style="background-image: none; background-color: #FFF7DE;">
+                    <div class="pais-info">
+                        <span class="pais-nom">Arquitectura</span>
+                        <img class="medalla-img" src="../../images/medalla-01.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="medalla-fallback" style="display: none;">🏅</div>
+                    </div>
+                </div>
+                <!-- Vivències -->
+                <div class="pais-card" data-tema="vivencies" style="background-image: none; background-color: #FFF7DE;">
+                    <div class="pais-info">
+                        <span class="pais-nom">Vivències</span>
+                        <img class="medalla-img" src="../../images/medalla-01.png" alt="medalla" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="medalla-fallback" style="display: none;">🏅</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="height: 10px;"></div>
+    </div>
+
+    <!-- BARRA INFERIOR -->
+    <nav class="navbar">
+        <a href="../../culturas.html" class="nav-item">
+            <img src="../../images/forum.png" class="nav-icon" alt="Forum">
+        </a>
+        <a href="../../quizz.html" class="nav-item active">
+            <img src="../../images/quizz2.png" class="nav-icon" alt="Quizz">
+        </a>
+        <a href="../../home.html" class="center-logo-link">
+            <img src="../../images/logos-033.png" class="center-logo" alt="Logo central 03">
+        </a>
+        <a href="../../pasaporte.html" class="nav-item">
+            <img src="../../images/passaport.png" class="nav-icon" alt="Passaport">
+        </a>
+        <a href="../../perfil.html" class="nav-item">
+            <img src="../../images/perfil.png" class="nav-icon" alt="Perfil">
+        </a>
+    </nav>
+</div>
+
+<script>
+    (function() {
+        // MAPEO DE TEMAS A ARCHIVOS HTML
+        const rutesTemes = {
+            "gastronomia": "turista/gastronomia.html",
+            "llenguatge": "turista/llenguatge.html",
+            "musica-i-art": "turista/musica-i-art.html",
+            "celebracions": "turista/celebracions.html",
+            "llegendes": "turista/llegendes.html",
+            "arquitectura": "turista/arquitectura.html",
+            "vivencies": "turista/vivències.html"
+        };
+
+        // Redirección al hacer clic en cada tarjeta según data-tema
+        const cards = document.querySelectorAll('.pais-card');
+        cards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Efecto visual
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => this.style.transform = '', 120);
+                
+                // Obtener el nombre del tema desde el atributo data-tema
+                const tema = this.dataset.tema;
+                if (tema) {
+                    // Redirigir al archivo correspondiente según el mapeo
+                    const ruta = rutesTemes[tema];
+                    if (ruta) {
+                        window.location.href = ruta;
+                    }
+                }
+            });
+        });
+
+        // Fallback para imágenes de medalla (por si no cargan)
+        const medalImgs = document.querySelectorAll('.medalla-img');
+        medalImgs.forEach(img => {
+            img.addEventListener('error', function() {
+                this.style.display = 'none';
+                const fallback = this.nextElementSibling;
+                if (fallback && fallback.classList.contains('medalla-fallback')) {
+                    fallback.style.display = 'flex';
+                }
+            });
+            if (img.complete && img.naturalHeight === 0) {
+                img.style.display = 'none';
+                const fallback = img.nextElementSibling;
+                if (fallback) fallback.style.display = 'flex';
+            }
+        });
+    })();
+</script>
+</body>
+</html>

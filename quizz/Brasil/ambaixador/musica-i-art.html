@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Coolture · Ambaixador | Música i Art del Brasil</title>
+    <style>
+        /* ===== ESTILOS EXACTAMENTE IGUALES ===== */
+        :root {
+            --bg-color: #F5F1E8;
+            --green-coolture: #667F57;
+            --select-bg: #F4F1E8;
+            --white: #ffffff;
+            --text-dark: #1c1c1c;
+            --text-grey: #7c7c7c;
+            --danger: #e67e22;
+            --correct: #2ecc71;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body, html {
+            margin: 0; padding: 0;
+            background-color: #1a1a1a;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border-radius: 0;
+            overflow: hidden;
+            padding-top: constant(safe-area-inset-top);
+            padding-top: env(safe-area-inset-top);
+        }
+        
+        /* ----- TÍTOL BONIT ----- */
+        .quiz-title {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 5px;
+            padding: 0 20px;
+        }
+        .quiz-title h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--green-coolture);
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #667F57, #8BA87A);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .quiz-title p {
+            font-size: 14px;
+            color: var(--text-grey);
+            margin-top: 4px;
+            font-style: italic;
+        }
+        .quiz-title .emoji {
+            font-size: 32px;
+            display: inline-block;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .quiz-content {
+            flex-grow: 1;
+            padding: 10px 20px 100px 20px;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        .quiz-content::-webkit-scrollbar { display: none; }
+        
+        .progress-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .question-counter {
+            font-size: clamp(12px, 3.5vw, 13px);
+            background: var(--green-coolture);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+        }
+        .timer-box {
+            background: var(--white);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-weight: bold;
+            color: var(--text-dark);
+            font-size: clamp(16px, 4.5vw, 18px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .question-text {
+            background: var(--white);
+            border-radius: 28px;
+            padding: 22px 18px;
+            font-size: clamp(16px, 4.5vw, 18px);
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 10px 0 25px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            line-height: 1.3;
+        }
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .option-btn {
+            background: var(--white);
+            border: 1px solid #ddd;
+            border-radius: 60px;
+            padding: 14px 18px;
+            font-size: clamp(13px, 4vw, 14px);
+            font-weight: 500;
+            color: var(--text-dark);
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .option-btn:hover { background: #f9f9f9; transform: scale(0.99); }
+        .option-btn.disabled { cursor: not-allowed; opacity: 0.7; pointer-events: none; }
+        .option-btn.correct { background: var(--correct); color: white; border-color: var(--correct); }
+        .option-btn.wrong { background: var(--danger); color: white; border-color: var(--danger); }
+        .next-btn {
+            background: var(--green-coolture);
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            font-size: clamp(14px, 4vw, 16px);
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+        .next-btn:active { transform: scale(0.97); background: #4e643f; }
+        .result-card {
+            background: white;
+            border-radius: 35px;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .result-score {
+            font-size: clamp(36px, 10vw, 48px);
+            font-weight: 800;
+            color: var(--green-coolture);
+            margin: 15px 0;
+        }
+        .btn-retry {
+            background: var(--green-coolture);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            margin: 10px;
+            cursor: pointer;
+            font-size: clamp(13px, 3.5vw, 14px);
+        }
+        
+        /* ===== BARRA INFERIOR ===== */
+        .navbar {
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom, 20px));
+            left: 8px;
+            right: 8px;
+            background-color: var(--green-coolture);
+            border-radius: 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 72px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            overflow: visible;
+        }
+
+        .nav-item {
+            position: relative;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 68px;
+            height: 56px;
+            transition: all 0.2s ease;
+            border-radius: 28px;
+            flex-shrink: 0;
+        }
+
+        .nav-item.active {
+            background-color: var(--select-bg);
+            border-radius: 32px;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .navbar a:first-child { transform: translateX(6px); }
+        .navbar a:nth-child(2) { transform: translateX(6px); }
+        .navbar a:nth-child(4) { transform: translateX(-6px); }
+        .navbar a:last-child { transform: translateX(-6px); }
+
+        .center-logo-link {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 76px;
+            height: 72px;
+            flex-shrink: 0;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .center-logo-link::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 84px;
+            background-color: var(--green-coolture);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .center-logo {
+            position: relative;
+            z-index: 10;
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-top: -58px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.2s ease;
+            pointer-events: auto;
+        }
+
+        .center-logo-link:hover .center-logo { transform: scale(1.02); }
+
+        /* MEDIA QUERIES */
+        @media (max-width: 450px) {
+            .navbar {
+                left: 6px;
+                right: 6px;
+                height: 68px;
+            }
+            .nav-item {
+                width: 60px;
+                height: 52px;
+            }
+            .nav-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .center-logo {
+                width: 60px;
+                height: 60px;
+                margin-top: -33px;
+            }
+            .center-logo-link::before {
+                width: 76px;
+                height: 76px;
+            }
+            .navbar a:first-child { transform: translateX(4px); }
+            .navbar a:nth-child(2) { transform: translateX(4px); }
+            .navbar a:nth-child(4) { transform: translateX(-4px); }
+            .navbar a:last-child { transform: translateX(-4px); }
+            .quiz-title h1 {
+                font-size: 22px;
+            }
+            .quiz-title .emoji {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .quiz-content {
+                padding: 10px 16px 100px 16px;
+            }
+            .question-text {
+                padding: 18px 14px;
+            }
+            .option-btn {
+                padding: 12px 16px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .quiz-content {
+                padding: 8px 14px 100px 14px;
+            }
+            .question-text {
+                padding: 15px 12px;
+            }
+            .option-btn {
+                padding: 10px 14px;
+            }
+            .quiz-title h1 {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .quiz-content {
+                padding: 8px 12px 100px 12px;
+            }
+            .question-text {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- TÍTOL: MÚSICA I ART DEL BRASIL - NIVELL AMBAIXADOR -->
+    <div class="quiz-title">
+        <span class="emoji">🇧🇷🎵</span>
+        <h1>Música i Art del Brasil</h1>
+        <p>Rítmes i colors</p>
+    </div>
+    
+    <div class="quiz-content" id="quizContent"></div>
+    
+    <nav class="navbar">
+        <a href="../../culturas.html" class="nav-item">
+            <img src="../../../images/forum.png" class="nav-icon" alt="Forum">
+        </a>
+        <a href="../../quizz.html" class="nav-item active">
+            <img src="../../../images/quizz2.png" class="nav-icon" alt="Quizz">
+        </a>
+        <a href="../../home.html" class="center-logo-link">
+            <img src="../../../images/logos-033.png" class="center-logo" alt="Logo central 03">
+        </a>
+        <a href="../../pasaporte.html" class="nav-item">
+            <img src="../../../images/passaport.png" class="nav-icon" alt="Passaport">
+        </a>
+        <a href="../../perfil.html" class="nav-item">
+            <img src="../../../images/perfil.png" class="nav-icon" alt="Perfil">
+        </a>
+    </nav>
+</div>
+
+<script>
+    // ===== 15 PREGUNTES NOVES · NIVELL AMBAIXADOR (DIFÍCIL) =====
+    // Totes diferents, centrades en música i art del Brasil
+    const QUESTIONS = [
+        { 
+            text: "Quin gènere musical brasiler, nascut a Bahia als anys 60, barreja ritmes afrobrasilers amb jazz i rock?", 
+            options: ["Samba", "Bossa Nova", "Tropicália", "Forró"], 
+            correct: 2 
+        },
+        { 
+            text: "Quin pintor brasiler del segle XX, conegut com 'el mestre de la pintura popular', va crear la sèrie 'Retirantes'?", 
+            options: ["Cândido Portinari", "Tarsila do Amaral", "Emiliano Di Cavalcanti", "Anita Malfatti"], 
+            correct: 0 
+        },
+        { 
+            text: "Com es diu el famós ritme i ball brasiler, originari de Rio de Janeiro, considerat el 'germà' de la samba?", 
+            options: ["Pagode", "Choro", "Samba de roda", "Partido alto"], 
+            correct: 1 
+        },
+        { 
+            text: "Quin arquitecte brasiler, co-creador de Brasília, és considerat el pare de l'arquitectura moderna brasilera?", 
+            options: ["Oscar Niemeyer", "Lúcio Costa", "Paulo Mendes da Rocha", "Roberto Burle Marx"], 
+            correct: 0 
+        },
+        { 
+            text: "Quina cantant brasilera, coneguda com la 'Reina del Bossa Nova', va interpretar 'The Girl from Ipanema'?", 
+            options: ["Astrud Gilberto", "Elis Regina", "Gal Costa", "Maria Bethânia"], 
+            correct: 0 
+        },
+        { 
+            text: "Quin moviment artístic brasiler de la dècada de 1920 va buscar una identitat nacional, liderat per Tarsila do Amaral?", 
+            options: ["Antropofagia", "Modernisme", "Cubisme", "Surrealisme"], 
+            correct: 0 
+        },
+        { 
+            text: "Quin instrument de percussió és fonamental en la samba i el pagode brasiler?", 
+            options: ["Pandeiro", "Cuíca", "Tamborim", "Surdo"], 
+            correct: 3 
+        },
+        { 
+            text: "Quin artista plàstic brasiler, conegut per les seves escultures de ferro i formigó, va dissenyar el Memorial d'Amèrica Llatina?", 
+            options: ["Oscar Niemeyer", "Tomie Ohtake", "Alfredo Volpi", "Ivan Serpa"], 
+            correct: 0 
+        },
+        { 
+            text: "Quin gènere musical brasiler, originari del sertão nordestí, es caracteritza per l'ús de l'acordió i la zabumba?", 
+            options: ["Forró", "Baião", "Xote", "Frevo"], 
+            correct: 0 
+        },
+        { 
+            text: "Quina pintora modernista brasilera, autora de 'Abaporu' i 'Antropofagia', va ser una de les impulsores del Moviment Antropofàgic?", 
+            options: ["Tarsila do Amaral", "Anita Malfatti", "Djanira da Motta e Silva", "Beatriz Milhazes"], 
+            correct: 0 
+        },
+        { 
+            text: "Quin ritme i dansa brasilera, originari de Recife, és conegut per la seva energia i l'ús de para-sol de colors?", 
+            options: ["Frevo", "Maracatu", "Coco", "Ciranda"], 
+            correct: 0 
+        },
+        { 
+            text: "Quin escultor brasiler, famós per les seves obres monumentals de formigó, va crear l'escultura 'A Loba' a São Paulo?", 
+            options: ["Tomie Ohtake", "Sérgio Camargo", "Franz Weissmann", "Amilcar de Castro"], 
+            correct: 0 
+        },
+        { 
+            text: "Quin músic brasiler, considerat el 'pioner del tropicalisme', va liderar el moviment juntament amb Gilberto Gil i Caetano Veloso?", 
+            options: ["Tom Zé", "Os Mutantes", "Jards Macalé", "Rogério Duprat"], 
+            correct: 0 
+        },
+        { 
+            text: "Quin fotògraf brasiler, conegut per les seves imatges de la construcció de Brasília i les faveles cariocas?", 
+            options: ["Sebastião Salgado", "Pierre Verger", "Marcelo Camargo", "Mario Cravo Neto"], 
+            correct: 0 
+        },
+        { 
+            text: "Quin gènere musical brasiler, nascut a les arrels africanes, es caracteritza per les lletres de denúncia social i la percussió intensa?", 
+            options: ["Samba de roda", "Candomblé", "Maracatu", "Ijexá"], 
+            correct: 2 
+        }
+    ];
+
+    let currentIndex = 0, score = 0, timerInterval = null, timeLeft = 20;
+    let selectedOption = null;
+    let questionLocked = false;
+    const quizContainer = document.getElementById('quizContent');
+
+    function stopTimer() { if (timerInterval) clearInterval(timerInterval); timerInterval = null; }
+    function startTimer() {
+        stopTimer();
+        timeLeft = 20;
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            if (timeLeft > 0) {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft === 0) { 
+                    stopTimer();
+                    if (!questionLocked) {
+                        handleTimeout();
+                    }
+                }
+            } else {
+                stopTimer();
+            }
+        }, 1000);
+    }
+    function updateTimerDisplay() {
+        const timerSpan = document.getElementById('timerValue');
+        if (timerSpan) timerSpan.innerText = timeLeft;
+        const timerBox = document.querySelector('.timer-box');
+        if (timerBox && timeLeft <= 5) timerBox.style.color = '#e67e22';
+        else if (timerBox) timerBox.style.color = 'var(--text-dark)';
+    }
+    function handleTimeout() {
+        if (questionLocked) return;
+        questionLocked = true;
+        document.querySelectorAll('.option-btn').forEach(btn => btn.classList.add('disabled'));
+        goToNextQuestion();
+    }
+    function renderQuestion() {
+        if (currentIndex >= QUESTIONS.length) return showResults();
+        questionLocked = false;
+        selectedOption = null;
+        const q = QUESTIONS[currentIndex];
+        quizContainer.innerHTML = `
+            <div class="progress-area">
+                <div class="question-counter">Pregunta ${currentIndex+1}/${QUESTIONS.length}</div>
+                <div class="timer-box">⏱ <span id="timerValue">20</span> s</div>
+            </div>
+            <div class="question-text">${q.text}</div>
+            <div class="options-list" id="optionsList">
+                ${q.options.map((opt, idx) => `<div class="option-btn" data-opt-index="${idx}">${opt}</div>`).join('')}
+            </div>
+            <button class="next-btn" id="nextBtn">Següent</button>
+        `;
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if (questionLocked) return;
+                const idx = parseInt(btn.dataset.optIndex);
+                document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('correct'));
+                btn.classList.add('correct');
+                selectedOption = idx;
+            });
+        });
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (questionLocked) return;
+            if (selectedOption !== null) {
+                const isCorrect = (selectedOption === QUESTIONS[currentIndex].correct);
+                if (isCorrect) score++;
+            }
+            questionLocked = true;
+            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.add('disabled'));
+            goToNextQuestion();
+        });
+        startTimer();
+    }
+    function goToNextQuestion() {
+        currentIndex++;
+        renderQuestion();
+    }
+    function showResults() {
+        stopTimer();
+        const percent = Math.round((score / QUESTIONS.length) * 100);
+        let mensaje = percent === 100 ? "🏆 Excel·lent! Ets un autèntic ambaixador de l'art i música brasilera!" : 
+                      percent >= 70 ? "🎼 Impressionant! El teu coneixement de la cultura brasilera és admirable." : 
+                      percent >= 50 ? "🎨 Bon nivell d'ambaixador! Encara pots aprofundir més." : 
+                      "📚 Un repte difícil! L'art i la música del Brasil tenen molt a oferir.";
+        quizContainer.innerHTML = `
+            <div class="result-card">
+                <h2>🎉 Quizz completat!</h2>
+                <div class="result-score">${score} / ${QUESTIONS.length}</div>
+                <p>${mensaje}</p>
+                <button class="btn-retry" id="retryBtn">🔄 Tornar a provar</button>
+                <button class="btn-retry" id="backMenuBtn">📋 Tornar al quizz</button>
+            </div>
+        `;
+        document.getElementById('retryBtn')?.addEventListener('click', () => {
+            currentIndex = 0;
+            score = 0;
+            selectedOption = null;
+            questionLocked = false;
+            stopTimer();
+            renderQuestion();
+        });
+        document.getElementById('backMenuBtn')?.addEventListener('click', () => { window.location.href = '../../quizz.html'; });
+    }
+    renderQuestion();
+</script>
+</body>
+</html>
