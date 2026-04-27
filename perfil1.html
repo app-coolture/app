@@ -49,6 +49,17 @@
             padding-top: env(safe-area-inset-top);
         }
 
+        /* ---------- FLECHA DE RETORN ---------- */
+        .back-arrow {
+            position: absolute;
+            top: 50px;
+            left: 16px;
+            z-index: 50;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+        }
+
         /* ---------- CONTINGUT DESPLAÇABLE (PERFIL) ---------- */
         .profile-scroll {
             flex: 1;
@@ -56,7 +67,7 @@
             padding: 8px 16px 90px 16px;
             scrollbar-width: none;
             -ms-overflow-style: none;
-            margin-top: 40px;
+            margin-top: 80px;
         }
         .profile-scroll::-webkit-scrollbar {
             display: none;
@@ -470,6 +481,9 @@
 </head>
 <body>
     <div class="container">
+        <!-- FLECHA DE RETORN -->
+        <img src="images/flechai.png" alt="Tornar" class="back-arrow" onclick="window.location.href='culturas.html'">
+
         <div class="profile-scroll">
             <div class="profile-container">
 

@@ -63,8 +63,8 @@
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
-            padding-top: calc(20px + constant(safe-area-inset-top));
-            padding-top: calc(20px + env(safe-area-inset-top));
+            padding-top: calc(10px + constant(safe-area-inset-top));
+            padding-top: calc(10px + env(safe-area-inset-top));
             padding-right: 20px;
             padding-bottom: 90px;
             padding-left: 20px;
@@ -77,7 +77,7 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-top: 10px;
-            padding-top: 80px;
+            padding-top: 20px;
             margin-bottom: 5px;
         }
 
@@ -109,6 +109,7 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
             flex-shrink: 0;
             background-color: #fff;
+            cursor: pointer;
         }
 
         .profile-pic img {
@@ -691,7 +692,7 @@
                     <h1>Descobreix Cultures</h1>
                     <p>CONNECTA AMB EL MÓN</p>
                 </div>
-                <div class="profile-pic">
+                <div class="profile-pic" onclick="window.location.href='perfil.html'">
                     <img src="images/imgperfil.png" alt="usuari">
                 </div>
             </header>
@@ -783,7 +784,7 @@
                     </div>
                 </div>
                 <div class="card-action-connecta">
-                    <button class="btn-entra-connecta">Entra</button>
+                    <button class="btn-entra-connecta" onclick="window.location.href='culturas.html'">Entra</button>
                 </div>
             </div>
 
@@ -804,7 +805,7 @@
                     </div>
                 </div>
                 <div class="card-action-connecta">
-                    <button class="btn-entra-connecta">Prova</button>
+                    <button class="btn-entra-connecta" onclick="window.location.href='quizz.html'">Prova</button>
                 </div>
             </div>
             
@@ -818,7 +819,7 @@
                     </div>
                 </div>
                 <div class="card-action-connecta">
-                    <button class="btn-entra-connecta">Veure</button>
+                    <button class="btn-entra-connecta" onclick="window.location.href='pasaporte.html'">Veure</button>
                 </div>
             </div>
 
