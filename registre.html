@@ -70,8 +70,8 @@
             align-items: center;
             text-align: center;
             flex: 1;
-            justify-content: flex-start;  /* logo al mateix lloc que a les altres pàgines */
-            padding: 20px 0 40px 0;
+            justify-content: flex-start;  /* Comença des de dalt */
+            /* Sense padding per no desplaçar el logo */
         }
 
         /* Logo i lema idèntics a escull.html i login.html */
@@ -89,13 +89,12 @@
             opacity: 0.9;
         }
 
-        /* Formulari */
+        /* Formulari (comença aquí, mateixa separació que login.html) */
         .form {
             width: 100%;
             margin-top: 15px;
         }
 
-        /* Camps d'entrada */
         .form input {
             width: 100%;
             background: transparent;
@@ -103,14 +102,14 @@
             border-bottom: 1px solid var(--white);
             color: var(--white);
             padding: 10px 0;
-            font-size: clamp(14px, 4vw, 16px);
             margin-bottom: 5px;
             outline: none;
+            font-size: clamp(14px, 4vw, 16px);
             box-sizing: border-box;
         }
 
         .form input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255,255,255,0.7);
         }
 
         /* Selector personalitzat */
@@ -237,7 +236,6 @@
         @media (max-width: 400px) {
             .content {
                 width: 88%;
-                padding: 15px 0 30px 0;
             }
             .custom-select-container {
                 width: 100px;
