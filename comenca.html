@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Coolture - Comença</title>
     <style>
-        /* --- VARIABLES PERSONALIZABLES (sin cambios) --- */
         :root {
-            --color-oro: #c5a866;       /* Color de la parte superior */
-            --color-verde: #6b7a5a;     /* Color de la parte inferior */
-            --angulo: 115deg;           /* Ajusta aquí los grados (ej: 120deg, 160deg) */
-            --separacion: 50%;          /* Dónde corta la línea (50% es la mitad) */
+            --color-oro: #c5a866;
+            --color-verde: #6b7a5a;
+            --angulo: 115deg;
+            --separacion: 50%;
         }
 
         * {
@@ -31,7 +30,6 @@
             overflow-x: hidden;
         }
 
-        /* Contenedor principal: OCUPA EL 100% DEL ANCHO (sin límite fijo) */
         .container {
             width: 100%;
             min-height: 100vh;
@@ -42,7 +40,6 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
-            /* Espacio dinámico para el notch */
             padding-top: constant(safe-area-inset-top);
             padding-top: env(safe-area-inset-top);
             padding-bottom: constant(safe-area-inset-bottom);
@@ -60,15 +57,14 @@
             color: white;
         }
 
-        /* Logo responsive: se adapta entre 180px y 280px según el ancho */
         .logo {
             width: clamp(180px, 70vw, 280px);
-            margin-top: clamp(80px, 25vh, 180px); /* Margen superior dinámico */
+            margin-top: clamp(20px, 10vh, 100px);
         }
 
         .bottom-area {
             width: 100%;
-            margin-bottom: 40px;
+            margin-bottom: 0;
         }
 
         .small-text {
@@ -98,7 +94,6 @@
             transform: scale(0.96);
         }
 
-        /* Ajustes para pantallas muy pequeñas */
         @media (max-width: 400px) {
             .content {
                 padding: 30px 16px;
@@ -111,10 +106,10 @@
 
         @media (max-width: 360px) {
             .logo {
-                margin-top: clamp(40px, 15vh, 120px);
+                margin-top: clamp(15px, 10vh, 90px);
             }
             .bottom-area {
-                margin-bottom: 30px;
+                margin-bottom: 40px;
             }
         }
 
@@ -128,14 +123,24 @@
             }
         }
 
-        /* Para pantallas muy altas, centramos mejor el contenido */
         @media (min-height: 800px) {
-            .logo {
-                margin-top: 0;
-            }
             .content {
                 justify-content: center;
                 gap: 40px;
+            }
+        }
+
+        /* Samsung Galaxy S8 i similars */
+        @media (min-height: 700px) and (max-width: 380px) {
+            .logo {
+                margin-top: clamp(180px, 42vh, 270px);
+            }
+            .content {
+                justify-content: space-between;
+                gap: 0;
+            }
+            .bottom-area {
+                margin-bottom: 200px;  /* pujat una mica més */
             }
         }
     </style>

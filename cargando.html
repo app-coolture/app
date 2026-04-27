@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Coolture · Carregant</title>
+    <style>
+        :root {
+            --crema: #f5f2eb;
+            --texto: #2E2E2E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a1a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 430px;
+            min-height: 100vh;
+            background-color: var(--crema);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            margin: 0 auto;
+        }
+
+        .logo-carga {
+            width: clamp(140px, 40vw, 200px);
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 30px;
+            animation: pulse 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.9; }
+            100% { transform: scale(1.03); opacity: 1; }
+        }
+
+        .porcentaje {
+            font-size: clamp(18px, 5vw, 24px);
+            font-weight: 700;
+            color: var(--texto);
+            letter-spacing: 1px;
+        }
+
+        .barra-fondo {
+            width: 70%;
+            max-width: 260px;
+            height: 6px;
+            background-color: #e0dbd0;
+            border-radius: 10px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .barra-progreso {
+            width: 0%;
+            height: 100%;
+            background-color: #667F57;
+            border-radius: 10px;
+            transition: width 0.1s linear;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="images/logopass.png" class="logo-carga" alt="Coolture Logo">
+        <div class="porcentaje" id="porcentaje-texto">0%</div>
+        <div class="barra-fondo">
+            <div class="barra-progreso" id="barra"></div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const porcentajeTexto = document.getElementById('porcentaje-texto');
+            const barra = document.getElementById('barra');
+            const duracion = 1500; // 1.5 segundos
+            const intervalo = 30; // actualizar cada 30ms
+            const incremento = 100 / (duracion / intervalo);
+            let progreso = 0;
+
+            const animacion = setInterval(() => {
+                progreso += incremento;
+                if (progreso >= 100) {
+                    progreso = 100;
+                    clearInterval(animacion);
+                    // Redirigir a home.html
+                    setTimeout(() => {
+                        window.location.href = 'home.html';
+                    }, 100);
+                }
+                const valor = Math.floor(progreso);
+                porcentajeTexto.textContent = valor + '%';
+                barra.style.width = valor + '%';
+            }, intervalo);
+        })();
+    </script>
+</body>
+</html>

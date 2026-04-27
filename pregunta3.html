@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Coolture · Interessos</title>
+    <title>Coolture · Moment</title>
     <style>
         :root {
             --verde: #6b7a5a;
@@ -100,7 +100,7 @@
         }
 
         /* ===== CONTENEDOR AMB SCROLL I DEGRADATS ===== */
-        .columna-interessos {
+        .columna-moment {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -130,7 +130,7 @@
             );
         }
 
-        .columna-interessos::before {
+        .columna-moment::before {
             content: '';
             position: absolute;
             top: 0;
@@ -142,7 +142,7 @@
             z-index: 5;
         }
 
-        .columna-interessos::after {
+        .columna-moment::after {
             content: '';
             position: absolute;
             bottom: 0;
@@ -154,25 +154,25 @@
             z-index: 5;
         }
 
-        .columna-interessos::-webkit-scrollbar {
+        .columna-moment::-webkit-scrollbar {
             display: none;
         }
 
-        /* Botones estilo rectángulo blanco, ahora con texto a la izquierda y minúsculas */
+        /* Botones estilo rectángulo blanco, igual que en intereses */
         .btn-opcio {
             font-size: clamp(14px, 4vw, 16px);
             color: #2E2E2E;
             background-color: var(--blanco);
             border-radius: 16px;
-            padding: 14px 20px;                /* padding izquierdo para indentar */
+            padding: 14px 20px;
             width: 90%;
             max-width: 340px;
-            text-align: left;                  /* alineado a la izquierda */
+            text-align: left;
             cursor: pointer;
             text-decoration: none;
             font-weight: 600;
             letter-spacing: 0.5px;
-            text-transform: none;              /* sin mayúsculas forzadas */
+            text-transform: none;
             transition: 0.2s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             border: none;
@@ -185,11 +185,11 @@
         }
 
         @media (max-width: 400px) {
-            .columna-interessos { padding: 30px 0; }
+            .columna-moment { padding: 30px 0; }
         }
 
         @media (max-width: 360px) {
-            .columna-interessos { padding: 20px 0; gap: 15px; }
+            .columna-moment { padding: 20px 0; gap: 15px; }
         }
 
         @media (max-width: 320px) {
@@ -201,16 +201,16 @@
 
 <div class="container">
     <div class="header">
-        <p class="step-indicator">Pas 2 de 3</p>
-        <h2 class="pregunta">Com prefereixes explorar?</h2>
-        <p class="sub-pregunta">Quan descobreixes una cultura nova, què et crida més?</p>
+        <p class="step-indicator">Pas 3 de 4</p>
+        <h2 class="pregunta">Quan tens curiositat pel món?</h2>
+        <p class="sub-pregunta">Entenem en quin moment connectes amb Coolture</p>
     </div>
 
-    <div class="columna-interessos">
-        <a href="pregunta3.html?interes=diferent" class="btn-opcio">El que és diferent a la meva</a>
-        <a href="pregunta3.html?interes=familiar" class="btn-opcio">El que em resulta familiar</a>
-        <a href="pregunta3.html?interes=noentenc" class="btn-opcio">El que no entenc</a>
-        <a href="pregunta3.html?interes=detalls" class="btn-opcio">Els petits detalls</a>
+    <div class="columna-moment">
+        <a href="cargando.html?moment=relaxat" class="btn-opcio">Quan estic relaxat/ada</a>
+        <a href="home.html?moment=avorreixo" class="btn-opcio">Quan m'avorreixo</a>
+        <a href="home.html?moment=curiositat" class="btn-opcio">Quan tinc curiositat</a>
+        <a href="home.html?moment=viatjo" class="btn-opcio">Quan viatjo o planifico</a>
     </div>
 </div>
 

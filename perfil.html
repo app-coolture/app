@@ -16,7 +16,7 @@
 --check-green: #667F57;
 --text-badge: #5D5334;
 --shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
---medal-line: #C8DFB8;    /* verd molt clar / muy flojo */
+--medal-line: #C8DFB8;
 }
 
 * {
@@ -25,7 +25,8 @@ margin: 0;
 padding: 0;
 }
 
-body, html {
+body,
+html {
 margin: 0;
 padding: 0;
 background-color: #1a1a1a;
@@ -45,7 +46,7 @@ background-color: var(--bg-color);
 position: relative;
 display: flex;
 flex-direction: column;
-box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 margin: 0 auto;
 padding-top: constant(safe-area-inset-top, 0px);
 padding-top: env(safe-area-inset-top, 0px);
@@ -69,7 +70,9 @@ padding-bottom: 100px;
 padding-left: 30px;
 scrollbar-width: none;
 }
-#profile-content::-webkit-scrollbar { display: none; }
+#profile-content::-webkit-scrollbar {
+display: none;
+}
 
 .profile-photo-container {
 position: relative;
@@ -96,43 +99,102 @@ border-radius: 50%;
 display: flex;
 align-items: center;
 justify-content: center;
-box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 cursor: pointer;
 }
-.edit-photo-btn img { width: 18px; height: 18px; }
+.edit-photo-btn img {
+width: 18px;
+height: 18px;
+}
 
-.profile-name { font-size: 26px; font-weight: 800; color: var(--text-dark); margin: 0; }
-.profile-handle { font-size: 16px; color: var(--text-grey); margin: 0; }
-.profile-info { font-size: 16px; color: var(--text-grey); margin: 5px 0 15px 0; }
-.profile-description { font-size: 15px; color: var(--text-dark); line-height: 1.4; margin-bottom: 25px; }
+.profile-name {
+font-size: 26px;
+font-weight: 800;
+color: var(--text-dark);
+margin: 0;
+}
+.profile-handle {
+font-size: 16px;
+color: var(--text-grey);
+margin: 0;
+}
+.profile-info {
+font-size: 16px;
+color: var(--text-grey);
+margin: 5px 0 15px 0;
+}
+.profile-description {
+font-size: 15px;
+color: var(--text-dark);
+line-height: 1.4;
+margin-bottom: 25px;
+}
 
-/* ===== NOU RECTANGLE VERD AMB MEDALLES (SOL·LICITAT) ===== */
+/* ===== RECTANGLE VERD AMB MEDALLES ===== */
 .medals-showcase {
-background-color: #667F57;     /* #667F57 exacte */
+background-color: #667F57;
 border-radius: 32px;
-padding: 20px 18px;
+padding: 20px 18px 16px;
 margin-bottom: 28px;
 display: flex;
+flex-direction: column;
 align-items: center;
-justify-content: space-between;
-gap: 12px;
+gap: 16px;
 box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
 transition: transform 0.2s ease;
 }
 
-/* cadascuna de les 3 imatges */
+/* Títol "Nivell de compte" */
+.medals-title {
+font-size: 17px;
+font-weight: 800;
+color: #ffffff;
+text-align: center;
+letter-spacing: 0.3px;
+margin: 0;
+line-height: 1.2;
+}
+
+/* Fila amb les 3 medalles i línies divisòries */
+.medals-row {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 12px;
+width: 100%;
+}
+
+/* Cada grup medalla + candado */
+.medal-group {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 6px;
+}
+
 .medal-img {
 width: clamp(65px, 18vw, 90px);
 height: auto;
 object-fit: contain;
 display: block;
-filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
 transition: transform 0.2s;
 border-radius: 16px;
 }
 
 .medals-showcase:hover .medal-img {
 transform: scale(1.02);
+}
+
+/* Imatge candado sota cada medalla */
+.candado-img {
+display: block;
+object-fit: contain;
+opacity: 0.95;
+transition: opacity 0.2s;
+}
+.candado-img:hover {
+opacity: 1;
 }
 
 /* línia horitzontal verda molt clara entre medalles */
@@ -144,12 +206,16 @@ background-color: var(--medal-line);
 border-radius: 4px;
 margin: 0 2px;
 box-shadow: 0 0 2px rgba(100, 130, 70, 0.3);
+align-self: center;
 }
 
-/* per a pantalles estretes les línies s'adapten i les imatges una mica més petites */
+/* Responsive per al showcase de medalles */
 @media (max-width: 450px) {
 .medals-showcase {
-padding: 16px 12px;
+padding: 18px 12px 14px;
+gap: 14px;
+}
+.medals-row {
 gap: 8px;
 }
 .medal-divider {
@@ -158,11 +224,15 @@ width: 18px;
 .medal-img {
 width: clamp(55px, 14vw, 75px);
 }
+.medals-title {
+font-size: 15px;
+}
 }
 
 @media (max-width: 380px) {
 .medals-showcase {
-padding: 14px 10px;
+padding: 16px 10px 12px;
+gap: 12px;
 }
 .medal-divider {
 width: 14px;
@@ -170,55 +240,122 @@ width: 14px;
 .medal-img {
 width: clamp(50px, 12vw, 65px);
 }
+.medals-title {
+font-size: 14px;
+}
+.medal-group {
+gap: 4px;
+}
 }
 
-/* secció d'emblemes existent */
-.section-title { font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; }
+/* ===== SECCIONS "CONTINGUT DESTACAT" I "PUBLICACIONS" ===== */
+.section-title {
+font-size: 20px;
+font-weight: 700;
+color: var(--text-dark);
+margin-bottom: 15px;
+}
 
-.badges-list { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+.featured-content {
+background-color: var(--white);
+border-radius: 24px;
+padding: 20px;
+margin-bottom: 28px;
+box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
 
-.badge-item {
-background-color: var(--badge-bg);
-border-radius: 30px;
-padding: 0 20px;
+.featured-header {
 display: flex;
 align-items: center;
-justify-content: space-between;
-height: 38px;
-box-sizing: border-box;
+gap: 12px;
+margin-bottom: 16px;
 }
 
-.badge-icons { display: flex; gap: 6px; }
-
-.check-icon {
-width: 20px;
-height: 20px;
+.featured-avatar {
+width: 50px;
+height: 50px;
 border-radius: 50%;
-background-color: var(--check-green);
-display: flex;
-align-items: center;
-justify-content: center;
-color: white;
-font-size: 12px;
-font-weight: bold;
+object-fit: cover;
+flex-shrink: 0;
 }
 
-.badge-text { font-size: 15px; font-weight: 700; color: var(--text-badge); }
+.featured-user-info {
+display: flex;
+flex-direction: column;
+gap: 2px;
+}
 
-.view-all-link {
-text-align: right;
-width: 100%;
+.featured-username {
+font-size: 18px;
+font-weight: 700;
+color: var(--text-dark);
+}
+
+.featured-name {
 font-size: 14px;
 color: var(--text-grey);
-cursor: pointer;
-margin-top: 8px;
-display: block;
-text-decoration: none;
 }
 
-.feed-end-space { height: 20px; }
+.featured-text {
+font-size: 15px;
+color: var(--text-dark);
+line-height: 1.4;
+margin-bottom: 18px;
+}
 
-/* ===== BARRA INFERIOR (fija, con soporte notch inferior) ===== */
+.featured-image {
+width: 85%;
+max-width: 260px;
+border-radius: 16px;
+display: block;
+margin-left: 0;
+margin-right: auto;
+}
+
+/* Ajustos responsive per a les seccions */
+@media (max-width: 400px) {
+.section-title {
+font-size: 18px;
+}
+.featured-content {
+padding: 16px;
+}
+.featured-avatar {
+width: 44px;
+height: 44px;
+}
+.featured-username {
+font-size: 16px;
+}
+.featured-name {
+font-size: 13px;
+}
+.featured-text {
+font-size: 14px;
+}
+}
+
+@media (max-width: 360px) {
+.section-title {
+font-size: 16px;
+}
+.featured-avatar {
+width: 40px;
+height: 40px;
+}
+.featured-username {
+font-size: 15px;
+}
+.featured-image {
+width: 90%;
+}
+}
+
+.feed-end-space {
+height: 20px;
+}
+
+/* ===== BARRA INFERIOR ===== */
 .navbar {
 position: fixed;
 bottom: max(20px, env(safe-area-inset-bottom, 20px));
@@ -264,10 +401,18 @@ object-fit: contain;
 display: block;
 }
 
-.navbar a:first-child { transform: translateX(6px); }
-.navbar a:nth-child(2) { transform: translateX(6px); }
-.navbar a:nth-child(4) { transform: translateX(-6px); }
-.navbar a:last-child { transform: translateX(-6px); }
+.navbar a:first-child {
+transform: translateX(6px);
+}
+.navbar a:nth-child(2) {
+transform: translateX(6px);
+}
+.navbar a:nth-child(4) {
+transform: translateX(-6px);
+}
+.navbar a:last-child {
+transform: translateX(-6px);
+}
 
 .center-logo-link {
 position: relative;
@@ -307,7 +452,7 @@ left: 0;
 right: 0;
 margin-left: auto;
 margin-right: auto;
-filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 transition: transform 0.2s ease;
 pointer-events: auto;
 }
@@ -320,7 +465,7 @@ transform: scale(1.02);
 opacity: 0.85;
 }
 
-/* ----- MEDIA QUERIES RESPONSIVAS (AJUSTES DINÁMICOS CON NOTCH) ----- */
+/* ----- MEDIA QUERIES RESPONSIVAS ----- */
 @media (max-width: 450px) {
 .navbar {
 left: 6px;
@@ -345,10 +490,18 @@ margin-top: -33px;
 width: 76px;
 height: 76px;
 }
-.navbar a:first-child { transform: translateX(4px); }
-.navbar a:nth-child(2) { transform: translateX(4px); }
-.navbar a:nth-child(4) { transform: translateX(-4px); }
-.navbar a:last-child { transform: translateX(-4px); }
+.navbar a:first-child {
+transform: translateX(4px);
+}
+.navbar a:nth-child(2) {
+transform: translateX(4px);
+}
+.navbar a:nth-child(4) {
+transform: translateX(-4px);
+}
+.navbar a:last-child {
+transform: translateX(-4px);
+}
 }
 
 @media (max-width: 400px) {
@@ -361,23 +514,10 @@ padding-top: calc(58px + env(safe-area-inset-top));
 .profile-name {
 font-size: 24px;
 }
-.profile-handle, .profile-info, .profile-description {
+.profile-handle,
+.profile-info,
+.profile-description {
 font-size: 14px;
-}
-.section-title {
-font-size: 18px;
-}
-.badge-item {
-height: 36px;
-padding: 0 16px;
-}
-.badge-text {
-font-size: 14px;
-}
-.check-icon {
-width: 18px;
-height: 18px;
-font-size: 11px;
 }
 }
 
@@ -394,13 +534,6 @@ font-size: 22px;
 .profile-photo-container {
 max-width: 280px;
 }
-.badge-item {
-height: 34px;
-padding: 0 14px;
-}
-.badge-text {
-font-size: 13px;
-}
 }
 
 @media (max-width: 320px) {
@@ -412,20 +545,6 @@ padding-top: calc(50px + env(safe-area-inset-top));
 }
 .profile-name {
 font-size: 20px;
-}
-.section-title {
-font-size: 16px;
-}
-.badge-item {
-height: 32px;
-}
-.badge-text {
-font-size: 12px;
-}
-.check-icon {
-width: 16px;
-height: 16px;
-font-size: 10px;
 }
 }
 </style>
@@ -445,52 +564,62 @@ font-size: 10px;
 <p class="profile-info">27 anys | Espanya</p>
 <p class="profile-description">M'agrada conèixer sobre altres països i cultures a la vegada que compartir les meves experiències amb tothom.</p>
 
-<!-- NOU RECTANGLE VERD AMB TRES MEDALLES I LÍNIES HORITZONTALS (sol·licitud) -->
+<!-- RECTANGLE VERD AMB TÍTOL + MEDALLES + CANDADOS -->
 <div class="medals-showcase">
-  <img class="medal-img" src="images/medalla-01.png" alt="Medalla 01" 
-       onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2245%22%20fill%3D%22%23E4C192%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2268%22%20font-size%3D%2240%22%20text-anchor%3D%22middle%22%20fill%3D%22%235E3A1A%22%3E🥉%3C%2Ftext%3E%3C%2Fsvg%3E'; this.style.background='#EFE2CF'; this.style.borderRadius='50%';">
-  
-  <div class="medal-divider" aria-hidden="true"></div>
+<h2 class="medals-title">Nivell de compte</h2>
 
-  <img class="medal-img" src="images/medalla-02.png" alt="Medalla 02"
-       onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2245%22%20fill%3D%22%23C0C0C0%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2268%22%20font-size%3D%2240%22%20text-anchor%3D%22middle%22%20fill%3D%22%23333333%22%3E🥈%3C%2Ftext%3E%3C%2Fsvg%3E'; this.style.background='#EFF2F7'; this.style.borderRadius='50%';">
-
-  <div class="medal-divider" aria-hidden="true"></div>
-
-  <img class="medal-img" src="images/medalla-03.png" alt="Medalla 03"
-       onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2245%22%20fill%3D%22%23FFD966%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2268%22%20font-size%3D%2240%22%20text-anchor%3D%22middle%22%20fill%3D%22%23A45D2E%22%3E🥇%3C%2Ftext%3E%3C%2Fsvg%3E'; this.style.background='#FFF0CC'; this.style.borderRadius='50%';">
+<div class="medals-row">
+<!-- Grup medalla 1 + candado1 -->
+<div class="medal-group">
+<img class="medal-img" src="images/medalla-01.png" alt="Medalla 01"
+onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2245%22%20fill%3D%22%23E4C192%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2268%22%20font-size%3D%2240%22%20text-anchor%3D%22middle%22%20fill%3D%22%235E3A1A%22%3E🥉%3C%2Ftext%3E%3C%2Fsvg%3E'; this.style.background='#EFE2CF'; this.style.borderRadius='50%';">
+<img class="candado-img" src="images/candado1.png" alt="Candado 1" width="15" height="15"
+onerror="this.onerror=null; this.style.background='%23ddd'; this.style.borderRadius='4px'; this.style.width='25px'; this.style.height='25px';">
 </div>
 
-<h2 class="section-title">Els meus emblemes</h2>
+<div class="medal-divider" aria-hidden="true"></div>
 
-<div class="badges-list">
-<div class="badge-item">
-<div class="badge-icons">
-<div class="check-icon">✓</div>
-<div class="check-icon">✓</div>
-<div class="check-icon">✓</div>
-<div class="check-icon">✓</div>
+<!-- Grup medalla 2 + candado2 -->
+<div class="medal-group">
+<img class="medal-img" src="images/medalla-02.png" alt="Medalla 02"
+onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2245%22%20fill%3D%22%23C0C0C0%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2268%22%20font-size%3D%2240%22%20text-anchor%3D%22middle%22%20fill%3D%22%23333333%22%3E🥈%3C%2Ftext%3E%3C%2Fsvg%3E'; this.style.background='#EFF2F7'; this.style.borderRadius='50%';">
+<img class="candado-img" src="images/candado2.png" alt="Candado 2" width="15" height="20"
+onerror="this.onerror=null; this.style.background='%23ddd'; this.style.borderRadius='4px'; this.style.width='25px'; this.style.height='30px';">
 </div>
-<span class="badge-text">Vivències</span>
+
+<div class="medal-divider" aria-hidden="true"></div>
+
+<!-- Grup medalla 3 + candado3 -->
+<div class="medal-group">
+<img class="medal-img" src="images/medalla-03.png" alt="Medalla 03"
+onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2245%22%20fill%3D%22%23FFD966%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2268%22%20font-size%3D%2240%22%20text-anchor%3D%22middle%22%20fill%3D%22%23A45D2E%22%3E🥇%3C%2Ftext%3E%3C%2Fsvg%3E'; this.style.background='#FFF0CC'; this.style.borderRadius='50%';">
+<img class="candado-img" src="images/candado3.png" alt="Candado 3" width="15" height="20"
+onerror="this.onerror=null; this.style.background='%23ddd'; this.style.borderRadius='4px'; this.style.width='25px'; this.style.height='30px';">
 </div>
-<div class="badge-item">
-<div class="badge-icons">
-<div class="check-icon">✓</div>
-<div class="check-icon">✓</div>
-<div class="check-icon">✓</div>
-</div>
-<span class="badge-text">Gastronomia</span>
-</div>
-<div class="badge-item">
-<div class="badge-icons">
-<div class="check-icon">✓</div>
-<div class="check-icon">✓</div>
-</div>
-<span class="badge-text">Celebracions</span>
 </div>
 </div>
 
-<a href="#" class="view-all-link">Veure tots</a>
+<!-- SECCIÓ "CONTINGUT DESTACAT" -->
+<h2 class="section-title">Contingut destacat</h2>
+<div class="featured-content">
+<div class="featured-header">
+<img src="images/imgperfil2.png" class="featured-avatar" alt="Avatar de JDaniel">
+<div class="featured-user-info">
+<span class="featured-username">@JDaniel</span>
+<span class="featured-name">Danni86</span>
+</div>
+</div>
+<p class="featured-text">A Grècia, els àpats són llargs i tranquils i sempre amb bona companyia. El clima és maravellós, fa molt bon temps i es agradable pasejar pels carrers. Sense dubte un dels llocs més bonics al món.</p>
+<img src="images/jardi.png" class="featured-image" alt="Jardi">
+</div>
+
+<!-- NOVA SECCIÓ "PUBLICACIONS" (sense foto ni noms, només text i imatge) -->
+<h2 class="section-title">Publicacions</h2>
+<div class="featured-content">
+<p class="featured-text">A Nova York em va sorprendre la barreja de cultures en un mateix barri. És com viatjar pel món sense sortir de la ciutat, però és molt estressant a vegades i s’ha de tenir molta destresa per caminar per la ciutat.</p>
+<img src="images/ny.png" class="featured-image" alt="Nova York">
+</div>
+
 <div class="feed-end-space"></div>
 </div>
 
