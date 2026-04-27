@@ -35,7 +35,7 @@
         .container {
             width: 100%;
             min-height: 100vh;
-            background-image: url('images/fondopass.png');
+            background-image: url('images/fondoquizz.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -112,7 +112,7 @@
             background-color: #1f1f1f;
         }
 
-        /* BARRA INFERIOR (sin cambios) */
+        /* ===== BARRA INFERIOR (tomada del segundo código, con el activo en Quizz) ===== */
         .navbar {
             position: fixed;
             bottom: max(20px, env(safe-area-inset-bottom, 20px));
@@ -239,7 +239,7 @@
 
         @media (max-width: 400px) {
             .btn-viatge {
-                width: 126px;           /* Manteniendo el nuevo tamaño */
+                width: 126px;
                 height: 42px;
                 font-size: 14px;
             }
@@ -254,7 +254,7 @@
 
         @media (max-width: 360px) {
             .btn-viatge {
-                width: 120px;           /* Ligeramente más pequeño para pantallas muy reducidas */
+                width: 120px;
                 height: 40px;
                 font-size: 13px;
             }
@@ -271,30 +271,31 @@
 <body>
 <div class="container">
     <div class="main-content">
-        <!-- LOGO PASSAPORT (logopass.PNG) -->
+        <!-- LOGO PASSAPORT -->
         <img src="images/logopass.PNG" class="logo-pass" alt="Coolture Passaport" onerror="this.style.display='none'">
 
-        <!-- FRASE EN COLOR DORADO -->
-        <div class="frase">Passaport de Coolture</div>
+        <!-- FRASE -->
+        <div class="frase">Quizzes de Coolture</div>
 
-        <!-- BOTÓN CON TEXTO "ACCEDEIX" (TAMAÑO REDUCIDO) -->
+        <!-- BOTÓN ACCEDEIX (redirige a quizz.html) -->
         <button class="btn-viatge" id="btnViatge">
             ACCEDEIX
         </button>
     </div>
 
+    <!-- BARRA INFERIOR: copiada del segundo ejemplo con el ítem Quizz activo -->
     <nav class="navbar">
         <a href="culturas.html" class="nav-item">
             <img src="images/forum.png" class="nav-icon" alt="Forum">
         </a>
-        <a href="quizz0.html" class="nav-item">
-            <img src="images/quizz.png" class="nav-icon" alt="Quizz">
+        <a href="quizz.html" class="nav-item active">
+            <img src="images/quizz2.png" class="nav-icon" alt="Quizz">
         </a>
         <a href="home.html" class="center-logo-link">
             <img src="images/logos-033.png" class="center-logo" alt="Logo central 03">
         </a>
-        <a href="pasaporte.html" class="nav-item active">
-            <img src="images/passaport2.png" class="nav-icon" alt="Passaport">
+        <a href="pasaporte.html" class="nav-item">
+            <img src="images/passaport.png" class="nav-icon" alt="Passaport">
         </a>
         <a href="perfil.html" class="nav-item">
             <img src="images/perfil.png" class="nav-icon" alt="Perfil">
@@ -306,8 +307,7 @@
     const btnViatge = document.getElementById('btnViatge');
     if (btnViatge) {
         btnViatge.addEventListener('click', () => {
-            // Redirige a passAB.html en lugar de home.html
-            window.location.href = 'pass/passAB.html';
+            window.location.href = 'quizz.html';
         });
     }
 </script>

@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Coolture - Registre</title>
+    <title>Coolture – Registre</title>
+
+    <!-- ========== ICONOS / PWA ========== -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="icon-192.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#c5a866">
+
+    <!-- MODO APP (iOS) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Coolture">
+    <!-- ================================== -->
+
     <style>
-        /* ===== VARIABLES ===== */
         :root {
             --gold: #c5a866;
             --green: #6b7a5a;
@@ -19,17 +33,18 @@
         }
 
         body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #1a1a1a;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             width: 100%;
             overflow-x: hidden;
         }
 
-        /* Contenidor principal: OCUPA EL 100% DEL ANCHO (SIN LÍMITE FIJO) */
         .container {
             width: 100%;
             min-height: 100vh;
@@ -41,7 +56,6 @@
             overflow: hidden;
             border-radius: 0;
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            /* Espacio dinámico para el notch */
             padding-top: constant(safe-area-inset-top);
             padding-top: env(safe-area-inset-top);
             padding-bottom: constant(safe-area-inset-bottom);
@@ -55,20 +69,30 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            padding: 20px 0 40px;
             flex: 1;
-            justify-content: center;
+            justify-content: flex-start;  /* logo al mateix lloc que a les altres pàgines */
+            padding: 20px 0 40px 0;
         }
 
+        /* Logo i lema idèntics a escull.html i login.html */
         .logo {
-            width: clamp(140px, 40vw, 180px);
-            margin-top: clamp(10px, 5vh, 30px);
+            width: clamp(200px, 70vw, 300px);
+            margin-top: clamp(80px, 20vh, 140px);
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: var(--white);
+            font-size: clamp(12px, 4vw, 14px);
+            margin-top: 5px;
+            margin-bottom: clamp(30px, 8vh, 50px);
+            opacity: 0.9;
         }
 
         /* Formulari */
         .form {
             width: 100%;
-            margin-top: 40px;
+            margin-top: 15px;
         }
 
         /* Camps d'entrada */
@@ -78,8 +102,8 @@
             border: none;
             border-bottom: 1px solid var(--white);
             color: var(--white);
-            padding: 12px 0;
-            font-size: clamp(13px, 4vw, 14px);
+            padding: 10px 0;
+            font-size: clamp(14px, 4vw, 16px);
             margin-bottom: 5px;
             outline: none;
             box-sizing: border-box;
@@ -89,11 +113,11 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
-        /* Selector personalitzat (transparent amb text blanc) */
+        /* Selector personalitzat */
         .custom-select-container {
             position: relative;
             width: 110px;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: inherit;
             flex-shrink: 0;
         }
 
@@ -104,7 +128,7 @@
             border-top: none;
             border-left: none;
             border-right: none;
-            padding: 12px 0;
+            padding: 10px 0;
             font-size: clamp(12px, 3.5vw, 13px);
             color: var(--white);
             cursor: pointer;
@@ -165,33 +189,38 @@
             font-size: clamp(9px, 3vw, 10px);
             text-align: left;
             width: 100%;
-            margin-bottom: 15px;
+            margin: 15px 0 5px 0;
         }
 
-        /* Botó */
-        .btn-white {
-            background: var(--white);
-            color: var(--gold);
+        /* Botons unificats */
+        .btn {
+            padding: 12px 16px;
+            border-radius: 30px;
             border: none;
-            width: 100%;
-            cursor: pointer;
-            display: block;
-            text-align: center;
-            text-decoration: none;
-            padding: 12px;
-            font-family: inherit;
-            border-radius: 25px;
             font-weight: bold;
             text-transform: uppercase;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
             font-size: clamp(12px, 3.5vw, 14px);
-            transition: all 0.2s ease;
+            transition: transform 0.2s ease;
+            text-align: center;
+            width: 100%;
+            max-width: 220px;
         }
-
-        .btn-white:active {
+        .btn:active {
             transform: scale(0.96);
         }
+        .btn-white {
+            background: var(--white);
+            color: #333;
+        }
+        .btn-submit {
+            display: block;
+            margin: 30px auto 10px auto;
+        }
 
-        /* Fila telèfon: adaptativa */
+        /* Fila telèfon */
         .phone-row {
             display: flex;
             gap: 8px;
@@ -208,22 +237,31 @@
         @media (max-width: 400px) {
             .content {
                 width: 88%;
-                padding: 15px 0 30px;
+                padding: 15px 0 30px 0;
             }
             .custom-select-container {
                 width: 100px;
             }
             .select-trigger {
-                padding: 10px 0;
+                padding: 8px 0;
             }
             .form input {
-                padding: 10px 0;
+                padding: 8px 0;
+            }
+            .btn {
+                padding: 10px;
             }
         }
 
         @media (max-width: 360px) {
             .content {
                 width: 90%;
+            }
+            .logo {
+                margin-top: clamp(60px, 15vh, 100px);
+            }
+            .tagline {
+                margin-bottom: clamp(20px, 6vh, 40px);
             }
             .phone-row {
                 flex-direction: column;
@@ -239,11 +277,14 @@
 
         @media (max-width: 320px) {
             .form input {
-                font-size: 12px;
+                font-size: 13px;
             }
-            .btn-white {
+            .btn {
                 font-size: 12px;
-                padding: 10px;
+                padding: 8px;
+            }
+            .small-text {
+                font-size: 8px;
             }
         }
     </style>
@@ -251,21 +292,22 @@
 <body>
 <div class="container">
     <div class="content">
-        <img src="images/logos-02.png" class="logo" style="margin-top: 10px;" alt="Coolture Logo">
-        
+        <img src="images/logos-02.png" class="logo" alt="Coolture Logo">
+        <p class="tagline">Explora cultures, Aprèn, Connecta</p>
+
         <form class="form" action="comenca.html" onsubmit="return checkPrefix()">
             <input type="email" placeholder="Email*" required>
             <input type="password" placeholder="Contrasenya*" required>
             <input type="text" placeholder="Nom*" required>
             <input type="text" placeholder="Cognom*" required>
-            
+
             <div class="phone-row">
                 <div class="custom-select-container">
                     <div class="select-trigger" id="selectTrigger">
                         <span id="selectedLabel">Prefix*</span>
                         <span style="font-size: 10px;">▼</span>
                     </div>
-                    
+
                     <div class="options-menu" id="optionsMenu">
                         <input type="text" class="search-box" id="searchBox" placeholder="Buscar país...">
                         <div id="countriesList"></div>
@@ -276,12 +318,12 @@
 
                 <input type="text" placeholder="Telèfon*" required>
             </div>
-            
+
             <p class="small-text">T'enviarem un SMS per verificar el teu telèfon</p>
             <input type="text" placeholder="DNI/NIF/NIE*" required>
             <input type="text" placeholder="Nom d'usuari*" required>
-            
-            <button type="submit" class="btn-white" style="margin-top: 20px;">
+
+            <button type="submit" class="btn btn-white btn-submit">
                 Crear compte
             </button>
         </form>
