@@ -3,749 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Coolture · Fòrum (etiquetes actualitzades)</title>
-    <!-- Tipografia Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <title>Coolture - Passaport</title>
     <style>
-        /* ========== ESTILS GENERALS ========== */
-        :root {
-            --bg-color: #F5F1E8; 
-            --green-coolture: #667F57;
+        :root { 
+            --green-coolture: #667F57; 
             --select-bg: #F4F1E8;
-            --white: #ffffff;
-            --reddit-grey: #7c7c7c;
-            --reddit-border: #cccbc4;
             --shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
-            --gold-tag: #C6A75E;   /* or daurat */
-            --green-tag: #667F57;   /* verd fosc per contrast amb blanc */
+            --gold: #C5A467;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body, html {
-            margin: 0; padding: 0;
-            background-color: #1a1a1a;
-            display: flex; justify-content: center; align-items: center;
+            margin: 0;
+            padding: 0;
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            font-family: 'Segoe UI', 'Montserrat', sans-serif;
             width: 100%;
             overflow-x: hidden;
         }
 
+        /* Contenedor principal: solo la imagen de fondo */
         .container {
             width: 100%;
             min-height: 100vh;
-            background-color: var(--bg-color);
+            background-image: url('images/fondoforum.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
             position: relative;
+            margin: 0;
+            padding: 0;
+            background-color: transparent;
+        }
+
+        .main-content {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border-radius: 0;
-            overflow: hidden;
-            padding-top: constant(safe-area-inset-top);
-            padding-top: env(safe-area-inset-top);
-        }
-
-        /* --- MENÚ A PANTALLA COMPLETA (amb marge superior i fons #667F57) --- */
-        .menu-dropdown {
-            position: fixed;
-            top: 80px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            background: #667F57;
-            border-radius: 28px 28px 0 0;
-            box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.2);
-            z-index: 4000;
-            display: none;
-            backdrop-filter: none;
-            transition: 0.2s ease;
-            font-family: 'Inter', sans-serif;
-            overflow: hidden; 
-            flex-direction: column;
-        }
-
-        .menu-dropdown.active {
-            display: flex;
-            animation: fadeSlideUp 0.25s ease;
-        }
-
-        @keyframes fadeSlideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .menu-header {
-            display: flex;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            padding: 24px 24px 12px 24px;
-            border-bottom: none;
-            background: transparent;
-            flex-shrink: 0;
+            /* Margen dinámico para notch */
+            padding-top: calc(20px + constant(safe-area-inset-top));
+            padding-top: calc(20px + env(safe-area-inset-top));
+            padding-right: 20px;
+            padding-bottom: 100px;
+            padding-left: 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: none;
         }
-        .profile-info {
-            text-align: left;
+        .main-content::-webkit-scrollbar { display: none; }
+
+        /* Logo superior (logopass.PNG) - un poco más pequeño que antes (200px) */
+        .logo-pass {
+            width: 200px;
+            max-width: 60%;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px auto;
         }
-        .profile-info h1 {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: #ffffff;
-            line-height: 1.2;
-            margin-bottom: 4px;
+
+        /* Frase inspiracional en color dorado */
+        .frase {
+            color: #2E2E2E;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 0 20px;
+            line-height: 1.3;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            letter-spacing: -0.2px;
         }
-        .profile-info .handle {
-            font-size: 14px;
-            font-weight: 400;
-            color: #e0f0da;
-            letter-spacing: -0.01em;
-        }
-        .menu-avatar {
-            width: 70px;
-            height: 70px;
-            background: #ffffffcc;
-            border-radius: 50%;
+
+        /* Botón con texto "ACCEDEIX" */
+        .btn-viatge {
+            background-color: #2E2E2E;
+            border: none;
+            width: 126px;               /* Cambiado de 180px a 126px */
+            height: 42px;               /* Cambiado de 60px a 42px */
+            border-radius: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #2c5a2c;
-            font-size: 28px;
-            font-weight: 400;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border: 2px solid white;
-            overflow: hidden;        
-        }
-        .menu-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .divider {
-            margin: 12px 24px 20px 24px;
-            border: 0;
-            height: 1px;
-            background: rgba(255,255,255,0.3);
-            opacity: 0.8;
-            flex-shrink: 0;
-        }
-
-        .menu-scroll-content {
-            flex: 1;                 
-            overflow-y: auto;
-            padding: 0 0 10px 0;
-            scrollbar-width: thin;
-        }
-        .menu-scroll-content::-webkit-scrollbar {
-            width: 5px;
-        }
-        .menu-scroll-content::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-        }
-        .menu-scroll-content::-webkit-scrollbar-thumb {
-            background: #ffffff;
-            border-radius: 10px;
-        }
-
-        .section {
-            margin: 0 0 12px 0;
-        }
-        .section h2 {
-            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.2s, background 0.2s;
+            margin: 0 auto;
+            color: white;
+            font-size: 15px;            /* Ligeramente reducido para ajustar al nuevo tamaño */
             font-weight: 700;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #ffffff;
-            margin-bottom: 8px;
-            padding: 0 24px;
-            text-align: right;
-            border-bottom: none;
         }
-        .clean-list {
-            list-style: none;
-            margin-top: 2px;
-        }
-        .clean-list li {
-            font-size: 14px;         
-            font-weight: 300;        
-            color: #ffffff;
-            padding: 12px 24px 12px 24px;
-            text-align: right;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            transition: background 0.2s;
-            cursor: pointer;
-        }
-        .clean-list li:last-child {
-            border-bottom: none;
-        }
-        .clean-list li:hover {
-            background-color: rgba(255,255,255,0.15);
-        }
-        .clean-list li.selected {
-            background-color: rgba(0,0,0,0.2);
-            color: #ffffff;
-            font-weight: 500;
-            border-left: 4px solid #ffffff;
-            text-align: right;
+        .btn-viatge:active {
+            transform: scale(0.96);
+            background-color: #1f1f1f;
         }
 
-        .menu-footer {
-            flex-shrink: 0;
-            padding: 12px 24px 32px 24px;
-            background: transparent;  
-        }
-
-        .logout-btn {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 12px;
-            width: auto;
-            min-width: 200px;
-            margin: 0;                
-            background: rgba(255,255,255,0.15);
-            border: 1.5px solid rgba(255,255,255,0.6);
-            border-radius: 60px;
-            padding: 12px 24px;
-            font-family: inherit;
-            font-size: 17px;
-            font-weight: 500;
-            color: #ffffff;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            backdrop-filter: blur(2px);
-        }
-        .logout-btn img {
-            width: 24px;
-            height: 24px;
-        }
-        .logout-btn:hover {
-            background-color: rgba(255,255,255,0.3);
-            border-color: white;
-        }
-        .logout-btn:active {
-            transform: scale(0.98);
-        }
-
-        .overlay-bg { 
-            position: fixed; top:0; left:0; width:100%; height:100%; 
-            background: rgba(0,0,0,0.4); 
-            z-index: 3500;
-            display: none; 
-        }
-        .overlay-bg.active { display: block; }
-
-        /* header i barra inferior */
-        .header { 
-            display: flex; 
-            align-items: center; 
-            justify-content: flex-start; 
-            padding: 10px 20px; 
-            margin-top: 43px;
-            flex-shrink: 0; 
-            z-index: 1000;
-            gap: 12px;
-        }
-        .burger {
-            width: 36px;
-            height: 36px;
-            cursor: pointer;
-            flex-shrink: 0;
-            position: relative;
-            top: -2px;
-        }
-        .burger img {
-            width: 100%;
-            height: 100%;
-            display: block;
-            opacity: 0;
-            pointer-events: none;
-        }
-        .burger img.visible {
-            animation: dissolveInverse 0.6s ease forwards;
-            opacity: 1;        
-            pointer-events: auto;
-        }
-        @keyframes dissolveInverse {
-            0% { opacity: 0; filter: blur(4px); transform: scale(0.8); }
-            100% { opacity: 1; filter: blur(0); transform: scale(1); }
-        }
-        
-        #search {
-            flex: 1;
-            display: grid;
-            grid-template: "search" 60px / 1fr;
-            justify-content: stretch;
-            align-content: center;
-            justify-items: stretch;
-            align-items: stretch;
-            background: transparent;
-            margin-right: 16px;
-        }
-        #search input {
-            display: block;
-            grid-area: search;
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 100%;
-            background: none;
-            padding: 0 30px 0 60px;
-            border: none;
-            border-radius: 100px;
-            font: 16px/1 system-ui, sans-serif;
-            outline-offset: -8px;
-            color: #1a1a1a;
-        }
-        #search input::placeholder { color: #aaa; }
-        #search svg {
-            grid-area: search;
-            overflow: visible;
-            color: #596D44;
-            fill: none;
-            stroke: currentColor;
-            width: 100%;
-            height: auto;
-        }
-
-        /* animacions de cerca (es mantenen) */
-        .spark { fill: currentColor; stroke: none; r: 15; }
-        .spark:nth-child(1) { animation: spark-radius 2.03s 1s both, spark-one-motion 2s 1s both; }
-        @keyframes spark-radius {
-            0% { r: 0; animation-timing-function: cubic-bezier(0, 0.3, 0, 1.57) }
-            30% { r: 15; animation-timing-function: cubic-bezier(1, -0.39, 0.68, 1.04) }
-            95% { r: 8 } 99% { r: 10 } 99.99% { r: 7 } 100% { r: 0 }
-        }
-        @keyframes spark-one-motion {
-            0% { transform: translate(-20%, 50%); animation-timing-function: cubic-bezier(0.63, 0.88, 0, 1.25) }
-            20% { transform: rotate(-0deg) translate(0%, -50%); animation-timing-function: ease-in }
-            80% { transform: rotate(-230deg) translateX(-20%) rotate(-100deg) translateX(15%); animation-timing-function: linear }
-            100% { transform: rotate(-360deg) translate(30px, 100%); animation-timing-function: cubic-bezier(.64,.66,0,.51) }
-        }
-        .spark:nth-child(2) { animation: spark-radius 2.03s 1s both, spark-two-motion 2.03s 1s both; }
-        @keyframes spark-two-motion {
-            0% { transform: translate(120%, 50%) rotate(-70deg) translateY(0%); animation-timing-function: cubic-bezier(0.36, 0.18, 0.94, 0.55) }
-            20% { transform: translate(90%, -80%) rotate(60deg) translateY(-80%); animation-timing-function: cubic-bezier(0.16, 0.77, 1, 0.4) }
-            40% { transform: translate(110%, -50%) rotate(-30deg) translateY(-120%); animation-timing-function: linear }
-            70% { transform: translate(100%, -50%) rotate(120deg) translateY(-100%); animation-timing-function: linear }
-            80% { transform: translate(95%, 50%) rotate(80deg) translateY(-150%); animation-timing-function: cubic-bezier(.64,.66,0,.51) }
-            100% { transform: translate(100%, 50%) rotate(120deg) translateY(0%) }
-        }
-        .spark:nth-child(3) { animation: spark-radius 2.05s 1s both, spark-three-motion 2.03s 1s both; }
-        @keyframes spark-three-motion {
-            0% { transform: translate(50%, 100%) rotate(-40deg) translateX(0%); animation-timing-function: cubic-bezier(0.62, 0.56, 1, 0.54) }
-            30% { transform: translate(40%, 70%) rotate(20deg) translateX(20%); animation-timing-function: cubic-bezier(0, 0.21, 0.88, 0.46) }
-            40% { transform: translate(65%, 20%) rotate(-50deg) translateX(15%); animation-timing-function: cubic-bezier(0, 0.24, 1, 0.62) }
-            60% { transform: translate(60%, -40%) rotate(-50deg) translateX(20%); animation-timing-function: cubic-bezier(0, 0.24, 1, 0.62) }
-            70% { transform: translate(70%, -0%) rotate(-180deg) translateX(20%); animation-timing-function: cubic-bezier(0.15, 0.48, 0.76, 0.26) }
-            100% { transform: translate(70%, -0%) rotate(-360deg) translateX(0%) rotate(180deg) translateX(20%); }
-        }
-        .burst { stroke-width: 3; }
-        .burst :nth-child(2n) { color: #ff783e } .burst :nth-child(3n) { color: #ffab00 } .burst :nth-child(4n) { color: #55e214 } .burst :nth-child(5n) { color: #82d9f5 }
-        .circle { r: 6; } .rect { width: 10px; height: 10px; } .triangle { d: path("M0,-6 L7,6 L-7,6 Z"); stroke-linejoin: round; } .plus { d: path("M0,-5 L0,5 M-5,0L 5,0"); stroke-linecap: round; }
-        .burst:nth-child(4) { transform: translate(30px, 100%) rotate(150deg); } .burst:nth-child(5) { transform: translate(50%, 0%) rotate(-20deg); } .burst:nth-child(6) { transform: translate(100%, 50%) rotate(75deg); }
-        @keyframes particle-fade { 0%, 100% { opacity: 0 } 5%, 80% { opacity: 1 } }
-        .burst :nth-child(1) { animation: particle-fade 600ms 2.95s both, particle-one-move 600ms 2.95s both; }
-        .burst :nth-child(2) { animation: particle-fade 600ms 2.95s both, particle-two-move 600ms 2.95s both; }
-        .burst :nth-child(3) { animation: particle-fade 600ms 2.95s both, particle-three-move 600ms 2.95s both; }
-        .burst :nth-child(4) { animation: particle-fade 600ms 2.95s both, particle-four-move 600ms 2.95s both; }
-        .burst :nth-child(5) { animation: particle-fade 600ms 2.95s both, particle-five-move 600ms 2.95s both; }
-        .burst :nth-child(6) { animation: particle-fade 600ms 2.95s both, particle-six-move 600ms 2.95s both; }
-        @keyframes particle-one-move { 0% { transform: rotate(0deg) translate(-5%) scale(0.0001, 0.0001) } 100% { transform: rotate(-20deg) translateX(8%) scale(0.5, 0.5) } }
-        @keyframes particle-two-move { 0% { transform: rotate(0deg) translate(-5%) scale(0.0001, 0.0001) } 100% { transform: rotate(0deg) translateX(8%) scale(0.5, 0.5) } }
-        @keyframes particle-three-move { 0% { transform: rotate(0deg) translate(-5%) scale(0.0001, 0.0001) } 100% { transform: rotate(20deg) translateX(8%) scale(0.5, 0.5) } }
-        @keyframes particle-four-move { 0% { transform: rotate(0deg) translate(-5%) scale(0.0001, 0.0001) } 100% { transform: rotate(-35deg) translateX(12%) } }
-        @keyframes particle-five-move { 0% { transform: rotate(0deg) translate(-5%) scale(0.0001, 0.0001) } 100% { transform: rotate(0deg) translateX(12%) } }
-        @keyframes particle-six-move { 0% { transform: rotate(0deg) translate(-5%) scale(0.0001, 0.0001) } 100% { transform: rotate(35deg) translateX(12%) } }
-        .bar { width: 100%; height: 100%; ry: 50%; stroke-width: 2; animation: bar-in 900ms 3s both; }
-        @keyframes bar-in { 0% { stroke-dasharray: 0 180 0 226 0 405 0 0 } 100% { stroke-dasharray: 0 0 181 0 227 0 405 0 } }
-        .magnifier { animation: magnifier-in 600ms 3.6s both; transform-box: fill-box; }
-        @keyframes magnifier-in { 0% { transform: translate(20px, 8px) rotate(-45deg) scale(0.01, 0.01); } 50% { transform: translate(-4px, 8px) rotate(-45deg); } 100% { transform: translate(0px, 0px) rotate(0deg); } }
-        .magnifier .glass { cx: 27; cy: 27; r: 8; stroke-width: 3; } .magnifier .handle { x1: 32; y1: 32; x2: 44; y2: 44; stroke-width: 3; }
-
-        #feed { flex-grow: 1; overflow-y: auto; padding-bottom: 120px; scrollbar-width: none; }
-        #feed::-webkit-scrollbar { display: none; }
-        .post-card { background: #F4F1E8; border-bottom: 1px solid var(--reddit-border); padding: 15px; }
-        .user-header { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
-        .avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #232323; object-fit: cover; background: #e0e0e0; flex-shrink: 0; cursor: pointer; transform: scale(1.3); }
-        .avatar-medra { object-position: 50% 30%; }
-        .avatar-belen { object-position: 70% 50%; }
-        .avatar-adrian { object-position: 50% 40%; }
-        .avatar-alex { object-position: 50% 50%; }
-        .avatar-miri { object-position: 50% 35%; }
-        .user-details { display: flex; flex-direction: column; }
-        .username-line { font-size: 13px; font-weight: bold; color: #1c1c1c; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
-        .user-alias { font-size: 10px; color: #7c7c7c; margin-top: 2px; }
-        .check-icon { height: 1em; width: auto; vertical-align: middle; margin-left: 2px; }
-
-        /* ========== ESTILS ACTUALITZATS PER A LES ETIQUETES (PILL) ========== */
-        .tags {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
-        .tag-pill {
-            display: inline-block;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 5px 14px;
-            border-radius: 40px;          /* forma de píndola */
-            text-transform: none;          /* sense majúscules forçades */
-            letter-spacing: 0.01em;
-            color: #ffffff !important;     /* text blanc */
-            background: #aaa;              /* fallback */
-            line-height: 1.2;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        /* colors específics */
-        .tag-tema {
-            background-color: var(--green-tag);   /* verd */
-        }
-        .tag-continent {
-            background-color: var(--gold-tag);    /* daurat */
-        }
-
-        .post-title { font-size: 16px; margin: 5px 0; color: #1c1c1c; font-weight: 700; }
-        .post-text { font-size: 14px; color: #444; line-height: 1.4; }
-        .post-image { width: auto; max-width: 100%; display: block; margin: 10px 0; margin-left: 0; border-radius: 12px; border: 2px solid #232323; object-fit: cover; max-height: 200px; }
-        .actions { display: flex; gap: 15px; font-size: 13px; font-weight: bold; color: var(--reddit-grey); margin-top: 10px; align-items: center; }
-        .action-icon { width: 18px; height: 18px; vertical-align: middle; margin-right: 4px; }
-        .btn-comment { cursor: pointer; display: inline-flex; align-items: center; gap: 4px; color: var(--green-coolture); }
-
-        .modal { position: absolute; bottom: -100%; left: 0; width: 100%; height: 75%; background: white; z-index: 7000; transition: 0.4s ease; border-top-left-radius: 30px; border-top-right-radius: 30px; display: flex; flex-direction: column; box-shadow: 0 -10px 30px rgba(0,0,0,0.2); }
-        .modal.active { bottom: 0; }
-        .modal-header { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; font-size: 16px; background: white; border-radius: 30px 30px 0 0; }
-        .comment-list { flex-grow: 1; overflow-y: auto; padding: 20px; background: #fefefe; }
-        .comment-item { margin-bottom: 16px; font-size: 13px; border-bottom: 1px solid #f0f0f0; padding-bottom: 12px; word-break: break-word; display: flex; gap: 10px; }
-        .comment-avatar { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #232323; object-fit: cover; flex-shrink: 0; cursor: pointer; }
-        .comment-content { flex: 1; }
-        .comment-user { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-bottom: 4px; }
-        .comment-username { font-weight: bold; font-size: 12px; color: #1c1c1c; }
-        .comment-alias { font-size: 9px; color: #7c7c7c; }
-        .comment-text { font-size: 12px; color: #333; margin-top: 2px; line-height: 1.4; }
-        .input-box { padding: 12px 16px; border-top: 1px solid #eee; display: flex; gap: 12px; background: white; align-items: center; padding-bottom: 20px; }
-        .input-box input { flex-grow: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px 18px; outline: none; background: white; color: #1a1a1a; font-size: 14px; transition: 0.2s; }
-        .input-box input:focus { border-color: var(--green-coolture); box-shadow: 0 0 0 2px rgba(102,127,87,0.2); }
-        .send-btn { background: var(--green-coolture); color: white; border: none; border-radius: 50%; width: 44px; height: 44px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .send-btn:active { transform: scale(0.94); background: #4e643f; }
-
+        /* ===== BARRA INFERIOR (con el activo en Forum) ===== */
         .navbar {
             position: fixed;
             bottom: max(20px, env(safe-area-inset-bottom, 20px));
-            left: 8px; right: 8px;
+            left: 8px;
+            right: 8px;
             background-color: var(--green-coolture);
             border-radius: 40px;
-            display: flex; justify-content: space-around; align-items: center;
-            height: 72px; box-shadow: var(--shadow); z-index: 100; overflow: visible;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 72px;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            overflow: visible;
         }
-        .nav-item { display: flex; align-items: center; justify-content: center; text-decoration: none; width: 68px; height: 56px; transition: all 0.2s ease; border-radius: 28px; flex-shrink: 0; position: relative; z-index: 10; }
-        .nav-item.active { background-color: var(--select-bg); border-radius: 32px; }
-        .nav-icon { width: 48px; height: 48px; object-fit: contain; display: block; }
-        .navbar a:first-child { transform: translateX(6px); } .navbar a:nth-child(2) { transform: translateX(6px); } .navbar a:nth-child(4) { transform: translateX(-6px); } .navbar a:last-child { transform: translateX(-6px); }
-        .center-logo-link { position: relative; display: flex; justify-content: center; align-items: center; width: 76px; height: 72px; flex-shrink: 0; text-decoration: none; cursor: pointer; z-index: 20; }
-        .center-logo-link::before { content: ''; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 84px; height: 84px; background-color: var(--green-coolture); border-radius: 50%; z-index: 1; pointer-events: none; }
-        .center-logo { position: relative; z-index: 2; width: 48px; height: 48px; object-fit: contain; margin-top: -58px; left: 0; right: 0; margin-left: auto; margin-right: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); transition: transform 0.2s ease; pointer-events: auto; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 68px;
+            height: 56px;
+            transition: all 0.2s ease;
+            border-radius: 28px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-item.active {
+            background-color: var(--select-bg);
+            border-radius: 32px;
+            z-index: 30;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .navbar a:first-child { transform: translateX(6px); }
+        .navbar a:nth-child(2) { transform: translateX(6px); }
+        .navbar a:nth-child(4) { transform: translateX(-6px); }
+        .navbar a:last-child { transform: translateX(-6px); }
+
+        .center-logo-link {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 76px;
+            height: 72px;
+            flex-shrink: 0;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .center-logo-link::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 84px;
+            background-color: var(--green-coolture);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .center-logo {
+            position: relative;
+            z-index: 2;
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-top: -48px;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.2s ease;
+            pointer-events: auto;
+        }
+
         .center-logo-link:hover .center-logo { transform: scale(1.02); }
+        .navbar a:active { opacity: 0.85; }
+
+        /* MEDIA QUERIES (ajustadas) */
         @media (max-width: 450px) {
-            .navbar { left: 6px; right: 6px; height: 68px; } .nav-item { width: 60px; height: 52px; } .nav-icon { width: 44px; height: 44px; } .center-logo { width: 60px; height: 60px; margin-top: -33px; } .center-logo-link::before { width: 76px; height: 76px; } .navbar a:first-child { transform: translateX(4px); } .navbar a:nth-child(2) { transform: translateX(4px); } .navbar a:nth-child(4) { transform: translateX(-4px); } .navbar a:last-child { transform: translateX(-4px); }
-            .menu-dropdown { top: 70px; }
+            .navbar {
+                left: 6px;
+                right: 6px;
+                height: 68px;
+            }
+            .nav-item {
+                width: 60px;
+                height: 52px;
+            }
+            .nav-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .center-logo {
+                width: 60px;
+                height: 60px;
+                margin-top: -33px;
+            }
+            .center-logo-link::before {
+                width: 76px;
+                height: 76px;
+            }
+            .navbar a:first-child { transform: translateX(4px); }
+            .navbar a:nth-child(2) { transform: translateX(4px); }
+            .navbar a:nth-child(4) { transform: translateX(-4px); }
+            .navbar a:last-child { transform: translateX(-4px); }
         }
-        @media (max-width: 400px) { .header { padding: 10px 16px; margin-top: 38px; } .post-card { padding: 12px; } .post-title { font-size: 15px; } .post-text { font-size: 13px; } }
-        @media (max-width: 360px) { .header { padding: 10px 12px; margin-top: 35px; } .burger { width: 32px; height: 32px; } .avatar { width: 32px; height: 32px; } }
+
+        @media (max-width: 400px) {
+            .btn-viatge {
+                width: 126px;
+                height: 42px;
+                font-size: 14px;
+            }
+            .frase {
+                font-size: 16px;
+                margin-bottom: 25px;
+            }
+            .logo-pass {
+                width: 160px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .btn-viatge {
+                width: 120px;
+                height: 40px;
+                font-size: 13px;
+            }
+            .frase {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+            .logo-pass {
+                width: 140px;
+            }
+        }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <div class="overlay-bg" id="overlay" onclick="closeAll()"></div>
+    <div class="main-content">
+        <!-- LOGO PASSAPORT -->
+        <img src="images/logopass.PNG" class="logo-pass" alt="Coolture Passaport" onerror="this.style.display='none'">
 
-    <!-- MENÚ REDISSENYAT -->
-    <div class="menu-dropdown" id="menuDropdown">
-        <div class="menu-header">
-            <div class="profile-info">
-                <h1>Miquel Campos</h1>
-                <span class="handle">@Mxkii_5</span>
-            </div>
-            <div class="menu-avatar" aria-label="imatge de perfil">
-                <img src="images/imgperfil.png" alt="Foto de perfil">
-            </div>
-        </div>
-        <hr class="divider" aria-hidden="true">
-        <div class="menu-scroll-content">
-            <div class="section">
-                <h2>TEMES</h2>
-                <ul class="clean-list" id="listaTemas">
-                    <li data-tema="Gastronomia">Gastronomia</li>
-                    <li data-tema="Llenguatge">Llenguatge</li>
-                    <li data-tema="Música i art">Música i art</li>
-                    <li data-tema="Celebracions">Celebracions</li>
-                    <li data-tema="Vivències">Vivències</li>
-                    <li data-tema="Llegendes">Llegendes</li>
-                    <li data-tema="Entorn">Entorn</li>
-                    <li data-tema="Arquitectura">Arquitectura</li>
-                </ul>
-            </div>
-            <div class="section">
-                <h2>CONTINENTS</h2>
-                <ul class="clean-list" id="listaContinentes">
-                    <li data-cont="Europa">Europa</li>
-                    <li data-cont="Àfrica">Àfrica</li>
-                    <li data-cont="Antartida">Antartida</li>
-                    <li data-cont="Amèrica">Amèrica</li>
-                    <li data-cont="Àsia">Àsia</li>
-                    <li data-cont="Oceania">Oceania</li>
-                </ul>
-            </div>
-        </div>
-        <div class="menu-footer">
-            <button class="logout-btn" aria-label="Tancar la sessió">
-                <img src="images/tancarsesion.png" alt="tancar sessió">
-                <span>Tanca la sessió</span>
-            </button>
-        </div>
+        <!-- FRASE -->
+        <div class="frase">Forum de Coolture</div>
+
+        <!-- BOTÓN ACCEDEIX (redirige a forum.html) -->
+        <button class="btn-viatge" id="btnViatge">
+            ACCEDEIX
+        </button>
     </div>
 
-    <!-- MODAL COMENTARIS -->
-    <div class="modal" id="commentModal">
-        <div class="modal-header"><b>Comentaris</b><span onclick="closeComments()" style="cursor:pointer; font-size:22px;">✕</span></div>
-        <div class="comment-list" id="commentList">Selecciona un post per veure comentaris.</div>
-        <div class="input-box"><input type="text" id="newComment" placeholder="Escriu el teu comentari..."><button class="send-btn" onclick="submitComment()">↑</button></div>
-    </div>
-
-    <!-- HEADER -->
-    <div class="header">
-        <div id="search">
-            <svg viewBox="0 0 420 60" xmlns="http://www.w3.org/2000/svg">
-                <rect class="bar"/>
-                <g class="magnifier">
-                    <circle class="glass"/>
-                    <line class="handle" x1="32" y1="32" x2="44" y2="44"></line>
-                </g>
-                <g class="sparks">
-                    <circle class="spark"/>
-                    <circle class="spark"/>
-                    <circle class="spark"/>
-                </g>
-                <g class="burst pattern-one">
-                    <circle class="particle circle"/>
-                    <path class="particle triangle"/>
-                    <circle class="particle circle"/>
-                    <path class="particle plus"/>
-                    <rect class="particle rect"/>
-                    <path class="particle triangle"/>
-                </g>
-                <g class="burst pattern-two">
-                    <path class="particle plus"/>
-                    <circle class="particle circle"/>
-                    <path class="particle triangle"/>
-                    <rect class="particle rect"/>
-                    <circle class="particle circle"/>
-                    <path class="particle plus"/>
-                </g>
-                <g class="burst pattern-three">
-                    <circle class="particle circle"/>
-                    <rect class="particle rect"/>
-                    <path class="particle plus"/>
-                    <path class="particle triangle"/>
-                    <rect class="particle rect"/>
-                    <path class="particle plus"/>
-                </g>
-            </svg>
-            <input type="search" id="searchInput" placeholder="Buscar...">
-        </div>
-        <div class="burger" onclick="toggleMenu()">
-            <img src="images/burguer.png" alt="Menú" id="burgerImg">
-        </div>
-    </div>
-
-    <!-- FEED AMB ETIQUETES ACTUALITZADES -->
-    <div id="feed">
-        <!-- Post 1 -->
-        <div class="post-card" data-tema="Gastronomia" data-cont="Europa">
-            <div class="user-header"><img src="images/perfil1.jpg" class="avatar avatar-medra" onclick="goToPerfil('DJ.Medra02')"><div class="user-details"><div class="username-line"><span>@DJ.Medra02</span><img src="images/check.png" class="check-icon"><img src="images/check.png" class="check-icon"></div><div class="user-alias">Medra Music</div></div></div>
-            <div class="tags">
-                <span class="tag-pill tag-tema">Gastronomia</span>
-                <span class="tag-pill tag-continent">Europa</span>
-            </div>
-            <h3 class="post-title">Els secrets de l'escudella catalana</h3>
-            <p class="post-text">He redescobert la recepta de la meva àvia. El caldo lent i la pilota... una meravella! Algú més n'és fan?</p>
-            <img src="https://picsum.photos/id/111/400/250" class="post-image"><div class="actions"><span><img src="images/icon-corazon.png" class="action-icon"> 34</span><span class="btn-comment" onclick="openComments(101)"><img src="images/icon-comentar.png" class="action-icon"> 2</span></div>
-        </div>
-        <!-- Post 2 -->
-        <div class="post-card" data-tema="Música i art" data-cont="Amèrica">
-            <div class="user-header"><img src="images/perfil2.jpg" class="avatar avatar-belen" onclick="goToPerfil('BelenEsteban')"><div class="user-details"><div class="username-line"><span>@BelenEsteban</span><img src="images/check.png" class="check-icon"><img src="images/check.png" class="check-icon"></div><div class="user-alias">Arte y Vida</div></div></div>
-            <div class="tags">
-                <span class="tag-pill tag-tema">Música i art</span>
-                <span class="tag-pill tag-continent">Amèrica</span>
-            </div>
-            <h3 class="post-title">El muralisme mexicà: més enllà de Rivera</h3>
-            <p class="post-text">Vaig visitar el Palacio de Bellas Artes i em va impressionar la força del moviment muralista.</p>
-            <img src="https://picsum.photos/id/1043/400/250" class="post-image"><div class="actions"><span><img src="images/icon-corazon.png" class="action-icon"> 52</span><span class="btn-comment" onclick="openComments(102)"><img src="images/icon-comentar.png" class="action-icon"> 1</span></div>
-        </div>
-        <!-- Post 3 -->
-        <div class="post-card" data-tema="Vivències" data-cont="Àsia">
-            <div class="user-header"><img src="images/perfil3.jpg" class="avatar avatar-adrian" onclick="goToPerfil('Adrianopayo')"><div class="user-details"><div class="username-line"><span>@Adrianopayo</span><img src="images/check.png" class="check-icon"><img src="images/check.png" class="check-icon"></div><div class="user-alias">Viajero Curioso</div></div></div>
-            <div class="tags">
-                <span class="tag-pill tag-tema">Vivències</span>
-                <span class="tag-pill tag-continent">Àsia</span>
-            </div>
-            <h3 class="post-title">Una tarda de te a Kyoto</h3>
-            <p class="post-text">Participar en una cerimònia del te va ser una experiència espiritual. La calma i el ritual et transporten.</p>
-            <img src="https://picsum.photos/id/155/400/250" class="post-image"><div class="actions"><span><img src="images/icon-corazon.png" class="action-icon"> 67</span><span class="btn-comment" onclick="openComments(103)"><img src="images/icon-comentar.png" class="action-icon"> 1</span></div>
-        </div>
-        <!-- Post 4 -->
-        <div class="post-card" data-tema="Celebracions" data-cont="Àfrica">
-            <div class="user-header"><img src="images/perfil4.jpg" class="avatar avatar-alex" onclick="goToPerfil('Alexbulbasur')"><div class="user-details"><div class="username-line"><span>@Alexbulbasur</span><img src="images/check.png" class="check-icon"><img src="images/check.png" class="check-icon"></div><div class="user-alias">Cultura Viva</div></div></div>
-            <div class="tags">
-                <span class="tag-pill tag-tema">Celebracions</span>
-                <span class="tag-pill tag-continent">Àfrica</span>
-            </div>
-            <h3 class="post-title">Timkat: la gran festa del bateig a Etiòpia</h3>
-            <p class="post-text">Els colors, els càntics i la devoció són indescriptibles. Una festa Patrimoni de la Humanitat que cal viure.</p>
-            <img src="https://picsum.photos/id/122/400/250" class="post-image"><div class="actions"><span><img src="images/icon-corazon.png" class="action-icon"> 28</span><span class="btn-comment" onclick="openComments(104)"><img src="images/icon-comentar.png" class="action-icon"> 1</span></div>
-        </div>
-        <!-- Post 5 -->
-        <div class="post-card" data-tema="Llenguatge" data-cont="Europa">
-            <div class="user-header"><img src="images/perfil5.jpg" class="avatar avatar-miri" onclick="goToPerfil('Mirimiau')"><div class="user-details"><div class="username-line"><span>@Mirimiau</span><img src="images/check.png" class="check-icon"><img src="images/check.png" class="check-icon"></div><div class="user-alias">Lingüista Creativa</div></div></div>
-            <div class="tags">
-                <span class="tag-pill tag-tema">Llenguatge</span>
-                <span class="tag-pill tag-continent">Europa</span>
-            </div>
-            <h3 class="post-title">Paraules catalanes intraduïbles</h3>
-            <p class="post-text">'Seny', 'rauxa', 'xerinola'... quines paraules de la vostra llengua us semblen úniques?</p>
-            <img src="https://picsum.photos/id/433/400/250" class="post-image"><div class="actions"><span><img src="images/icon-corazon.png" class="action-icon"> 45</span><span class="btn-comment" onclick="openComments(105)"><img src="images/icon-comentar.png" class="action-icon"> 1</span></div>
-        </div>
-    </div>
-
+    <!-- BARRA INFERIOR: el ítem activo ahora es Forum -->
     <nav class="navbar">
-        <a href="culturas.html" class="nav-item active"><img src="images/forum2.png" class="nav-icon" alt="Forum"></a>
-        <a href="quizz.html" class="nav-item"><img src="images/quizz.png" class="nav-icon" alt="Quizz"></a>
-        <a href="home.html" class="center-logo-link"><img src="images/logos-033.png" class="center-logo" alt="Logo"></a>
-        <a href="pasaporte.html" class="nav-item"><img src="images/passaport.png" class="nav-icon" alt="Passaport"></a>
-        <a href="perfil.html" class="nav-item"><img src="images/perfil.png" class="nav-icon" alt="Perfil"></a>
+        <a href="culturas.html" class="nav-item active">
+            <img src="images/forum2.png" class="nav-icon" alt="Forum">
+        </a>
+        <a href="quizz.html" class="nav-item">
+            <img src="images/quizz.png" class="nav-icon" alt="Quizz">
+        </a>
+        <a href="home.html" class="center-logo-link">
+            <img src="images/logos-033.png" class="center-logo" alt="Logo central 03">
+        </a>
+        <a href="pasaporte.html" class="nav-item">
+            <img src="images/passaport.png" class="nav-icon" alt="Passaport">
+        </a>
+        <a href="perfil.html" class="nav-item">
+            <img src="images/perfil.png" class="nav-icon" alt="Perfil">
+        </a>
     </nav>
 </div>
 
 <script>
-    // MAPA DE PERFILS I COMENTARIS
-    const PERFIL_MAP = { 'DJ.Medra02': 'perfil1.html', 'BelenEsteban': 'perfil2.html', 'Adrianopayo': 'perfil3.html', 'Alexbulbasur': 'perfil4.html', 'Mirimiau': 'perfil5.html' };
-    const COMENTARIS_MAP = { 'DJ.Medra02': { alias: 'Medra Music', avatar: 'images/perfil1.png' }, 'BelenEsteban': { alias: 'Arte y Vida', avatar: 'images/perfil2.png' }, 'Adrianopayo': { alias: 'Viajero Curioso', avatar: 'images/perfil3.png' }, 'Alexbulbasur': { alias: 'Cultura Viva', avatar: 'images/perfil4.png' }, 'Mirimiau': { alias: 'Lingüista Creativa', avatar: 'images/perfil5.png' } };
-    
-    window.goToPerfil = function(username) { if(PERFIL_MAP[username]) window.location.href = PERFIL_MAP[username]; };
-    
-    let filtroTema = null, filtroCont = null, activePostId = null;
-    const searchInput = document.getElementById('searchInput');
-    const feed = document.getElementById('feed');
-    const posts = Array.from(document.querySelectorAll('.post-card'));
-    const menuDropdown = document.getElementById('menuDropdown');
-    const overlay = document.getElementById('overlay');
-
-    function filterPosts() {
-        const term = searchInput.value.toLowerCase();
-        posts.forEach(post => {
-            const tema = post.dataset.tema;
-            const cont = post.dataset.cont;
-            const title = post.querySelector('.post-title')?.innerText.toLowerCase() || '';
-            const body = post.querySelector('.post-text')?.innerText.toLowerCase() || '';
-            const matchesTema = !filtroTema || tema === filtroTema;
-            const matchesCont = !filtroCont || cont === filtroCont;
-            const matchesSearch = !term || title.includes(term) || body.includes(term);
-            post.style.display = (matchesTema && matchesCont && matchesSearch) ? '' : 'none';
+    const btnViatge = document.getElementById('btnViatge');
+    if (btnViatge) {
+        btnViatge.addEventListener('click', () => {
+            window.location.href = 'forum.html';
         });
     }
-
-    function setFiltreTema(valor, elementLi) {
-        if (filtroTema === valor) {
-            filtroTema = null;
-            elementLi.classList.remove('selected');
-        } else {
-            document.querySelectorAll('#listaTemas li').forEach(li => li.classList.remove('selected'));
-            filtroTema = valor;
-            elementLi.classList.add('selected');
-        }
-        filterPosts();
-        menuDropdown.classList.remove('active');
-        overlay.classList.remove('active');
-    }
-
-    function setFiltreContinente(valor, elementLi) {
-        if (filtroCont === valor) {
-            filtroCont = null;
-            elementLi.classList.remove('selected');
-        } else {
-            document.querySelectorAll('#listaContinentes li').forEach(li => li.classList.remove('selected'));
-            filtroCont = valor;
-            elementLi.classList.add('selected');
-        }
-        filterPosts();
-        menuDropdown.classList.remove('active');
-        overlay.classList.remove('active');
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const temaItems = document.querySelectorAll('#listaTemas li');
-        temaItems.forEach(li => {
-            const temaVal = li.getAttribute('data-tema');
-            li.addEventListener('click', (e) => {
-                e.stopPropagation();
-                setFiltreTema(temaVal, li);
-            });
-        });
-        const contItems = document.querySelectorAll('#listaContinentes li');
-        contItems.forEach(li => {
-            const contVal = li.getAttribute('data-cont');
-            li.addEventListener('click', (e) => {
-                e.stopPropagation();
-                setFiltreContinente(contVal, li);
-            });
-        });
-        filterPosts();
-
-        const burgerImg = document.getElementById('burgerImg');
-        if (burgerImg) {
-            setTimeout(() => {
-                burgerImg.classList.add('visible');
-            }, 4000);
-        }
-    });
-
-    window.toggleMenu = () => { 
-        menuDropdown.classList.toggle('active'); 
-        overlay.classList.toggle('active'); 
-    };
-    window.closeAll = () => { 
-        closeComments(); 
-        menuDropdown.classList.remove('active'); 
-        overlay.classList.remove('active'); 
-    };
-    
-    const logoutBtn = document.querySelector('.logout-btn');
-    if(logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            alert("Sessió tancada (demo). Redirigeix a login si ho desitges.");
-            closeAll();
-        });
-    }
-
-    const comentarisSimulats = { 101: [{user:'Mirimiau',text:'A casa també en fem! Amb galets o sense?'},{user:'Alexbulbasur',text:'La pilota és insuperable 😋'}], 102: [{user:'DJ.Medra02',text:'Rivera, Orozco, Siqueiros... genis!'}], 103: [{user:'BelenEsteban',text:'Quina sort! Jo vull anar-hi aviat.'}], 104: [{user:'Adrianopayo',text:'Vaig a Etiòpia, el seu cristianisme ortodox és fascinant.'}], 105: [{user:'DJ.Medra02',text:'Atzucac també és molt nostre.'}] };
-    window.openComments = (postId) => {
-        activePostId = postId;
-        const list = document.getElementById('commentList');
-        const comentaris = comentarisSimulats[postId] || [];
-        list.innerHTML = comentaris.length ? comentaris.map(c => { const info = COMENTARIS_MAP[c.user] || { alias: 'Usuari', avatar: 'images/perfil1.png' }; return `<div class="comment-item"><img src="${info.avatar}" class="comment-avatar" onclick="goToPerfil('${c.user}')"><div class="comment-content"><div class="comment-user"><span class="comment-username">@${c.user}</span> <span class="comment-alias">${info.alias}</span></div><div class="comment-text">${c.text}</div></div></div>`; }).join('') : '<div style="padding:12px;text-align:center;color:gray;">Encara no hi ha comentaris.</div>';
-        document.getElementById('commentModal').classList.add('active');
-        overlay.classList.add('active');
-    };
-    window.closeComments = () => { document.getElementById('commentModal').classList.remove('active'); overlay.classList.remove('active'); };
-    window.submitComment = () => { const input = document.getElementById('newComment'); if(input.value.trim() && activePostId) alert(`Comentari enviat (demo): "${input.value}"`); input.value = ''; closeComments(); };
-    searchInput.addEventListener('input', filterPosts);
-    overlay.addEventListener('click', closeAll);
 </script>
 </body>
 </html>
